@@ -1,12 +1,35 @@
 apply plugin: 'com.android.application'
+apply plugin: "org.sonarqube"
+
+sonarqube {
+    properties {
+        property "sonar.projectName", "OpenTracksConcordia"
+        property "sonar.projectKey", "OpenTracksConcordia"
+        property "sonar.tests", ["src/androidTest/java"]
+        property "sonar.host.url","http://localhost:9000"
+        property "sonar.test.inclusions", "*/*Test/**"
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.sources", "src/main/java"
+        property "sonar.exclusions", '*/*Test/**,' +
+                '*.json,' +
+                '*/*test/**,' +
+                '**/.gradle/**,' +
+                '**/R.class'
+    }
+}
 
 buildscript {
+    ext {
+        agp_version = '8.1.1'
+    }
     repositories {
         google()
         mavenCentral()
+
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.2.0-beta01'
+        classpath "com.android.tools.build:gradle:$agp_version"
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.7.1"
     }
 }
 
