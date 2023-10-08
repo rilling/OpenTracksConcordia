@@ -46,6 +46,6 @@ public class PressureSensorUtilsTest {
         // then
         assertEquals(0f, altitudeGain_m, 0.01);
         assertEquals(15.0f, altitudeLoss, 0.01);
-        assertEquals(1016.80f, lastUsedPressureValue.getHPA(), 0.01); //Expect exponential smoothing
+        assertEquals(1016.80f, 0.01, lastUsedPressureValue.getHPA()); //Expect exponential smoothing
     }
 }
