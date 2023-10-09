@@ -95,7 +95,7 @@ public class ShareUtils {
             }
             if (marker.getPhotoURI() == null) {
                 Log.e(TAG, "MarkerId " + markerId.id() + " has no picture.");
-                continue;
+
             }
 
             mime = context.getContentResolver().getType(marker.getPhotoURI());
