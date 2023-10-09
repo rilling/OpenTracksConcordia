@@ -221,7 +221,7 @@ public class DescriptionGenerator {
     }
 
     /**
-     * @param altitudeM altitudeM in meters
+     * @param altitudeM altitude_m in meters
      * @param builder    StringBuilder to append
      * @param resId      resource id of altitude string
      * @param lineBreak  line break string
