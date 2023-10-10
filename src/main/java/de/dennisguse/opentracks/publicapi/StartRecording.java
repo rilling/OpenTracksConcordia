@@ -15,7 +15,7 @@ import de.dennisguse.opentracks.util.TrackUtils;
 public class StartRecording extends AbstractAPIActivity {
 
     public static final String EXTRA_TRACK_NAME = "TRACK_NAME";
-    public static final String EXTRA_TRACK_ACTIVITY_TYPE_LOCALIZED = "TRACK_CATEGORY"; //TODO Update constant
+    public static final String EXTRA_TRACK_ACTIVITY_TYPE_LOCALIZED = "TRACK_CATEGORY";
     public static final String EXTRA_TRACK_ACTIVITY_TYPE_ID = "TRACK_ICON"; //TODO Update constant
     public static final String EXTRA_TRACK_DESCRIPTION = "TRACK_DESCRIPTION";
 
