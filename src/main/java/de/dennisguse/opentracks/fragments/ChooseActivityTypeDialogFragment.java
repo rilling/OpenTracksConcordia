@@ -23,6 +23,7 @@ public class ChooseActivityTypeDialogFragment extends DialogFragment implements 
 
     private static final String CHOOSE_ACTIVITY_TYPE_DIALOG_TAG = "chooseActivityType";
 
+    
     public static void showDialog(FragmentManager fragmentManager, ActivityType activityType) {
         new ChooseActivityTypeDialogFragment(activityType).show(fragmentManager, ChooseActivityTypeDialogFragment.CHOOSE_ACTIVITY_TYPE_DIALOG_TAG);
     }
