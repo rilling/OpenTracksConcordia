@@ -1,4 +1,7 @@
 apply plugin: 'com.android.application'
+apply plugin: "org.sonarqube"
+
+
 
 buildscript {
     repositories {
@@ -6,7 +9,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.2.0-beta01'
+        classpath 'com.android.tools.build:gradle:8.1.1'
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.7.1"
     }
 }
 
@@ -144,4 +148,20 @@ dependencies {
     androidTestImplementation 'org.mockito:mockito-android:5.5.0'
 
     androidTestUtil 'androidx.test:orchestrator:1.4.2'
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectName", "OpenTracksConcordia"
+        property "sonar.projectKey", "OpenTracksConcordia"
+        property "sonar.tests", ["src/androidTest/java"]
+        property "sonar.test.inclusions", "/*Test/*"
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.sources", "src/main/java"
+        property "sonar.exclusions", '/*Test/*,' +
+                '*.json,' +
+                '/*test/*,' +
+                '*/.gradle/*,' +
+                '**/R.class'
+    }
 }

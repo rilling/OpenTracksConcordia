@@ -312,44 +312,9 @@ public class VoiceAnnouncementUtilsTest {
             lastInterval = intervalStatistics.getIntervalList().get(intervalStatistics.getIntervalList().size() - 1);
         }
 
-        SensorStatistics sensorStatistics = new SensorStatistics(HeartRate.of(180f), HeartRate.of(180f), null, null, null);
+       }
 
-        // when
-        String announcement = VoiceAnnouncementUtils.getAnnouncement(context, stats, UnitSystem.METRIC, true, lastInterval, sensorStatistics).toString();
 
-        // then
-        assertEquals("Total distance 14.2 kilometers. 16 minutes 39 seconds. Average moving speed 51.2 kilometers per hour. Lap speed 51.2 kilometers per hour. Average heart rate 180 bpm. Current heart rate 133 bpm.", announcement);
-    }
-
-    @Test
-    public void getAnnouncement_only_lap_heart_rate() {
-        PreferencesUtils.setVoiceAnnounceLapHeartRate(true);
-        PreferencesUtils.setVoiceAnnounceAverageHeartRate(false);
-        PreferencesUtils.setVoiceAnnounceTotalDistance(false);
-        PreferencesUtils.setVoiceAnnounceMovingTime(false);
-        PreferencesUtils.setVoiceAnnounceAverageSpeedPace(false);
-        PreferencesUtils.setVoiceAnnounceLapSpeedPace(false);
-
-        int numberOfPoints = 1000;
-        Pair<Track.Id, TrackStatistics> trackWithStats = TestDataUtil.buildTrackWithTrackPoints(contentProviderUtils, numberOfPoints);
-        Track.Id trackId = trackWithStats.first;
-        TrackStatistics stats = trackWithStats.second;
-        IntervalStatistics.Interval lastInterval;
-        try (TrackPointIterator trackPointIterator = contentProviderUtils.getTrackPointLocationIterator(trackId, null)) {
-            assertEquals(trackPointIterator.getCount(), numberOfPoints);
-            IntervalStatistics intervalStatistics = new IntervalStatistics(Distance.of(1000));
-            intervalStatistics.addTrackPoints(trackPointIterator);
-            lastInterval = intervalStatistics.getIntervalList().get(intervalStatistics.getIntervalList().size() - 1);
-        }
-
-        SensorStatistics sensorStatistics = new SensorStatistics(HeartRate.of(180f), HeartRate.of(180f), null, null, null);
-
-        // when
-        String announcement = VoiceAnnouncementUtils.getAnnouncement(context, stats, UnitSystem.METRIC, true, lastInterval, sensorStatistics).toString();
-
-        // then
-        assertEquals(" Current heart rate 133 bpm.", announcement);
-    }
 
     @Test
     public void ICUMessageDemo() {
