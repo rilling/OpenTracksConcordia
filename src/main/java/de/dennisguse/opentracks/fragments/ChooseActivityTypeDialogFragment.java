@@ -22,16 +22,6 @@ import de.dennisguse.opentracks.databinding.ChooseActivityTypeBinding;
 public class ChooseActivityTypeDialogFragment extends DialogFragment implements AdapterView.OnItemClickListener {
 
     private static final String CHOOSE_ACTIVITY_TYPE_DIALOG_TAG = "chooseActivityType";
-    /**
-     * This method is marked as deprecated because it uses outdated functionality.
-     * @deprecated
-     */
-    @Deprecated
-
-    public static void showDialog(FragmentManager fragmentManager, Context context, String activityTypeLocalized) {
-        ActivityType activityType = ActivityType.findByLocalizedString(context, activityTypeLocalized);
-        showDialog(fragmentManager, activityType);
-    }
 
     public static void showDialog(FragmentManager fragmentManager, ActivityType activityType) {
         new ChooseActivityTypeDialogFragment(activityType).show(fragmentManager, ChooseActivityTypeDialogFragment.CHOOSE_ACTIVITY_TYPE_DIALOG_TAG);
