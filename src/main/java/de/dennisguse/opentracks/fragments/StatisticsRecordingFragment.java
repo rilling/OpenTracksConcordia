@@ -162,6 +162,7 @@ public class StatisticsRecordingFragment extends Fragment {
             } catch (Exception e) {
                 throw new IllegalArgumentException(String.format("Could not add " + dataField.getKey(), e));
             }
+            
         }
     }
 
