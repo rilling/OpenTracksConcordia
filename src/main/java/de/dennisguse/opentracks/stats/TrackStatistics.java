@@ -355,11 +355,11 @@ public class TrackStatistics {
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
-    public void addTotalAltitudeLoss(float loss_m) {
+    public void addTotalAltitudeLoss(float lossm) {
         if (totalAltitudeLoss_m == null) {
             totalAltitudeLoss_m = 0f;
         }
-        totalAltitudeLoss_m += loss_m;
+        totalAltitudeLoss_m += lossm;
     }
 
     @Override
