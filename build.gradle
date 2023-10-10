@@ -1,12 +1,32 @@
 apply plugin: 'com.android.application'
-
+apply plugin: "org.sonarqube"
+sonarqube {
+    properties {
+        property "sonar.projectName", "OpenTracksConcordia"
+        property "sonar.projectKey", "OpenTracksConcordia"
+        property "sonar.host.url", "http://localhost:9000"
+//        property "sonar.tests", ["src/test/java"]
+        property "sonar.test.inclusions", "**/*Test*/**"
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.sources", "src/main/java"
+        property "sonar.login", "admin"
+        property "sonar.password", "TYRANITER100"
+        property "sonar.exclusions", '**/*Test*/**,' +
+                '*.json,' +
+                '**/*test*/**,' +
+                '**/.gradle/**,' +
+                '**/R.class'
+    }
+}
 buildscript {
     repositories {
         google()
         mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/"}
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.2.0-beta01'
+        classpath 'com.android.tools.build:gradle:8.0.2'
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.1.1"
     }
 }
 
@@ -58,9 +78,9 @@ android {
         buildConfig true
     }
 
-    androidResources {
-        generateLocaleConfig = true
-    }
+//    androidResources {
+//        generateLocaleConfig = true
+//    }
 
     defaultConfig {
         applicationId "de.dennisguse.opentracks"
