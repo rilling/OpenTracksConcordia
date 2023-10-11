@@ -635,8 +635,8 @@ public class ChartView extends View {
                 }
                 canvas.save();
                 float x = getX(getMarkerXValue(marker));
-                canvas.drawLine(x, topBorder + spacer + markerHeight / 2, x, topBorder + effectiveHeight, markerPaint);
-                canvas.translate(x - (markerWidth * MARKER_X_ANCHOR), topBorder + spacer);
+                canvas.drawLine(x, (float)(topBorder) + spacer + markerHeight / 2, x, (float)(topBorder) + effectiveHeight, markerPaint);
+                canvas.translate(x - (markerWidth * MARKER_X_ANCHOR), (float)(topBorder) + spacer);
 
                 markerPin.draw(canvas);
                 canvas.restore();
@@ -654,7 +654,7 @@ public class ChartView extends View {
         List<Double> xAxisMarkerPositions = getXAxisMarkerPositions(getXAxisInterval());
         for (double position : xAxisMarkerPositions) {
             int x = getX(position);
-            canvas.drawLine(x, topBorder, x, topBorder + effectiveHeight, gridPaint);
+            canvas.drawLine(x, topBorder, x, (float)(topBorder) + effectiveHeight, gridPaint);
         }
         // Y axis grid
         float rightEdge = getX(maxX);
