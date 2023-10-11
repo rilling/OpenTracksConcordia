@@ -21,7 +21,7 @@ public class ErrorListDialog extends DialogFragment {
     private ArrayList<String> errorList;
     private String title;
 
-    public static void showDialog(FragmentManager fragmentManager, String title, ArrayList<String> errorList) {
+    public static void showDialog(FragmentManager fragmentManager, String title, List<String> errorList) {
         Bundle bundle = new Bundle();
         bundle.putString(EXTRA_TITLE, title);
         bundle.putStringArrayList(EXTRA_ERROR_LIST, errorList);
