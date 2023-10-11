@@ -636,7 +636,7 @@ public class ChartView extends View {
                 canvas.save();
                 float x = getX(getMarkerXValue(marker));
                 canvas.drawLine(x, (float)(topBorder) + spacer + markerHeight / 2, x, (float)(topBorder) + effectiveHeight, markerPaint);
-                canvas.translate(x - (markerWidth * MARKER_X_ANCHOR), (float)(topBorder) + spacer);
+                canvas.translate(x - (markerWidth * MARKER_X_ANCHOR), (float)(topBorder + spacer));
 
                 markerPin.draw(canvas);
                 canvas.restore();
