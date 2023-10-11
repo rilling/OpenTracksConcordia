@@ -102,17 +102,63 @@ public class TrackStatistics {
      * @param other another statistics data object
      */
     public void merge(TrackStatistics other) {
-        if (startTime == null) {
+        startTime = startTimeAssignment(other);
+        stopTime = stopTimeAssignment(other);
+        avgHeartRate = averageHeartRateAssignment(other);
+        totalDistance = totalDistance.plus(other.totalDistance);
+        totalTime = totalTime.plus(other.totalTime);
+        movingTime = movingTime.plus(other.movingTime);
+        maxSpeed = Speed.max(maxSpeed, other.maxSpeed);
+        if (other.altitudeExtremities.hasData()) {
+            altitudeExtremities.update(other.altitudeExtremities.getMin());
+            altitudeExtremities.update(other.altitudeExtremities.getMax());
+        }
+        totalAltitudeGain_m = totalAltitudeGainAssignment(other);
+        totalAltitudeLoss_m = totalAltitudeLossAssignment(other);
+
+    }
+    public Instant startTimeAssignment(TrackStatistics other){
+        if(startTime == null){
             startTime = other.startTime;
-        } else {
+        }
+        else {
             startTime = startTime.isBefore(other.startTime) ? startTime : other.startTime;
         }
+        return startTime;
+    }
+    public Instant stopTimeAssignment(TrackStatistics other){
         if (stopTime == null) {
             stopTime = other.stopTime;
         } else {
             stopTime = stopTime.isAfter(other.stopTime) ? stopTime : other.stopTime;
         }
-
+        return stopTime;
+    }
+    public Float totalAltitudeLossAssignment(TrackStatistics other){
+        if (totalAltitudeLoss_m == null) {
+            if (other.totalAltitudeLoss_m != null) {
+                totalAltitudeLoss_m = other.totalAltitudeLoss_m;
+            }
+        } else {
+            if (other.totalAltitudeLoss_m != null) {
+                totalAltitudeLoss_m += other.totalAltitudeLoss_m;
+            }
+        }
+        return totalAltitudeLoss_m;
+    }
+    public Float totalAltitudeGainAssignment(TrackStatistics other){
+        if (totalAltitudeGain_m == null) {
+            if (other.totalAltitudeGain_m != null) {
+                totalAltitudeGain_m = other.totalAltitudeGain_m;
+            }
+        } else {
+            if (other.totalAltitudeGain_m != null) {
+                totalAltitudeGain_m += other.totalAltitudeGain_m;
+            }
+        }
+        return totalAltitudeGain_m;
+    }
+    public HeartRate averageHeartRateAssignment(TrackStatistics other){
         if (avgHeartRate == null) {
             avgHeartRate = other.avgHeartRate;
         } else {
@@ -125,35 +171,8 @@ public class TrackStatistics {
                 );
             }
         }
-
-        totalDistance = totalDistance.plus(other.totalDistance);
-        totalTime = totalTime.plus(other.totalTime);
-        movingTime = movingTime.plus(other.movingTime);
-        maxSpeed = Speed.max(maxSpeed, other.maxSpeed);
-        if (other.altitudeExtremities.hasData()) {
-            altitudeExtremities.update(other.altitudeExtremities.getMin());
-            altitudeExtremities.update(other.altitudeExtremities.getMax());
-        }
-        if (totalAltitudeGain_m == null) {
-            if (other.totalAltitudeGain_m != null) {
-                totalAltitudeGain_m = other.totalAltitudeGain_m;
-            }
-        } else {
-            if (other.totalAltitudeGain_m != null) {
-                totalAltitudeGain_m += other.totalAltitudeGain_m;
-            }
-        }
-        if (totalAltitudeLoss_m == null) {
-            if (other.totalAltitudeLoss_m != null) {
-                totalAltitudeLoss_m = other.totalAltitudeLoss_m;
-            }
-        } else {
-            if (other.totalAltitudeLoss_m != null) {
-                totalAltitudeLoss_m += other.totalAltitudeLoss_m;
-            }
-        }
+        return avgHeartRate;
     }
-
     public boolean isInitialized() {
         return startTime != null;
     }
