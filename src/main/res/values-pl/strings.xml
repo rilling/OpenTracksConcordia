@@ -78,7 +78,7 @@ limitations under the License.
     <string name="activity_type_ultimate_frisbee">wyczynowe frisbee</string>
     <string name="activity_type_unknown">nieznany</string>
     <string name="activity_type_wakeboarding">wakeboardzie</string>
-    <string name="activity_type_walking">spacer</string>
+    <string name="activity_type_walking">spacer_str</string>
     <string name="activity_type_water_skiing">narciarstwo wodne</string>
     <string name="activity_type_wind_surfing">windsurfing</string>
     <!-- Description -->
