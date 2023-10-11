@@ -28,6 +28,13 @@ class NoTracksToShareException extends RuntimeException{
         super(message);
     }
 }
+
+ class NoMarkersToShareException extends RuntimeException {
+    public NoMarkersToShareException() {
+        super("Need to share at least one marker.");
+    }
+}
+
 public class ShareUtils {
 
     private static final String TAG = ShareUtils.class.getSimpleName();
@@ -90,7 +97,7 @@ public class ShareUtils {
     @Nullable
     public static Intent newShareFileIntent(Context context, Marker.Id... markerIds) {
         if (markerIds.length == 0) {
-            throw new RuntimeException("Need to share at least one marker.");
+            throw new NoMarkersToShareException();
         }
 
         String mime = null;
