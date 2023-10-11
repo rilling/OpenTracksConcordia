@@ -27,6 +27,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -126,7 +127,9 @@ public class CustomContentProvider extends ContentProvider {
         try {
             db = databaseHelper.getWritableDatabase();
             // Necessary to enable cascade deletion from Track to TrackPoints and Markers
-            db.setForeignKeyConstraintsEnabled(true);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                db.setForeignKeyConstraintsEnabled(true);
+            }
         } catch (SQLiteException e) {
             Log.e(TAG, "Unable to open database for writing.", e);
         }
@@ -153,7 +156,7 @@ public class CustomContentProvider extends ContentProvider {
         } finally {
             db.endTransaction();
         }
-        getContext().getContentResolver().notifyChange(url, null, false);
+        getContext().getContentResolver().notifyChange(url, null);
 
         int totalChanges = getTotalChanges() - totalChangesBefore;
         Log.i(TAG, "Deleted " + totalChanges + " total rows from database");
@@ -204,7 +207,7 @@ public class CustomContentProvider extends ContentProvider {
         } finally {
             db.endTransaction();
         }
-        getContext().getContentResolver().notifyChange(url, null, false);
+        getContext().getContentResolver().notifyChange(url, null);
         return result;
     }
 
@@ -227,7 +230,7 @@ public class CustomContentProvider extends ContentProvider {
         } finally {
             db.endTransaction();
         }
-        getContext().getContentResolver().notifyChange(url, null, false);
+        getContext().getContentResolver().notifyChange(url, null);
         return numInserted;
     }
 
@@ -332,7 +335,7 @@ public class CustomContentProvider extends ContentProvider {
         } finally {
             db.endTransaction();
         }
-        getContext().getContentResolver().notifyChange(url, null, false);
+        getContext().getContentResolver().notifyChange(url, null);
         return count;
     }
 
