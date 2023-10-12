@@ -68,11 +68,13 @@ public abstract class GenericStatisticsViewHolder extends StatisticViewHolder<St
     public abstract static class SpeedOrPace extends GenericStatisticsViewHolder {
 
         private final boolean reportSpeed;
-
-        public SpeedOrPace(boolean reportSpeed) {
+//Change this constructor's visibility to protected
+//        public SpeedOrPace(boolean reportSpeed) {
+//            this.reportSpeed = reportSpeed;
+//        }
+        protected SpeedOrPace(boolean reportSpeed) {
             this.reportSpeed = reportSpeed;
         }
-
         @Override
         public void onChanged(UnitSystem unitSystem, RecordingData data) {
             SpeedFormatter localSpeedFormatter = SpeedFormatter.Builder()
