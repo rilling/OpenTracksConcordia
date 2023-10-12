@@ -75,10 +75,12 @@ public class MarkerDetailFragment extends Fragment {
 
                 @Override
                 public void onAnimationStart(Animation anim) {
+                    throw new UnsupportedOperationException("onAnimationStart is not supported for this class.");
                 }
 
                 @Override
-                public void onAnimationRepeat(Animation anim) {
+                public void onAnimationStart(Animation anim) {
+                    throw new UnsupportedOperationException("onAnimationStart is not supported for this class.");
                 }
 
                 @Override
