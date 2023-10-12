@@ -43,7 +43,8 @@ import de.dennisguse.opentracks.stats.TrackStatisticsUpdater;
 
 /**
  * A fragment to display track chart to the user.
- * ChartFragment uses a {@link TrackStatisticsUpdater} internally and recomputes the {@link TrackStatistics} from the beginning.
+ * ChartFragment uses a {@link TrackStatisticsUpdater} internally and recomputes
+ * the {@link TrackStatistics} from the beginning.
  *
  * @author Sandor Dornbush
  * @author Rodrigo Damazio
@@ -103,7 +104,8 @@ public class ChartFragment extends Fragment implements TrackDataHub.Listener {
     };
 
     /**
-     * A runnable that will setFrequency the orange pointer as appropriate and redraw.
+     * A runnable that will setFrequency the orange pointer as appropriate and
+     * redraw.
      */
     private final Runnable updateChart = new Runnable() {
         @Override
@@ -116,7 +118,6 @@ public class ChartFragment extends Fragment implements TrackDataHub.Listener {
             viewBinding.chartView.invalidate();
         }
     };
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -188,7 +189,8 @@ public class ChartFragment extends Fragment implements TrackDataHub.Listener {
 
     public void onSampledInTrackPoint(@NonNull TrackPoint trackPoint, @NonNull TrackStatistics trackStatistics) {
         if (isResumed()) {
-            ChartPoint point = new ChartPoint(trackStatistics, trackPoint, trackPoint.getSpeed(), chartByDistance, viewBinding.chartView.getUnitSystem());
+            ChartPoint point = new ChartPoint(trackStatistics, trackPoint, trackPoint.getSpeed(), chartByDistance,
+                    viewBinding.chartView.getUnitSystem());
             pendingPoints.add(point);
         }
     }
@@ -196,7 +198,7 @@ public class ChartFragment extends Fragment implements TrackDataHub.Listener {
     @Override
     public void onNewTrackPointsDone() {
         if (isResumed()) {
-            //Avoid ConcurrentModificationException exception
+            // Avoid ConcurrentModificationException exception
             viewBinding.chartView.addChartPoints(Collections.unmodifiableList(pendingPoints));
             pendingPoints.clear();
             runOnUiThread(updateChart);
@@ -236,7 +238,8 @@ public class ChartFragment extends Fragment implements TrackDataHub.Listener {
 
     /**
      * Resumes the trackDataHub.
-     * Needs to be synchronized because trackDataHub can be accessed by multiple threads.
+     * Needs to be synchronized because trackDataHub can be accessed by multiple
+     * threads.
      */
     private synchronized void resumeTrackDataHub() {
         trackDataHub = ((TrackDataHubInterface) getActivity()).getTrackDataHub();
@@ -245,7 +248,8 @@ public class ChartFragment extends Fragment implements TrackDataHub.Listener {
 
     /**
      * Pauses the trackDataHub.
-     * Needs to be synchronized because trackDataHub can be accessed by multiple threads.
+     * Needs to be synchronized because trackDataHub can be accessed by multiple
+     * threads.
      */
     private synchronized void pauseTrackDataHub() {
         trackDataHub.unregisterTrackDataListener(this);
@@ -254,10 +258,12 @@ public class ChartFragment extends Fragment implements TrackDataHub.Listener {
 
     /**
      * Returns true if the selected track is recording.
-     * Needs to be synchronized because trackDataHub can be accessed by multiple threads.
+     * Needs to be synchronized because trackDataHub can be accessed by multiple
+     * threads.
      */
+    // TODO Should not be dynamic but instead set while instantiating, i.e.,
+    // newFragment().
     @Deprecated
-    //TODO Should not be dynamic but instead set while instantiating, i.e., newFragment().
     private synchronized boolean isSelectedTrackRecording() {
         return trackDataHub != null && trackDataHub.isSelectedTrackRecording();
     }
