@@ -69,6 +69,7 @@ public abstract class AbstractBluetoothConnectionManager<DataType> {
                     }
                     clearData();
                 }
+                default -> throw new RuntimeException("Unknown newState");
             }
         }
 
