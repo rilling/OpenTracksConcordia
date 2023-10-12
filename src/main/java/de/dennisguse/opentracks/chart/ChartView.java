@@ -772,16 +772,16 @@ public class ChartView extends View {
     }
 
     private List<Double> getXAxisMarkerPositions(double interval) {
-        List<Double> markers = new ArrayList<>();
-        markers.add(0d);
+        List<Double> xAxisMarkers = new ArrayList<>();
+        xAxisMarkers.add(0d);
         for (int i = 1; i * interval < maxX; i++) {
-            markers.add(i * interval);
+            xAxisMarkers.add(i * interval);
         }
 
-        if (markers.size() < 2) {
-            markers.add(maxX);
+        if (xAxisMarkers.size() < 2) {
+            xAxisMarkers.add(maxX);
         }
-        return markers;
+        return xAxisMarkers;
     }
 
     /**
