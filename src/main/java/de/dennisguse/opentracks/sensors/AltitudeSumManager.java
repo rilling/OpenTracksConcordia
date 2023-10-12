@@ -92,11 +92,11 @@ public class AltitudeSumManager implements SensorConnector {
         altitudeGain_m = altitudeGain_m != null ? altitudeGain_m : 0;
         altitudeLoss_m = altitudeLoss_m != null ? altitudeLoss_m : 0;
 
-        PressureSensorUtils.AltitudeChange altitudeChange = PressureSensorUtils.computeChangesWithSmoothing_m(lastAcceptedSensorValue, lastSeenSensorValue, currentSensorValue);
+        PressureSensorUtils.AltitudeChange altitudeChange = PressureSensorUtils.computeChangesWithSmoothingMeters(lastAcceptedSensorValue, lastSeenSensorValue, currentSensorValue);
         if (altitudeChange != null) {
-            altitudeGain_m += altitudeChange.getAltitudeGain_m();
+            altitudeGain_m += altitudeChange.getAltitudeGainMeters();
 
-            altitudeLoss_m += altitudeChange.getAltitudeLoss_m();
+            altitudeLoss_m += altitudeChange.getAltitudeLossMeters();
 
             lastAcceptedSensorValue = altitudeChange.currentSensorValue();
         }
