@@ -25,8 +25,8 @@ public class AltitudeSumManager implements SensorConnector {
 
     private AtmosphericPressure lastSeenSensorValue;
 
-    private Float altitudeGain_m;
-    private Float altitudeLoss_m;
+    private Float altitudeGainMeters;
+    private Float altitudeLossMeters;
 
     public AltitudeSumManager() {
         driver = new BarometerInternal();
@@ -52,34 +52,34 @@ public class AltitudeSumManager implements SensorConnector {
     }
 
     public void fill(@NonNull TrackPoint trackPoint) {
-        trackPoint.setAltitudeGain(altitudeGain_m);
-        trackPoint.setAltitudeLoss(altitudeLoss_m);
+        trackPoint.setAltitudeGain(altitudeGainMeters);
+        trackPoint.setAltitudeLoss(altitudeLossMeters);
     }
 
     @Nullable
-    public Float getAltitudeGain_m() {
-        return driver.isConnected() ? altitudeGain_m : null;
+    public Float getAltitudeGainMeters() {
+        return driver.isConnected() ? altitudeGainMeters : null;
     }
 
     @VisibleForTesting
-    public void setAltitudeGain_m(float altitudeGain_m) {
-        this.altitudeGain_m = altitudeGain_m;
+    public void setAltitudeGainMeters(float altitudeGainMeters) {
+        this.altitudeGainMeters = altitudeGainMeters;
     }
 
     @Nullable
-    public Float getAltitudeLoss_m() {
-        return driver.isConnected() ? altitudeLoss_m : null;
+    public Float getAltitudeLossMeters() {
+        return driver.isConnected() ? altitudeLossMeters : null;
     }
 
     @VisibleForTesting
-    public void setAltitudeLoss_m(float altitudeLoss_m) {
-        this.altitudeLoss_m = altitudeLoss_m;
+    public void setAltitudeLossMeters(float altitudeLossMeters) {
+        this.altitudeLossMeters = altitudeLossMeters;
     }
 
     public void reset() {
         Log.d(TAG, "Reset");
-        altitudeGain_m = null;
-        altitudeLoss_m = null;
+        altitudeGainMeters = null;
+        altitudeLossMeters = null;
     }
 
     public void onSensorValueChanged(AtmosphericPressure currentSensorValue) {
@@ -89,20 +89,20 @@ public class AltitudeSumManager implements SensorConnector {
             return;
         }
 
-        altitudeGain_m = altitudeGain_m != null ? altitudeGain_m : 0;
-        altitudeLoss_m = altitudeLoss_m != null ? altitudeLoss_m : 0;
+        altitudeGainMeters = altitudeGainMeters != null ? altitudeGainMeters : 0;
+        altitudeLossMeters = altitudeLossMeters != null ? altitudeLossMeters : 0;
 
         PressureSensorUtils.AltitudeChange altitudeChange = PressureSensorUtils.computeChangesWithSmoothingMeters(lastAcceptedSensorValue, lastSeenSensorValue, currentSensorValue);
         if (altitudeChange != null) {
-            altitudeGain_m += altitudeChange.getAltitudeGainMeters();
+            altitudeGainMeters += altitudeChange.getAltitudeGainMeters();
 
-            altitudeLoss_m += altitudeChange.getAltitudeLossMeters();
+            altitudeLossMeters += altitudeChange.getAltitudeLossMeters();
 
             lastAcceptedSensorValue = altitudeChange.currentSensorValue();
         }
 
         lastSeenSensorValue = currentSensorValue;
 
-        Log.v(TAG, "altitude gain: " + altitudeGain_m + ", altitude loss: " + altitudeLoss_m);
+        Log.v(TAG, "altitude gain: " + altitudeGainMeters + ", altitude loss: " + altitudeLossMeters);
     }
 }
