@@ -50,7 +50,7 @@ public class ImportViewModel extends AndroidViewModel implements ImportServiceRe
         List<ArrayList<DocumentFile>> nestedFileList = documentFiles.stream()
                 .map(FileUtils::getFiles)
                 // TODO flatMap(Collection::stream) fails with ClassCastException; try in the future again
-                .collect(Collectors.toList());
+                .toList();
 
         List<DocumentFile> fileList = new ArrayList<>();
         nestedFileList.forEach(fileList::addAll);
