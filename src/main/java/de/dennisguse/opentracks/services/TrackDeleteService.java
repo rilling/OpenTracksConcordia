@@ -15,7 +15,15 @@ import java.util.ArrayList;
 import de.dennisguse.opentracks.data.ContentProviderUtils;
 import de.dennisguse.opentracks.data.models.Track;
 
+
+class UnknownResultCodeException extends Exception {
+    public UnknownResultCodeException() {
+        super("Unknown resultCode.");
+    }
+}
+
 public class TrackDeleteService extends JobIntentService {
+
 
     private static final int JOB_ID = 3;
 
@@ -54,10 +62,18 @@ public class TrackDeleteService extends JobIntentService {
 
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
-            switch (resultCode) {
-                case RESULT_CODE_SUCCESS -> receiver.onDeleteFinished();
-                default -> throw new RuntimeException("Unknown resultCode.");
+            if (resultCode == RESULT_CODE_SUCCESS) {
+                receiver.onDeleteFinished();
+            } else {
+                try {
+                    throw new UnknownResultCodeException();
+                } catch (UnknownResultCodeException e) {
+
+                    
+                }
             }
+
+
         }
 
         public interface Receiver {
