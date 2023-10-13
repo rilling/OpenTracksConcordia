@@ -47,8 +47,6 @@ import de.dennisguse.opentracks.util.IntentUtils;
  */
 public class ImportActivity extends FragmentActivity {
 
-    private static final String TAG = ImportActivity.class.getSimpleName();
-
     public static final String EXTRA_DIRECTORY_URI_KEY = "directory_uri";
 
     private static final String BUNDLE_DOCUMENT_URIS = "document_uris";
