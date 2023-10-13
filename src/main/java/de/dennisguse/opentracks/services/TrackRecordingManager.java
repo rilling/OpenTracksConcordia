@@ -11,6 +11,7 @@ import android.util.Pair;
 import androidx.annotation.NonNull;
 
 import java.time.Duration;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 
 import de.dennisguse.opentracks.R;
@@ -60,8 +61,10 @@ class TrackRecordingManager implements SharedPreferences.OnSharedPreferenceChang
 
     Track.Id startNewTrack() {
         TrackPoint segmentStartTrackPoint = trackPointCreator.createSegmentStartManual();
-        // Create new track
-        ZoneOffset zoneOffset = ZoneOffset.systemDefault().getRules().getOffset(segmentStartTrackPoint.getTime());
+        ZoneId zoneId = ZoneId.systemDefault();
+        ZoneOffset zoneOffset = zoneId.getRules().getOffset(segmentStartTrackPoint.getTime());
+
+        //ZoneOffset zoneOffset = ZoneOffset.systemDefault().getRules().getOffset(segmentStartTrackPoint.getTime());
         Track track = new Track(zoneOffset);
         trackId = contentProviderUtils.insertTrack(track);
         track.setId(trackId);
