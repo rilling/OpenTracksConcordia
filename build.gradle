@@ -77,13 +77,14 @@ android {
     }
     signingConfigs {
         nightly {
-            if (System.getProperty("nightly_store_file") != null) {
-                storeFile file(System.getProperty("nightly_store_file"))
-                storePassword System.getProperty("nightly_store_password")
-                keyAlias System.getProperty("nightly_key_alias")
-                keyPassword System.getProperty("nightly_key_password")
-            }
+
+            storeFile file("my-release-key.keystore")
+            storePassword "Group5"
+            keyAlias "Group5"
+            keyPassword "Group5"
+
         }
+
     }
 
     namespace 'de.dennisguse.opentracks'
