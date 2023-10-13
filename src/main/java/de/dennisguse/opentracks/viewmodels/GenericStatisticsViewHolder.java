@@ -69,10 +69,6 @@ public abstract class GenericStatisticsViewHolder extends StatisticViewHolder<St
 
         private final boolean reportSpeed;
 
-        //Change this constructor's visibility to protected
-//        public SpeedOrPace(boolean reportSpeed) {
-//            this.reportSpeed = reportSpeed;
-//        }
         protected SpeedOrPace(boolean reportSpeed) {
             this.reportSpeed = reportSpeed;
         }
