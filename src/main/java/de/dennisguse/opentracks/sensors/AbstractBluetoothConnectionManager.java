@@ -40,7 +40,7 @@ import de.dennisguse.opentracks.sensors.sensorData.SensorData;
  * Manages connection to a Bluetooth LE sensor and subscribes for onChange-notifications.
  * Also parses the transferred data into {@link SensorDataObserver}.
  */
-public abstract class AbstractBluetoothConnectionManager<DataType> {
+public abstract class AbstractBluetoothConnectionManager<D> {
 
     private static final String TAG = AbstractBluetoothConnectionManager.class.getSimpleName();
 
@@ -120,7 +120,7 @@ public abstract class AbstractBluetoothConnectionManager<DataType> {
                 return;
             }
 
-            SensorData<DataType> sensorData = parsePayload(serviceMeasurementUUID.get(), gatt.getDevice().getName(), gatt.getDevice().getAddress(), characteristic);
+            SensorData<D> sensorData = parsePayload(serviceMeasurementUUID.get(), gatt.getDevice().getName(), gatt.getDevice().getAddress(), characteristic);
             if (sensorData != null) {
                 Log.d(TAG, "Decoded data from " + gatt.getDevice().getAddress() + ": " + sensorData);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -183,12 +183,12 @@ public abstract class AbstractBluetoothConnectionManager<DataType> {
         return address.equals(bluetoothGatt.getDevice().getAddress());
     }
 
-    protected abstract SensorData<DataType> createEmptySensorData(String address);
+    protected abstract SensorData<D> createEmptySensorData(String address);
 
     /**
      * @return null if data could not be parsed.
      */
-    protected abstract SensorData<DataType> parsePayload(@NonNull ServiceMeasurementUUID serviceMeasurementUUID, String sensorName, String address, @NonNull BluetoothGattCharacteristic characteristic);
+    protected abstract SensorData<D> parsePayload(@NonNull ServiceMeasurementUUID serviceMeasurementUUID, String sensorName, String address, @NonNull BluetoothGattCharacteristic characteristic);
 
     @Deprecated //TODO REMOVE
     interface SensorDataObserver {
