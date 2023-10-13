@@ -22,10 +22,18 @@ public abstract class GenericStatisticsViewHolder extends StatisticViewHolder<St
         return StatsGenericItemBinding.inflate(inflater);
     }
 
+    //Removed usage of the first parameter because of the deprecated method which accepts 2 parameters and
+    // the other method which suppressed this warning uses only one parameter
+    //
+    // @Override
+    //    public void configureUI(DataField dataField) {
+    //        getBinding().statsValue.setTextAppearance(getContext(), dataField.isPrimary() ? R.style.TextAppearance_OpenTracks_PrimaryValue : R.style.TextAppearance_OpenTracks_SecondaryValue);
+    //        getBinding().statsDescriptionMain.setTextAppearance(getContext(), dataField.isPrimary() ? R.style.TextAppearance_OpenTracks_PrimaryHeader : R.style.TextAppearance_OpenTracks_SecondaryHeader);
+    //    }
     @Override
     public void configureUI(DataField dataField) {
-        getBinding().statsValue.setTextAppearance(getContext(), dataField.isPrimary() ? R.style.TextAppearance_OpenTracks_PrimaryValue : R.style.TextAppearance_OpenTracks_SecondaryValue);
-        getBinding().statsDescriptionMain.setTextAppearance(getContext(), dataField.isPrimary() ? R.style.TextAppearance_OpenTracks_PrimaryHeader : R.style.TextAppearance_OpenTracks_SecondaryHeader);
+        getBinding().statsValue.setTextAppearance(dataField.isPrimary() ? R.style.TextAppearance_OpenTracks_PrimaryValue : R.style.TextAppearance_OpenTracks_SecondaryValue);
+        getBinding().statsDescriptionMain.setTextAppearance(dataField.isPrimary() ? R.style.TextAppearance_OpenTracks_PrimaryHeader : R.style.TextAppearance_OpenTracks_SecondaryHeader);
     }
 
     public static class Distance extends GenericStatisticsViewHolder {
