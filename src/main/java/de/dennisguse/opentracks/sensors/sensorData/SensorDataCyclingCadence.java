@@ -12,8 +12,8 @@ import de.dennisguse.opentracks.sensors.UintUtils;
 
 public class SensorDataCyclingCadence extends SensorData<Cadence> {
 
-    private final String TAG = SensorDataCyclingCadence.class.getSimpleName();
-
+    private final String tag = SensorDataCyclingCadence.class.getSimpleName();
+    
     private final Long crankRevolutionsCount; // UINT32
     private final Integer crankRevolutionsTime; // UINT16; 1/1024s
 
@@ -83,5 +83,13 @@ public class SensorDataCyclingCadence extends SensorData<Cadence> {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (crankRevolutionsCount != null ? crankRevolutionsCount.hashCode() : 0);
+        result = 31 * result + (crankRevolutionsTime != null ? crankRevolutionsTime.hashCode() : 0);
+        return result;
     }
 }
