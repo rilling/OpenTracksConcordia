@@ -52,14 +52,14 @@ public class SensorDataCyclingCadence extends SensorData<Cadence> {
             float timeDiff_ms = UintUtils.diff(crankRevolutionsTime, previous.crankRevolutionsTime, UintUtils.UINT16_MAX) / 1024f * 1000;
             Duration timeDiff = Duration.ofMillis((long) timeDiff_ms);
             if (timeDiff.isZero() || timeDiff.isNegative()) {
-                Log.e(tAG, "Timestamps difference is invalid: cannot compute cadence.");
+                Log.e(tag, "Timestamps difference is invalid: cannot compute cadence.");
                 value = null;
                 return;
             }
 
             // TODO We have to treat with overflow according to the documentation: read https://github.com/OpenTracksApp/OpenTracks/pull/953#discussion_r711625268
             if (crankRevolutionsCount < previous.crankRevolutionsCount) {
-                Log.e(tAG, "Crank revolutions count difference is invalid: cannot compute cadence.");
+                Log.e(tag, "Crank revolutions count difference is invalid: cannot compute cadence.");
                 return;
             }
 
