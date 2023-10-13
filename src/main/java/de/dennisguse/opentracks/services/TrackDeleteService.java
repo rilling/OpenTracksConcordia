@@ -9,9 +9,9 @@ import android.os.ResultReceiver;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.JobIntentService;
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
+
 
 import de.dennisguse.opentracks.data.ContentProviderUtils;
 import de.dennisguse.opentracks.data.models.Track;
@@ -24,6 +24,7 @@ class UnknownResultCodeException extends Exception {
 }
 
 public class TrackDeleteService extends JobIntentService {
+
 
 
     private static final int JOB_ID = 3;
