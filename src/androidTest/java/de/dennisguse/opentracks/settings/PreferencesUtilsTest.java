@@ -309,11 +309,11 @@ public class PreferencesUtilsTest {
         // then only updated profile is modified in the custom layouts
         List<RecordingLayout> layoutsAfter = PreferencesUtils.getAllCustomLayouts();
 
-        assertEquals(layoutsBefore.size(), 2);
-        assertEquals(layoutsAfter.size(), 2);
+        assertEquals(2, layoutsBefore.size());
+        assertEquals(2, layoutsAfter.size());
 
-        assertEquals(layoutsBefore.get(0).getFields().stream().filter(DataField::isVisible).count(), 4);
-        assertEquals(layoutsAfter.get(0).getFields().stream().filter(DataField::isVisible).count(), 1);
+        assertEquals(4, layoutsBefore.get(0).getFields().stream().filter(DataField::isVisible).count());
+        assertEquals(1, layoutsAfter.get(0).getFields().stream().filter(DataField::isVisible).count());
     }
 
     @Test
