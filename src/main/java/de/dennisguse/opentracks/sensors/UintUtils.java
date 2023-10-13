@@ -29,7 +29,7 @@ public class UintUtils {
         return (UINT_MAX + 1 - b) + a;
     }
     static class DataOutOfRangeException extends RuntimeException{
-        public DataOutOfRangeException(String errorMesaage){
+        public DataOutOfRangeException(String errorMessage){
             super(errorMessage);
         }
     }
