@@ -69,12 +69,12 @@ public enum TrackFileFormat {
 
     KMZ_WITH_TRACKDETAIL_AND_SENSORDATA_AND_PICTURES("KMZ_WITH_TRACKDETAIL_AND_SENSORDATA_AND_PICTURES") {
 
-        private static final boolean exportPhotos = true;
+        private static final boolean EXPORT_PHOTOS = true;
 
         @Override
         public TrackExporter createTrackExporter(@NonNull Context context, @NonNull ContentProviderUtils contentProviderUtils) {
-            KMLTrackExporter exporter = new KMLTrackExporter(context, contentProviderUtils, exportPhotos);
-            return new KmzTrackExporter(context, contentProviderUtils, exporter, exportPhotos);
+            KMLTrackExporter exporter = new KMLTrackExporter(context, contentProviderUtils, EXPORT_PHOTOS);
+            return new KmzTrackExporter(context, contentProviderUtils, exporter, EXPORT_PHOTOS);
         }
 
         @Override
@@ -88,7 +88,7 @@ public enum TrackFileFormat {
 
         @Override
         public boolean includesPhotos() {
-            return exportPhotos;
+            return EXPORT_PHOTOS;
         }
 
     },
