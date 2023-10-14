@@ -42,8 +42,13 @@ public class TrackDeleteService extends JobIntentService {
 
     @Override
     protected void onHandleWork(@NonNull Intent intent) {
-        ResultReceiver resultReceiver = intent.getParcelableExtra(EXTRA_RECEIVER);
-        ArrayList<Track.Id> trackIds = intent.getParcelableArrayListExtra(EXTRA_TRACK_IDS);
+        Bundle extras = intent.getExtras();
+        if (extras == null) {
+            return;
+        }
+
+        ResultReceiver resultReceiver = extras.getParcelable(EXTRA_RECEIVER);
+        ArrayList<Track.Id> trackIds = extras.getParcelableArrayList(EXTRA_TRACK_IDS);
 
         ContentProviderUtils contentProviderUtils = new ContentProviderUtils(this);
         contentProviderUtils.deleteTracks(this, trackIds);
