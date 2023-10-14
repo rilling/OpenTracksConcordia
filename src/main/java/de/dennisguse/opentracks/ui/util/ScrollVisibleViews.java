@@ -28,7 +28,7 @@ public class ScrollVisibleViews implements AbsListView.OnScrollListener {
                 }
             }
         }
-    }
+    
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
