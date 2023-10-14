@@ -176,12 +176,12 @@ public class TrackRecordingServiceConnection implements ServiceConnection, Death
 
     @Nullable
     public Marker.Id addMarker(Context context, String name, String category, String description, String photoUrl) {
-        TrackRecordingService trackRecordingService = getServiceIfBound();
-        if (trackRecordingService == null) {
+        TrackRecordingService newTrackRecordingService = getServiceIfBound();
+        if (newTrackRecordingService == null) {
             Log.d(TAG, "Unable to add marker, no track recording service");
         } else {
             try {
-                Marker.Id marker = trackRecordingService.insertMarker(name, category, description, photoUrl);
+                Marker.Id marker = newTrackRecordingService.insertMarker(name, category, description, photoUrl);
                 if (marker != null) {
                     Toast.makeText(context, R.string.marker_add_success, Toast.LENGTH_SHORT).show();
                     return marker;
@@ -196,11 +196,11 @@ public class TrackRecordingServiceConnection implements ServiceConnection, Death
     }
 
     public void stopRecording(@NonNull Context context) {
-        TrackRecordingService trackRecordingService = getServiceIfBound();
-        if (trackRecordingService == null) {
+        TrackRecordingService newTrackRecordingService = getServiceIfBound();
+        if (newTrackRecordingService == null) {
             Log.e(TAG, "TrackRecordingService not connected.");
         } else {
-            trackRecordingService.endCurrentTrack();
+            newTrackRecordingService.endCurrentTrack();
         }
         unbindAndStop(context);
     }
