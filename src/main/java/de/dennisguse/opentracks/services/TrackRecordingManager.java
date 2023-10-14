@@ -200,6 +200,15 @@ class TrackRecordingManager implements SharedPreferences.OnSharedPreferenceChang
             distanceToLastStoredTrackPoint = trackPoint.distanceToPrevious(lastStoredTrackPoint);
         }
 
+        if (insertCorrectTrackPoint(trackPoint, distanceToLastStoredTrackPoint)) return true;
+
+        Log.d(TAG, "Not recording TrackPoint");
+        lastTrackPoint = trackPoint;
+
+        return false;
+    }
+
+    private boolean insertCorrectTrackPoint(@NonNull TrackPoint trackPoint, Distance distanceToLastStoredTrackPoint) {
         if (distanceToLastStoredTrackPoint.greaterThan(maxRecordingDistance)) {
             trackPoint.setType(TrackPoint.Type.SEGMENT_START_AUTOMATIC);
             insertTrackPoint(trackPoint, true);
@@ -217,10 +226,6 @@ class TrackRecordingManager implements SharedPreferences.OnSharedPreferenceChang
             insertTrackPoint(trackPoint, true);
             return true;
         }
-
-        Log.d(TAG, "Not recording TrackPoint");
-        lastTrackPoint = trackPoint;
-
         return false;
     }
 
