@@ -1,4 +1,4 @@
-package de.dennisguse.opentracks.ui.customRecordingLayout;
+package de.dennisguse.opentracks.ui.customrecordinglayout;
 
 import androidx.annotation.Nullable;
 
