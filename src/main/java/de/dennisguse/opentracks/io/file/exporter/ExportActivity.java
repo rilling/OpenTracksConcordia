@@ -231,7 +231,7 @@ public class ExportActivity extends FragmentActivity implements ExportService.Ex
         exportTasks = new ArrayList<>();
         if (allInOneFile) {
             String filename = "OpenTracks-Backup";
-            exportTasks.add(new ExportTask(filename, trackFileFormat, tracks.stream().map(Track::getId).collect(Collectors.toList())));
+            exportTasks.add(new ExportTask(filename, trackFileFormat, tracks.stream().map(Track::getId).toList()));
         } else {
             exportTasks.addAll(tracks.stream().map(it -> new ExportTask(null, trackFileFormat, List.of(it.getId()))).collect(Collectors.toList()));
         }
