@@ -162,7 +162,7 @@ public class BluetoothUtils {
 
         int index = 0;
         int flags1 = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, index++);
-        int flags2 = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, index++);
+        characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, index++);
         boolean hasPedalPowerBalance = (flags1 & 0x01) > 0;
         boolean hasAccumulatedTorque = (flags1 & 0x04) > 0;
         boolean hasWheel = (flags1 & 16) > 0;
@@ -261,7 +261,7 @@ public class BluetoothUtils {
 
         index = 4;
         if (hasStrideLength && valueLength - index >= 2) {
-            Distance strideDistance = Distance.ofCM(characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, index));
+            Distance.ofCM(characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, index));
             index += 2;
         }
 
