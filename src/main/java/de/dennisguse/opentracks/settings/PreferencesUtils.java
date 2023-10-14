@@ -654,12 +654,12 @@ public class PreferencesUtils {
     }
 
     public static TrackFilenameGenerator getTrackFileformatGenerator() {
-        String DEFAULT = resources.getString(R.string.export_filename_format_default);
+        String defaultDate = resources.getString(R.string.export_filename_format_default);
         TrackFilenameGenerator generator = new TrackFilenameGenerator(getString(R.string.export_filename_format_key, DEFAULT));
         if (generator.isValid()) {
             return generator;
         } else {
-            return new TrackFilenameGenerator(DEFAULT);
+            return new TrackFilenameGenerator(defaultDate);
         }
     }
 
