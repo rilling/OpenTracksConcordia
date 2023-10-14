@@ -95,7 +95,7 @@ public class ActivityTypePreference extends DialogPreference {
             });
 
             iconView = view.findViewById(R.id.activity_type_preference_spinner);
-            iconView.setOnClickListener((it) -> showIconSelectDialog());
+            iconView.setOnClickListener(it -> showIconSelectDialog());
 
             updateIcon(ActivityType.findByLocalizedString(context, activityTypeLocalized));
         }
