@@ -1,4 +1,4 @@
-package de.dennisguse.opentracks.ui.customrecordinglayout;
+package de.dennisguse.opentracks.ui.customRecordingLayout;
 
 import android.os.Parcel;
 import android.os.Parcelable;
