@@ -775,13 +775,13 @@ public class ChartView extends View {
         List<Double> xAxisMarkers = new ArrayList<>();
         xAxisMarkers.add(0d);
         for (int i = 1; i * interval < maxX; i++) {
-             xAxisMarkers.add(i * interval);
+            xAxisMarkers.add(i * interval);
         }
 
         if (xAxisMarkers.size() < 2) {
-             xAxisMarkers.add(maxX);
+            xAxisMarkers.add(maxX);
         }
-        return  xAxisMarkers;
+        return xAxisMarkers;
     }
 
     /**
