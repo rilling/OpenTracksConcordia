@@ -1,4 +1,4 @@
-package de.dennisguse.opentracks.ui.customrecordinglayout;
+package de.dennisguse.opentracks.ui.customRecordingLayout;
 
 import android.content.Context;
 import android.util.Log;

@@ -1,4 +1,4 @@
-package de.dennisguse.opentracks.ui.customrecordinglayout;
+package de.dennisguse.opentracks.ui.customRecordingLayout;
 
 public enum CustomLayoutFieldType {
     GENERIC(1),
