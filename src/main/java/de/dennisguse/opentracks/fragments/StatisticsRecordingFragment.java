@@ -160,8 +160,9 @@ public class StatisticsRecordingFragment extends Fragment {
 
                 viewBinding.statsLayout.addView(viewHolder.getView(), param);
             } catch (Exception e) {
-                throw new RuntimeException("Could not add " + dataField.getKey(), e);
+                throw new IllegalArgumentException(String.format("Could not add " + dataField.getKey(), e));
             }
+            
         }
     }
 
