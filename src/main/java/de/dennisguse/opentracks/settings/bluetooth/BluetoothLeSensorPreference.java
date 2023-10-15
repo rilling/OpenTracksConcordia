@@ -66,7 +66,7 @@ public abstract class BluetoothLeSensorPreference extends DialogPreference {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setData(String value) {
         final boolean changed = !TextUtils.equals(this.value, value);
         if (changed || !valueSet) {
             this.value = value;
@@ -80,7 +80,7 @@ public abstract class BluetoothLeSensorPreference extends DialogPreference {
 
     @Override
     protected void onSetInitialValue(Object defaultValue) {
-        setValue(getPersistedString((String) defaultValue));
+        setData(getPersistedString((String) defaultValue));
     }
 
     @Override
@@ -239,7 +239,7 @@ public abstract class BluetoothLeSensorPreference extends DialogPreference {
                 String value = listAdapter.get(selectedEntryIndex).getAddress();
                 BluetoothLeSensorPreference preference = (BluetoothLeSensorPreference) getPreference();
                 if (preference.callChangeListener(value)) {
-                    preference.setValue(value);
+                    preference.setData(value);
                 }
             }
         }
