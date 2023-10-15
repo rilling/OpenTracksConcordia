@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentResultListener;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Map;
+import java.util.UUID;
 
 import de.dennisguse.opentracks.R;
 import de.dennisguse.opentracks.io.file.TrackFileFormat;
@@ -57,20 +60,27 @@ public class UserInterfaceSettingsFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onDisplayPreferenceDialog(Preference preference) {
-        DialogFragment dialogFragment = null;
-
         if (preference instanceof ResetDialogPreference) {
-            dialogFragment = ResetDialogPreference.ResetPreferenceDialog.newInstance(preference.getKey());
-        }
+            String requestKey = UUID.randomUUID().toString();
 
-        if (dialogFragment != null) {
-            dialogFragment.setTargetFragment(this, 0);
+            getParentFragmentManager().setFragmentResultListener(requestKey, this, new FragmentResultListener() {
+                public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                    // Handle the result here, if needed
+                }
+            });
+
+            DialogFragment dialogFragment = ResetDialogPreference.ResetPreferenceDialog.newInstance(preference.getKey());
+            Bundle args = new Bundle();
+            args.putString("requestKey", requestKey);
+            dialogFragment.setArguments(args);
+
             dialogFragment.show(getParentFragmentManager(), getClass().getSimpleName());
-            return;
+        } else {
+            super.onDisplayPreferenceDialog(preference);
         }
-
-        super.onDisplayPreferenceDialog(preference);
     }
+
+
 
     private void setShowOnMapFormatOptions() {
         Map<String, String> options = TrackFileFormat.toPreferenceIdLabelMap(getResources(), IntentDashboardUtils.SHOW_ON_MAP_TRACK_FILE_FORMATS);

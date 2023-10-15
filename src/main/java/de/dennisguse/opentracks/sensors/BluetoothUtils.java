@@ -115,7 +115,7 @@ public class BluetoothUtils {
 
     public static BatteryLevel parseBatteryLevel(BluetoothGattCharacteristic characteristic) {
         // DOCUMENTATION org.bluetooth.characteristic.battery_level.xml
-        byte[] raw = characteristic.getValue();
+        byte[] raw = characteristic.getData();
         if (raw.length == 0) {
             return null;
         }
@@ -126,7 +126,7 @@ public class BluetoothUtils {
 
     public static HeartRate parseHeartRate(BluetoothGattCharacteristic characteristic) {
         //DOCUMENTATION https://www.bluetooth.com/wp-content/uploads/Sitecore-Media-Library/Gatt/Xml/Characteristics/org.bluetooth.characteristic.heart_rate_measurement.xml
-        byte[] raw = characteristic.getValue();
+        byte[] raw = characteristic.getData();
         if (raw.length == 0) {
             return null;
         }
@@ -143,7 +143,7 @@ public class BluetoothUtils {
     }
 
     public static AtmosphericPressure parseEnvironmentalSensing(BluetoothGattCharacteristic characteristic) {
-        byte[] raw = characteristic.getValue();
+        byte[] raw = characteristic.getData();
 
         if (raw.length < 4) {
             return null;
@@ -155,14 +155,14 @@ public class BluetoothUtils {
 
     public static SensorDataCyclingPower.Data parseCyclingPower(String address, String sensorName, BluetoothGattCharacteristic characteristic) {
         // DOCUMENTATION https://www.bluetooth.com/wp-content/uploads/Sitecore-Media-Library/Gatt/Xml/Characteristics/org.bluetooth.characteristic.cycling_power_measurement.xml
-        int valueLength = characteristic.getValue().length;
+        int valueLength = characteristic.getData().length;
         if (valueLength == 0) {
             return null;
         }
 
         int index = 0;
         int flags1 = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, index++);
-        int flags2 = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, index++);
+        characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, index++);
         boolean hasPedalPowerBalance = (flags1 & 0x01) > 0;
         boolean hasAccumulatedTorque = (flags1 & 0x04) > 0;
         boolean hasWheel = (flags1 & 16) > 0;
@@ -197,12 +197,12 @@ public class BluetoothUtils {
 
     public static SensorDataCyclingCadenceAndDistanceSpeed parseCyclingCrankAndWheel(String address, String sensorName, @NonNull BluetoothGattCharacteristic characteristic) {
         // DOCUMENTATION https://www.bluetooth.com/wp-content/uploads/Sitecore-Media-Library/Gatt/Xml/Characteristics/org.bluetooth.characteristic.csc_measurement.xml
-        int valueLength = characteristic.getValue().length;
+        int valueLength = characteristic.getData().length;
         if (valueLength == 0) {
             return null;
         }
 
-        int flags = characteristic.getValue()[0];
+        int flags = characteristic.getData()[0];
         boolean hasWheel = (flags & 0x01) > 0;
         boolean hasCrank = (flags & 0x02) > 0;
 
@@ -230,12 +230,12 @@ public class BluetoothUtils {
 
     public static SensorDataRunning parseRunningSpeedAndCadence(String address, String sensorName, @NonNull BluetoothGattCharacteristic characteristic) {
         // DOCUMENTATION https://www.bluetooth.com/wp-content/uploads/Sitecore-Media-Library/Gatt/Xml/Characteristics/org.bluetooth.characteristic.rsc_measurement.xml
-        int valueLength = characteristic.getValue().length;
+        int valueLength = characteristic.getData().length;
         if (valueLength == 0) {
             return null;
         }
 
-        int flags = characteristic.getValue()[0];
+        int flags = characteristic.getData()[0];
         boolean hasStrideLength = (flags & 0x01) > 0;
         boolean hasTotalDistance = (flags & 0x02) > 0;
         boolean hasStatus = (flags & 0x03) > 0; // walking vs running
@@ -261,7 +261,7 @@ public class BluetoothUtils {
 
         index = 4;
         if (hasStrideLength && valueLength - index >= 2) {
-            Distance strideDistance = Distance.ofCM(characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, index));
+            Distance.ofCM(characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, index));
             index += 2;
         }
 

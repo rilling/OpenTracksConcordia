@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import de.dennisguse.opentracks.R;
 
-abstract public class RecyclerViewSwipeDeleteCallback extends ItemTouchHelper.Callback {
+public abstract class RecyclerViewSwipeDeleteCallback extends ItemTouchHelper.Callback {
 
     private final Paint clearPaint;
     private final ColorDrawable background;
@@ -25,7 +25,7 @@ abstract public class RecyclerViewSwipeDeleteCallback extends ItemTouchHelper.Ca
     private final int intrinsicWidth;
     private final int intrinsicHeight;
 
-    public RecyclerViewSwipeDeleteCallback(Context context) {
+    protected RecyclerViewSwipeDeleteCallback(Context context) {
         background = new ColorDrawable();
         backgroundColor = ContextCompat.getColor(context, R.color.colorBackgroundDelete);
         clearPaint = new Paint();

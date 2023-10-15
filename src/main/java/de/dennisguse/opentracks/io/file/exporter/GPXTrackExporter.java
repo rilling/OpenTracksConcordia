@@ -332,12 +332,12 @@ public class GPXTrackExporter implements TrackExporter {
                 trackPointExtensionContent += "<pwr:PowerInWatts>" + POWER_FORMAT.format(trackPoint.getPower().getW()) + "</pwr:PowerInWatts>\n";
             }
 
-            Double cumulativeGain = cumulateSensorData(trackPoint, sensorPoints, (tp) -> tp.hasAltitudeGain() ? (double) tp.getAltitudeGain() : null);
+            Double cumulativeGain = cumulateSensorData(trackPoint, sensorPoints, tp -> tp.hasAltitudeGain() ? (double) tp.getAltitudeGain() : null);
             if (cumulativeGain != null) {
                 trackPointExtensionContent += ("<opentracks:gain>" + ALTITUDE_FORMAT.format(cumulativeGain) + "</opentracks:gain>\n");
             }
 
-            Double cumulativeLoss = cumulateSensorData(trackPoint, sensorPoints, (tp) -> tp.hasAltitudeLoss() ? (double) tp.getAltitudeLoss() : null);
+            Double cumulativeLoss = cumulateSensorData(trackPoint, sensorPoints, tp -> tp.hasAltitudeLoss() ? (double) tp.getAltitudeLoss() : null);
             if (cumulativeLoss != null) {
                 trackPointExtensionContent += ("<opentracks:loss>" + ALTITUDE_FORMAT.format(cumulativeLoss) + "</opentracks:loss>\n");
             }

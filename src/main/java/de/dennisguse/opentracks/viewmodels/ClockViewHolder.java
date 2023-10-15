@@ -18,10 +18,15 @@ public class ClockViewHolder extends StatisticViewHolder<StatsClockItemBinding> 
     @Override
     public void configureUI(DataField dataField) {
         //TODO Unify with GenericStatisticsViewHolder?
-        getBinding().statsClock.setTextAppearance(getContext(), dataField.isPrimary() ? R.style.TextAppearance_OpenTracks_PrimaryValue : R.style.TextAppearance_OpenTracks_SecondaryValue);
+        int textAppearanceResId = dataField.isPrimary() ? R.style.TextAppearance_OpenTracks_PrimaryValue : R.style.TextAppearance_OpenTracks_SecondaryValue;
+        getBinding().statsClock.setTextAppearance(textAppearanceResId);
+
     }
 
     @Override
     public void onChanged(UnitSystem unitSystem, RecordingData data) {
+        throw new UnsupportedOperationException();
+        //We don't have enough information or context to provide a complete implementation in the base class or interface for this mothod.
     }
+
 }

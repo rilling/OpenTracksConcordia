@@ -12,8 +12,8 @@ import de.dennisguse.opentracks.sensors.UintUtils;
 
 public class SensorDataCyclingCadence extends SensorData<Cadence> {
 
-    private final String TAG = SensorDataCyclingCadence.class.getSimpleName();
-
+    private final String tag = SensorDataCyclingCadence.class.getSimpleName();
+    
     private final Long crankRevolutionsCount; // UINT32
     private final Integer crankRevolutionsTime; // UINT16; 1/1024s
 
@@ -52,14 +52,14 @@ public class SensorDataCyclingCadence extends SensorData<Cadence> {
             float timeDiff_ms = UintUtils.diff(crankRevolutionsTime, previous.crankRevolutionsTime, UintUtils.UINT16_MAX) / 1024f * 1000;
             Duration timeDiff = Duration.ofMillis((long) timeDiff_ms);
             if (timeDiff.isZero() || timeDiff.isNegative()) {
-                Log.e(TAG, "Timestamps difference is invalid: cannot compute cadence.");
+                Log.e(tag, "Timestamps difference is invalid: cannot compute cadence.");
                 value = null;
                 return;
             }
 
             // TODO We have to treat with overflow according to the documentation: read https://github.com/OpenTracksApp/OpenTracks/pull/953#discussion_r711625268
             if (crankRevolutionsCount < previous.crankRevolutionsCount) {
-                Log.e(TAG, "Crank revolutions count difference is invalid: cannot compute cadence.");
+                Log.e(tag, "Crank revolutions count difference is invalid: cannot compute cadence.");
                 return;
             }
 
@@ -83,5 +83,13 @@ public class SensorDataCyclingCadence extends SensorData<Cadence> {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (crankRevolutionsCount != null ? crankRevolutionsCount.hashCode() : 0);
+        result = 31 * result + (crankRevolutionsTime != null ? crankRevolutionsTime.hashCode() : 0);
+        return result;
     }
 }

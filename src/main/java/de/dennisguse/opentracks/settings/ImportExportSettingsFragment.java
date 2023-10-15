@@ -18,7 +18,6 @@ import de.dennisguse.opentracks.util.IntentUtils;
 
 public class ImportExportSettingsFragment extends PreferenceFragmentCompat {
 
-    private static final String TAG = ImportExportSettingsFragment.class.getSimpleName();
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
