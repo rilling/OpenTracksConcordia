@@ -62,7 +62,7 @@ public abstract class BluetoothLeSensorPreference extends DialogPreference {
     private String value;
     private boolean valueSet = false;
 
-    public String getValue() {
+    public String getData() {
         return value;
     }
 
@@ -85,11 +85,11 @@ public abstract class BluetoothLeSensorPreference extends DialogPreference {
 
     @Override
     public CharSequence getSummary() {
-        if (getValue() == null || PreferencesUtils.isBluetoothSensorAddressNone(getValue())) {
+        if (getData() == null || PreferencesUtils.isBluetoothSensorAddressNone(getData())) {
             return getContext().getString(DEVICE_NONE_RESOURCEID);
         }
 
-        return getValue();
+        return getData();
     }
 
     public abstract PreferenceDialogFragmentCompat createInstance();
@@ -192,9 +192,9 @@ public abstract class BluetoothLeSensorPreference extends DialogPreference {
             selectedEntryIndex = 0;
 
             BluetoothLeSensorPreference preference = (BluetoothLeSensorPreference) getPreference();
-            String deviceSelected = preference.getValue();
+            String deviceSelected = preference.getData();
             if (deviceSelected != null && !deviceNone.equals(deviceSelected)) {
-                listAdapter.add(preference.getValue(), preference.getValue());
+                listAdapter.add(preference.getData(), preference.getData());
                 selectedEntryIndex = 1;
             }
 
