@@ -242,9 +242,8 @@ public class MarkerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             setSelected(true);
             return true;
         }
-    }
 
-    /**
+            /**
      * It loads the photoUrl in the imageView from view.
      * It takes the photo from cache or from storage if isn't in the cache.
      *
@@ -273,4 +272,7 @@ public class MarkerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             }
         });
     }
+    }
+
+
 }
