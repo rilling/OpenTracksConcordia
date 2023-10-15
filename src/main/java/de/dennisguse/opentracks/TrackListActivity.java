@@ -220,8 +220,9 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
 
         trackRecordingServiceConnection = new TrackRecordingServiceConnection(bindChangedCallback);
 
-        viewBinding.aggregatedStatsButton.setOnClickListener((view) -> startActivity(IntentUtils.newIntent((ActivityUtils.ContextualActionModeCallback) this, AggregatedStatisticsActivity.class)));
-        viewBinding.sensorStartButton.setOnClickListener((view) -> {
+        viewBinding.aggregatedStatsButton.setOnClickListener(view -> startActivity(IntentUtils.newIntent(this, AggregatedStatisticsActivity.class)));
+        viewBinding.sensorStartButton.setOnClickListener(view -> {
+
             LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
             if (locationManager != null && !locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                 startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
@@ -292,7 +293,7 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
         viewBinding.trackList.setAdapter(resourceCursorAdapter);
         ActivityUtils.configureListViewContextualMenu(viewBinding.trackList, contextualActionModeCallback);
 
-        viewBinding.trackListFabAction.setOnClickListener((view) -> {
+        viewBinding.trackListFabAction.setOnClickListener(view -> {
             if (recordingStatus.isRecording()) {
                 Toast.makeText(TrackListActivity.this, getString(R.string.hold_to_stop), Toast.LENGTH_LONG).show();
                 return;
@@ -310,7 +311,7 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
                 connection.unbind(this);
             }).startAndBind(this, true);
         });
-        viewBinding.trackListFabAction.setOnLongClickListener((view) -> {
+        viewBinding.trackListFabAction.setOnLongClickListener(view -> {
             if (!recordingStatus.isRecording()) {
                 return false;
             }

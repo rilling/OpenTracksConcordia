@@ -56,7 +56,7 @@ public class TrackStatistics {
     private Duration movingTime;
     // The maximum speed (meters/second) that we believe is valid.
     private Speed maxSpeed;
-    private Float totalAltitudeGain_m = null;
+    private Float totalAltitudeGain = null;
     private Float totalAltitudeLoss_m = null;
     // The average heart rate seen on this track
     private HeartRate avgHeartRate = null;
@@ -78,7 +78,7 @@ public class TrackStatistics {
         movingTime = other.movingTime;
         maxSpeed = other.maxSpeed;
         altitudeExtremities.set(other.altitudeExtremities.getMin(), other.altitudeExtremities.getMax());
-        totalAltitudeGain_m = other.totalAltitudeGain_m;
+        totalAltitudeGain = other.totalAltitudeGain;
         totalAltitudeLoss_m = other.totalAltitudeLoss_m;
         avgHeartRate = other.avgHeartRate;
     }
@@ -91,7 +91,7 @@ public class TrackStatistics {
         this.totalTime = Duration.ofSeconds(totalTime_s);
         this.movingTime = Duration.ofSeconds(movingTime_s);
         this.maxSpeed = Speed.of(maxSpeed_mps);
-        this.totalAltitudeGain_m = totalAltitudeGain_m;
+        this.totalAltitudeGain = totalAltitudeGain_m;
         this.totalAltitudeLoss_m = totalAltitudeLoss_m;
     }
 
@@ -102,17 +102,63 @@ public class TrackStatistics {
      * @param other another statistics data object
      */
     public void merge(TrackStatistics other) {
-        if (startTime == null) {
+        startTime = startTimeAssignment(other);
+        stopTime = stopTimeAssignment(other);
+        avgHeartRate = averageHeartRateAssignment(other);
+        totalDistance = totalDistance.plus(other.totalDistance);
+        totalTime = totalTime.plus(other.totalTime);
+        movingTime = movingTime.plus(other.movingTime);
+        maxSpeed = Speed.max(maxSpeed, other.maxSpeed);
+        if (other.altitudeExtremities.hasData()) {
+            altitudeExtremities.update(other.altitudeExtremities.getMin());
+            altitudeExtremities.update(other.altitudeExtremities.getMax());
+        }
+        totalAltitudeGain = totalAltitudeGainAssignment(other);
+        totalAltitudeLoss_m = totalAltitudeLossAssignment(other);
+
+    }
+    public Instant startTimeAssignment(TrackStatistics other){
+        if(startTime == null){
             startTime = other.startTime;
-        } else {
+        }
+        else {
             startTime = startTime.isBefore(other.startTime) ? startTime : other.startTime;
         }
+        return startTime;
+    }
+    public Instant stopTimeAssignment(TrackStatistics other){
         if (stopTime == null) {
             stopTime = other.stopTime;
         } else {
             stopTime = stopTime.isAfter(other.stopTime) ? stopTime : other.stopTime;
         }
-
+        return stopTime;
+    }
+    public Float totalAltitudeLossAssignment(TrackStatistics other){
+        if (totalAltitudeLoss_m == null) {
+            if (other.totalAltitudeLoss_m != null) {
+                totalAltitudeLoss_m = other.totalAltitudeLoss_m;
+            }
+        } else {
+            if (other.totalAltitudeLoss_m != null) {
+                totalAltitudeLoss_m += other.totalAltitudeLoss_m;
+            }
+        }
+        return totalAltitudeLoss_m;
+    }
+    public Float totalAltitudeGainAssignment(TrackStatistics other){
+        if (totalAltitudeGain == null) {
+            if (other.totalAltitudeGain != null) {
+                totalAltitudeGain = other.totalAltitudeGain;
+            }
+        } else {
+            if (other.totalAltitudeGain != null) {
+                totalAltitudeGain += other.totalAltitudeGain;
+            }
+        }
+        return totalAltitudeGain;
+    }
+    public HeartRate averageHeartRateAssignment(TrackStatistics other){
         if (avgHeartRate == null) {
             avgHeartRate = other.avgHeartRate;
         } else {
@@ -125,35 +171,8 @@ public class TrackStatistics {
                 );
             }
         }
-
-        totalDistance = totalDistance.plus(other.totalDistance);
-        totalTime = totalTime.plus(other.totalTime);
-        movingTime = movingTime.plus(other.movingTime);
-        maxSpeed = Speed.max(maxSpeed, other.maxSpeed);
-        if (other.altitudeExtremities.hasData()) {
-            altitudeExtremities.update(other.altitudeExtremities.getMin());
-            altitudeExtremities.update(other.altitudeExtremities.getMax());
-        }
-        if (totalAltitudeGain_m == null) {
-            if (other.totalAltitudeGain_m != null) {
-                totalAltitudeGain_m = other.totalAltitudeGain_m;
-            }
-        } else {
-            if (other.totalAltitudeGain_m != null) {
-                totalAltitudeGain_m += other.totalAltitudeGain_m;
-            }
-        }
-        if (totalAltitudeLoss_m == null) {
-            if (other.totalAltitudeLoss_m != null) {
-                totalAltitudeLoss_m = other.totalAltitudeLoss_m;
-            }
-        } else {
-            if (other.totalAltitudeLoss_m != null) {
-                totalAltitudeLoss_m += other.totalAltitudeLoss_m;
-            }
-        }
+        return avgHeartRate;
     }
-
     public boolean isInitialized() {
         return startTime != null;
     }
@@ -321,24 +340,24 @@ public class TrackStatistics {
     }
 
     public boolean hasTotalAltitudeGain() {
-        return totalAltitudeGain_m != null;
+        return totalAltitudeGain != null;
     }
 
     @Nullable
     public Float getTotalAltitudeGain() {
-        return totalAltitudeGain_m;
+        return totalAltitudeGain;
     }
 
     public void setTotalAltitudeGain(Float totalAltitudeGain_m) {
-        this.totalAltitudeGain_m = totalAltitudeGain_m;
+        this.totalAltitudeGain = totalAltitudeGain_m;
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
     public void addTotalAltitudeGain(float gain_m) {
-        if (totalAltitudeGain_m == null) {
-            totalAltitudeGain_m = 0f;
+        if (totalAltitudeGain == null) {
+            totalAltitudeGain = 0f;
         }
-        totalAltitudeGain_m += gain_m;
+        totalAltitudeGain += gain_m;
     }
 
     public boolean hasTotalAltitudeLoss() {
@@ -355,11 +374,11 @@ public class TrackStatistics {
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
-    public void addTotalAltitudeLoss(float loss_m) {
+    public void addTotalAltitudeLoss(float lossm) {
         if (totalAltitudeLoss_m == null) {
             totalAltitudeLoss_m = 0f;
         }
-        totalAltitudeLoss_m += loss_m;
+        totalAltitudeLoss_m += lossm;
     }
 
     @Override
