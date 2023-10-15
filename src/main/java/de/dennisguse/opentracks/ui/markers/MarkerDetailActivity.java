@@ -62,7 +62,7 @@ public class MarkerDetailActivity extends AbstractActivity implements DeleteMark
         Object bundleMarkerId = getIntent().getExtras().get(EXTRA_MARKER_ID);
         Id markerId = null;
         if(bundleMarkerId instanceof Id){
-            markerId = (Id) bundleMarkerId
+            markerId = (Id) bundleMarkerId;
         }
         if (bundleMarkerId instanceof Long) {
             //Incoming Intent via Dashboard API.
