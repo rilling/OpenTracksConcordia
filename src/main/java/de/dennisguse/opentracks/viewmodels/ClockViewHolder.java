@@ -25,5 +25,8 @@ public class ClockViewHolder extends StatisticViewHolder<StatsClockItemBinding> 
 
     @Override
     public void onChanged(UnitSystem unitSystem, RecordingData data) {
+        throw new UnsupportedOperationException();
+        //We don't have enough information or context to provide a complete implementation in the base class or interface for this mothod.
     }
+
 }
