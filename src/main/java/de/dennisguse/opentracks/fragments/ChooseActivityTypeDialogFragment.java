@@ -23,7 +23,12 @@ public class ChooseActivityTypeDialogFragment extends DialogFragment implements 
 
     private static final String CHOOSE_ACTIVITY_TYPE_DIALOG_TAG = "chooseActivityType";
 
-    
+    @Deprecated
+    public static void showDialog(FragmentManager fragmentManager, Context context, String activityTypeLocalized) {
+        ActivityType activityType = ActivityType.findByLocalizedString(context, activityTypeLocalized);
+        showDialog(fragmentManager, activityType);
+    }
+
     public static void showDialog(FragmentManager fragmentManager, ActivityType activityType) {
         new ChooseActivityTypeDialogFragment(activityType).show(fragmentManager, ChooseActivityTypeDialogFragment.CHOOSE_ACTIVITY_TYPE_DIALOG_TAG);
     }
@@ -51,7 +56,7 @@ public class ChooseActivityTypeDialogFragment extends DialogFragment implements 
             ActivityType.WORKOUT
     );
 
-    private static int getPosition(ActivityType activityType) {
+    private static int getPosition(Context context, ActivityType activityType) {
         if (activityType == null) {
             return -1;
         }
@@ -87,7 +92,7 @@ public class ChooseActivityTypeDialogFragment extends DialogFragment implements 
         }
 
         final ChooseActivityTypeImageAdapter imageAdapter = new ChooseActivityTypeImageAdapter(iconDrawableIds);
-        int position = getPosition(preselectedActivityType);
+        int position = getPosition(getContext(), preselectedActivityType);
         if (position != -1) {
             imageAdapter.setSelected(position);
         }
