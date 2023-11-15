@@ -209,17 +209,14 @@ public class PreferencesUtils {
         setBoolean(R.string.show_introduction_screen_key, introduction);
     }
 
-     public static UnitSystem getUnitSystem() {
+    public static UnitSystem getUnitSystem() {
         final String STATS_UNIT_DEFAULT = resources.getString(R.string.stats_units_default);
+
         final String VALUE = getString(R.string.stats_units_key, STATS_UNIT_DEFAULT);
-
-        // Define the default UnitSystem only once
-        UnitSystem defaultUnitSystem = UnitSystem.METRIC;
-
         return Arrays.stream(UnitSystem.values())
                 .filter(d -> VALUE.equals(resources.getString(d.getPreferenceId(), STATS_UNIT_DEFAULT)))
                 .findFirst()
-                .orElse(defaultUnitSystem);
+                .orElse(UnitSystem.defaultUnitSystem()); //TODO This AGAIN defines the default
     }
 
     public static void setUnit(UnitSystem unitSystem) {
@@ -657,12 +654,12 @@ public class PreferencesUtils {
     }
 
     public static TrackFilenameGenerator getTrackFileformatGenerator() {
-        String defaultDate = resources.getString(R.string.export_filename_format_default);
+        String DEFAULT = resources.getString(R.string.export_filename_format_default);
         TrackFilenameGenerator generator = new TrackFilenameGenerator(getString(R.string.export_filename_format_key, DEFAULT));
         if (generator.isValid()) {
             return generator;
         } else {
-            return new TrackFilenameGenerator(defaultDate);
+            return new TrackFilenameGenerator(DEFAULT);
         }
     }
 
