@@ -123,60 +123,6 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
             viewBinding.trackListFabAction.setVisibility(View.VISIBLE);
             viewBinding.bottomAppBar.performShow(true);
         }
-
-        /**
-         * Handles a context item selection.
-         *
-         * @param itemId       the menu item id
-         * @param longTrackIds the track ids
-         * @return true if handled.
-         */
-        private boolean handleContextItem(int itemId, long... longTrackIds) {
-            Track.Id[] trackIds = new Track.Id[longTrackIds.length];
-            for (int i = 0; i < longTrackIds.length; i++) {
-                trackIds[i] = new Track.Id(longTrackIds[i]);
-            }
-
-            if (itemId == R.id.list_context_menu_show_on_map) {
-                IntentDashboardUtils.showTrackOnMap(this, false, trackIds);
-                return true;
-            }
-
-            if (itemId == R.id.list_context_menu_share) {
-                Intent intent = ShareUtils.newShareFileIntent(this, trackIds);
-                intent = Intent.createChooser(intent, null);
-                startActivity(intent);
-                return true;
-            }
-
-            if (itemId == R.id.list_context_menu_edit) {
-                Intent intent = IntentUtils.newIntent(this, TrackEditActivity.class)
-                        .putExtra(TrackEditActivity.EXTRA_TRACK_ID, trackIds[0]);
-                startActivity(intent);
-                return true;
-            }
-
-            if (itemId == R.id.list_context_menu_delete) {
-                deleteTracks(trackIds);
-                return true;
-            }
-
-            if (itemId == R.id.list_context_menu_aggregated_stats) {
-                Intent intent = IntentUtils.newIntent(this, AggregatedStatisticsActivity.class)
-                        .putParcelableArrayListExtra(AggregatedStatisticsActivity.EXTRA_TRACK_IDS, new ArrayList<>(Arrays.asList(trackIds)));
-                startActivity(intent);
-                return true;
-            }
-
-            if (itemId == R.id.list_context_menu_select_all) {
-                for (int i = 0; i < viewBinding.trackList.getCount(); i++) {
-                    viewBinding.trackList.setItemChecked(i, true);
-                }
-                return false;
-            }
-
-            return false;
-        }
     };
 
     private final OnSharedPreferenceChangeListener sharedPreferenceChangeListener = (sharedPreferences, key) -> {
@@ -220,9 +166,8 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
 
         trackRecordingServiceConnection = new TrackRecordingServiceConnection(bindChangedCallback);
 
-        viewBinding.aggregatedStatsButton.setOnClickListener(view -> startActivity(IntentUtils.newIntent(this, AggregatedStatisticsActivity.class)));
-        viewBinding.sensorStartButton.setOnClickListener(view -> {
-
+        viewBinding.aggregatedStatsButton.setOnClickListener((view) -> startActivity(IntentUtils.newIntent(this, AggregatedStatisticsActivity.class)));
+        viewBinding.sensorStartButton.setOnClickListener((view) -> {
             LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
             if (locationManager != null && !locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                 startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
@@ -240,12 +185,12 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
             Track.Id trackId = new Track.Id(trackIdId);
             if (recordingStatus.isRecording() && trackId.equals(recordingStatus.getTrackId())) {
                 // Is recording -> open record activity.
-                Intent newIntent = IntentUtils.newIntent((ActivityUtils.ContextualActionModeCallback) TrackListActivity.this, TrackRecordingActivity.class)
+                Intent newIntent = IntentUtils.newIntent(TrackListActivity.this, TrackRecordingActivity.class)
                         .putExtra(TrackRecordedActivity.EXTRA_TRACK_ID, trackId);
                 startActivity(newIntent);
             } else {
                 // Not recording -> open detail activity.
-                Intent newIntent = IntentUtils.newIntent((ActivityUtils.ContextualActionModeCallback) TrackListActivity.this, TrackRecordedActivity.class)
+                Intent newIntent = IntentUtils.newIntent(TrackListActivity.this, TrackRecordedActivity.class)
                         .putExtra(TrackRecordedActivity.EXTRA_TRACK_ID, trackId);
                 ActivityOptions activityOptions = ActivityOptions.makeSceneTransitionAnimation(
                         this,
@@ -293,7 +238,7 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
         viewBinding.trackList.setAdapter(resourceCursorAdapter);
         ActivityUtils.configureListViewContextualMenu(viewBinding.trackList, contextualActionModeCallback);
 
-        viewBinding.trackListFabAction.setOnClickListener(view -> {
+        viewBinding.trackListFabAction.setOnClickListener((view) -> {
             if (recordingStatus.isRecording()) {
                 Toast.makeText(TrackListActivity.this, getString(R.string.hold_to_stop), Toast.LENGTH_LONG).show();
                 return;
@@ -304,14 +249,14 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
             new TrackRecordingServiceConnection((service, connection) -> {
                 Track.Id trackId = service.startNewTrack();
 
-                Intent newIntent = IntentUtils.newIntent((ActivityUtils.ContextualActionModeCallback) TrackListActivity.this, TrackRecordingActivity.class);
+                Intent newIntent = IntentUtils.newIntent(TrackListActivity.this, TrackRecordingActivity.class);
                 newIntent.putExtra(TrackRecordingActivity.EXTRA_TRACK_ID, trackId);
                 startActivity(newIntent);
 
                 connection.unbind(this);
             }).startAndBind(this, true);
         });
-        viewBinding.trackListFabAction.setOnLongClickListener(view -> {
+        viewBinding.trackListFabAction.setOnLongClickListener((view) -> {
             if (!recordingStatus.isRecording()) {
                 return false;
             }
@@ -398,12 +343,12 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.track_list_markers) {
-            startActivity(IntentUtils.newIntent((ActivityUtils.ContextualActionModeCallback) this, MarkerListActivity.class));
+            startActivity(IntentUtils.newIntent(this, MarkerListActivity.class));
             return true;
         }
 
         if (item.getItemId() == R.id.track_list_settings) {
-            startActivity(IntentUtils.newIntent((ActivityUtils.ContextualActionModeCallback) this, SettingsActivity.class));
+            startActivity(IntentUtils.newIntent(this, SettingsActivity.class));
             return true;
         }
 
@@ -415,7 +360,7 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
         }
 
         if (item.getItemId() == R.id.track_list_help) {
-            startActivity(IntentUtils.newIntent((ActivityUtils.ContextualActionModeCallback) this, HelpActivity.class));
+            startActivity(IntentUtils.newIntent(this, HelpActivity.class));
             return true;
         }
 
@@ -500,7 +445,59 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
         }
     }
 
+    /**
+     * Handles a context item selection.
+     *
+     * @param itemId       the menu item id
+     * @param longTrackIds the track ids
+     * @return true if handled.
+     */
+    private boolean handleContextItem(int itemId, long... longTrackIds) {
+        Track.Id[] trackIds = new Track.Id[longTrackIds.length];
+        for (int i = 0; i < longTrackIds.length; i++) {
+            trackIds[i] = new Track.Id(longTrackIds[i]);
+        }
 
+        if (itemId == R.id.list_context_menu_show_on_map) {
+            IntentDashboardUtils.showTrackOnMap(this, false, trackIds);
+            return true;
+        }
+
+        if (itemId == R.id.list_context_menu_share) {
+            Intent intent = ShareUtils.newShareFileIntent(this, trackIds);
+            intent = Intent.createChooser(intent, null);
+            startActivity(intent);
+            return true;
+        }
+
+        if (itemId == R.id.list_context_menu_edit) {
+            Intent intent = IntentUtils.newIntent(this, TrackEditActivity.class)
+                    .putExtra(TrackEditActivity.EXTRA_TRACK_ID, trackIds[0]);
+            startActivity(intent);
+            return true;
+        }
+
+        if (itemId == R.id.list_context_menu_delete) {
+            deleteTracks(trackIds);
+            return true;
+        }
+
+        if (itemId == R.id.list_context_menu_aggregated_stats) {
+            Intent intent = IntentUtils.newIntent(this, AggregatedStatisticsActivity.class)
+                    .putParcelableArrayListExtra(AggregatedStatisticsActivity.EXTRA_TRACK_IDS, new ArrayList<>(Arrays.asList(trackIds)));
+            startActivity(intent);
+            return true;
+        }
+
+        if (itemId == R.id.list_context_menu_select_all) {
+            for (int i = 0; i < viewBinding.trackList.getCount(); i++) {
+                viewBinding.trackList.setItemChecked(i, true);
+            }
+            return false;
+        }
+
+        return false;
+    }
 
     private class TrackLoaderCallBack implements LoaderManager.LoaderCallbacks<Cursor> {
 

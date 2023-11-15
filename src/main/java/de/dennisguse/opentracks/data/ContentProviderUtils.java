@@ -39,6 +39,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+import de.dennisguse.opentracks.BuildConfig;
 import de.dennisguse.opentracks.data.models.ActivityType;
 import de.dennisguse.opentracks.data.models.Altitude;
 import de.dennisguse.opentracks.data.models.Cadence;
@@ -64,6 +65,14 @@ import de.dennisguse.opentracks.util.FileUtils;
  */
 public class ContentProviderUtils {
 
+    private static final String TAG = ContentProviderUtils.class.getSimpleName();
+
+    // The authority (the first part of the URI) for the app's content provider.
+    @VisibleForTesting
+    public static final String AUTHORITY_PACKAGE = BuildConfig.APPLICATION_ID + ".content";
+
+    // The base URI for the app's content provider.
+    public static final String CONTENT_BASE_URI = "content://" + AUTHORITY_PACKAGE;
 
     private static final String ID_SEPARATOR = ",";
 
@@ -351,8 +360,8 @@ public class ContentProviderUtils {
         Marker marker = new Marker(trackId, Instant.ofEpochMilli(cursor.getLong(timeIndex)));
 
         if (!cursor.isNull(longitudeIndex) && !cursor.isNull(latitudeIndex)) {
-            marker.setLongitude((() cursor.getInt(longitudeIndex)) / 1E6);
-            marker.setLatitude((() cursor.getInt(latitudeIndex)) / 1E6);
+            marker.setLongitude(((double) cursor.getInt(longitudeIndex)) / 1E6);
+            marker.setLatitude(((double) cursor.getInt(latitudeIndex)) / 1E6);
         }
         if (!cursor.isNull(altitudeIndex)) {
             marker.setAltitude(Altitude.WGS84.of(cursor.getFloat(altitudeIndex)));
