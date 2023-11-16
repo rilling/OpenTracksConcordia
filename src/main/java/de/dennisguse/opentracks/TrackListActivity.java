@@ -265,8 +265,8 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
             ActivityUtils.vibrate(this, 1000);
             updateGpsMenuItem(false, false);
             trackRecordingServiceConnection.stopRecording(TrackListActivity.this);
-            viewBinding.trackListFabAction.setImageResource(R.drawable.ic_baseline_record_24);
-            viewBinding.trackListFabAction.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.red_dark));
+            //   viewBinding.button.setImageResource(R.drawable.ic_baseline_record_24);
+            viewBinding.button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.red_dark));
             return true;
         });
 
@@ -553,13 +553,13 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
         updateGpsMenuItem(true, recordingStatus.isRecording());
     }
 
-    private void setFloatButton() {
-        viewBinding.trackListFabAction.setImageResource(recordingStatus.isRecording() ? R.drawable.ic_baseline_stop_24 : R.drawable.ic_baseline_record_24);
-        viewBinding.trackListFabAction.setBackgroundTintList(ContextCompat.getColorStateList(this, recordingStatus.isRecording() ? R.color.opentracks : R.color.red_dark));
-    }
+    // private void setFloatButton() {
+    //   viewBinding.button.setImageResource(recordingStatus.isRecording() ? R.drawable.ic_baseline_stop_24 : R.drawable.ic_baseline_record_24);
+    // viewBinding.button.setBackgroundTintList(ContextCompat.getColorStateList(this, recordingStatus.isRecording() ? R.color.opentracks : R.color.red_dark));
+    // }
 
     private void onRecordingStatusChanged(RecordingStatus status) {
         recordingStatus = status;
-        setFloatButton();
+        // setFloatButton();
     }
 }
