@@ -107,7 +107,7 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
             boolean isSingleSelection = trackIds.length == 1;
 
             viewBinding.bottomAppBar.performHide(true);
-            viewBinding.trackListFabAction.setVisibility(View.INVISIBLE);
+            viewBinding.button.setVisibility(View.INVISIBLE);
 
             menu.findItem(R.id.list_context_menu_edit).setVisible(isSingleSelection);
             menu.findItem(R.id.list_context_menu_select_all).setVisible(showSelectAll);
@@ -120,7 +120,7 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
 
         @Override
         public void onDestroy() {
-            viewBinding.trackListFabAction.setVisibility(View.VISIBLE);
+            viewBinding.button.setVisibility(View.VISIBLE);
             viewBinding.bottomAppBar.performShow(true);
         }
     };
@@ -238,7 +238,7 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
         viewBinding.trackList.setAdapter(resourceCursorAdapter);
         ActivityUtils.configureListViewContextualMenu(viewBinding.trackList, contextualActionModeCallback);
 
-        viewBinding.trackListFabAction.setOnClickListener((view) -> {
+        viewBinding.button.setOnClickListener((view) -> {
             if (recordingStatus.isRecording()) {
                 Toast.makeText(TrackListActivity.this, getString(R.string.hold_to_stop), Toast.LENGTH_LONG).show();
                 return;
@@ -256,7 +256,7 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
                 connection.unbind(this);
             }).startAndBind(this, true);
         });
-        viewBinding.trackListFabAction.setOnLongClickListener((view) -> {
+        viewBinding.button.setOnLongClickListener((view) -> {
             if (!recordingStatus.isRecording()) {
                 return false;
             }
