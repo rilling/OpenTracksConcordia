@@ -532,6 +532,15 @@ limitations under the License.
     <string name="unit_minute_per_kilometer">min/km</string>
     <string name="unit_minute_per_mile">min/mi</string>
     <string name="unit_minute_per_nautical_mile">min/NM</string>
+
+    <!-- Weight and Temperature Units -->
+    <string name="settings_weight_title">Preferred weight</string>
+    <string name="settings_temperature_title">Preferred Temperature</string>
+    <string name="unit_pound">Pound (lb)</string>
+    <string name="unit_kilogram">Kilogram (kg)</string>
+    <string name="unit_celsius">Celsius (°C)</string>
+    <string name="unit_fahrenheit">Fahrenheit (°F)</string>
+
     <!-- Location Coordinates -->
     <string name="location_coordinate">%1$s°</string>
     <string name="location_latitude_longitude">%1$s, %2$s</string>
