@@ -247,10 +247,9 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
             // Not Recording -> Recording
             updateGpsMenuItem(false, true);
             new TrackRecordingServiceConnection((service, connection) -> {
-                Track.Id trackId = service.startNewTrack();
-
+               // Track.Id trackId = service.startNewTrack();
                 Intent newIntent = IntentUtils.newIntent(TrackListActivity.this, TrackRecordingActivity.class);
-                newIntent.putExtra(TrackRecordingActivity.EXTRA_TRACK_ID, trackId);
+                //newIntent.putExtra(TrackRecordingActivity.EXTRA_TRACK_ID, trackId);
                 startActivity(newIntent);
 
                 connection.unbind(this);
@@ -271,7 +270,22 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
         });
 
         setSupportActionBar(viewBinding.trackListToolbar);
+        if (recordingStatus.isRecording()) {
+            Toast.makeText(TrackListActivity.this, getString(R.string.hold_to_stop), Toast.LENGTH_LONG).show();
+            return;
+        }
 
+        // Not Recording -> Recording
+        updateGpsMenuItem(false, true);
+        new TrackRecordingServiceConnection((service, connection) -> {
+            //Track.Id trackId = service.startNewTrack();
+
+            Intent newIntent = IntentUtils.newIntent(TrackListActivity.this, TrackRecordingActivity.class);
+//            newIntent.putExtra(TrackRecordingActivity.EXTRA_TRACK_ID, trackId);
+            startActivity(newIntent);
+
+            connection.unbind(this);
+        }).startAndBind(this, true);
         loadData(getIntent());
     }
 
@@ -328,6 +342,24 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
         ActivityUtils.configureSearchWidget(this, searchMenuItem);
 
         return super.onCreateOptionsMenu(menu);
+    }
+    void startRecording() {
+        if (recordingStatus.isRecording()) {
+            Toast.makeText(TrackListActivity.this, getString(R.string.hold_to_stop), Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // Not Recording -> Recording
+        updateGpsMenuItem(false, true);
+        new TrackRecordingServiceConnection((service, connection) -> {
+            Track.Id trackId = service.startNewTrack();
+
+            Intent newIntent = IntentUtils.newIntent(TrackListActivity.this, TrackRecordingActivity.class);
+            newIntent.putExtra(TrackRecordingActivity.EXTRA_TRACK_ID, trackId);
+            startActivity(newIntent);
+
+            connection.unbind(this);
+        }).startAndBind(this, true);
     }
 
     @Override

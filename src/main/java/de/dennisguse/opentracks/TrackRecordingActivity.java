@@ -5,11 +5,11 @@ import android.content.Intent;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -112,25 +112,25 @@ public class TrackRecordingActivity extends AbstractActivity implements ChooseAc
         super.onCreate(savedInstanceState);
         contentProviderUtils = new ContentProviderUtils(this);
 
-        trackId = getIntent().getParcelableExtra(EXTRA_TRACK_ID);
-        if (trackId == null) {
-            throw new RuntimeException("TrackId is mandatory");
-        }
-        if (contentProviderUtils.getTrack(trackId) == null) {
-            Log.w(TAG, "TrackId does not exists.");
-            finish();
-        }
+       // trackId = getIntent().getParcelableExtra(EXTRA_TRACK_ID);
+//        if (trackId == null) {
+//            throw new RuntimeException("TrackId is mandatory");
+//        }
+//        if (contentProviderUtils.getTrack(trackId) == null) {
+//            Log.w(TAG, "TrackId does not exists.");
+//            finish();
+//        }
 
-        trackRecordingServiceConnection = new TrackRecordingServiceConnection(bindChangedCallback);
+  //     trackRecordingServiceConnection = new TrackRecordingServiceConnection(bindChangedCallback);
         trackDataHub = new TrackDataHub(this);
 
         CustomFragmentPagerAdapter pagerAdapter = new CustomFragmentPagerAdapter(this);
-        viewBinding.trackDetailActivityViewPager.setAdapter(pagerAdapter);
-        new TabLayoutMediator(viewBinding.trackDetailActivityTablayout, viewBinding.trackDetailActivityViewPager,
-                (tab, position) -> tab.setText(pagerAdapter.getPageTitle(position))).attach();
-        if (savedInstanceState != null) {
-            viewBinding.trackDetailActivityViewPager.setCurrentItem(savedInstanceState.getInt(CURRENT_TAB_TAG_KEY));
-        }
+      viewBinding.trackDetailActivityViewPager.setAdapter(pagerAdapter);
+//        new TabLayoutMediator(viewBinding.trackDetailActivityTablayout, viewBinding.trackDetailActivityViewPager,
+//                (tab, position) -> tab.setText(pagerAdapter.getPageTitle(position))).attach();
+//        if (savedInstanceState != null) {
+//            viewBinding.trackDetailActivityViewPager.setCurrentItem(savedInstanceState.getInt(CURRENT_TAB_TAG_KEY));
+//        }
 
         viewBinding.trackRecordingFabAction.setImageResource(R.drawable.ic_baseline_stop_24);
         viewBinding.trackRecordingFabAction.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.opentracks));
@@ -149,8 +149,72 @@ public class TrackRecordingActivity extends AbstractActivity implements ChooseAc
 
         viewBinding.bottomAppBar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
         setSupportActionBar(viewBinding.bottomAppBar);
-    }
+        Button startRecordingButton = findViewById(R.id.startRecordingButton);
+        startRecordingButton.setOnClickListener(v -> startRecording(pagerAdapter));
 
+        startRecordingButton.setOnLongClickListener((view) -> {
+            ActivityUtils.vibrate(this, 1000);
+            trackRecordingServiceConnection.stopRecording(TrackRecordingActivity.this);
+            Intent newIntent = IntentUtils.newIntent(TrackRecordingActivity.this, TrackStoppedActivity.class)
+                    .putExtra(TrackStoppedActivity.EXTRA_TRACK_ID, trackId);
+            startActivity(newIntent);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            finish();
+            return true;
+        });
+
+        viewBinding.bottomAppBar.setVisibility(View.GONE);
+        viewBinding.trackRecordingFabAction.hide();
+
+    }
+     void startRecording(CustomFragmentPagerAdapter pagerAdapter) {
+//      //  ((TrackListActivity) getParent()).startRecording();
+//        new TrackRecordingServiceConnection((service, connection) -> {
+//            Track.Id trackId = service.startNewTrack();
+//
+////            Intent newIntent = IntentUtils.newIntent(TrackListActivity.this, TrackRecordingActivity.class);
+////            newIntent.putExtra(TrackRecordingActivity.EXTRA_TRACK_ID, trackId);
+////            startActivity(newIntent);
+//
+//            connection.unbind(this);
+//        }).startAndBind(this, true);
+
+
+        if (recordingStatus.isRecording()) {
+            Toast.makeText(TrackRecordingActivity.this, getString(R.string.hold_to_stop), Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // Not Recording -> Recording
+       // updateGpsMenuItem(false, true);
+        new TrackRecordingServiceConnection((service, connection) -> {
+            trackId = service.startNewTrack();
+            trackRecordingServiceConnection = new TrackRecordingServiceConnection(bindChangedCallback);
+            trackRecordingServiceConnection.startConnection(this);
+
+            //trackId = trackId;
+//            Intent newIntent = IntentUtils.newIntent(TrackListActivity.this, TrackRecordingActivity.class);
+//            newIntent.putExtra(TrackRecordingActivity.EXTRA_TRACK_ID, trackId);
+//            startActivity(newIntent);
+
+           // connection.unbind(this);
+        }).startAndBind(this, true);
+        // CustomFragmentPagerAdapter pagerAdapter = new CustomFragmentPagerAdapter(this);
+        // viewBinding.trackDetailActivityViewPager.setAdapter(pagerAdapter);
+        new TabLayoutMediator(viewBinding.trackDetailActivityTablayout, viewBinding.trackDetailActivityViewPager,
+                (tab, position) -> tab.setText(pagerAdapter.getPageTitle(position))).attach();
+         viewBinding.bottomAppBar.setVisibility(View.VISIBLE);
+         Button startRecordingButton = findViewById(R.id.startRecordingButton);
+
+         startRecordingButton.setText("Stop Recording");
+
+//// Change text color
+//         startRecordingButton.setTextColor(getResources().getColor(R.color.your_text_color));
+//
+//// Change background color
+//         startRecordingButton.setBackgroundColor(getResources().getColor(R.color.your_background_color));
+
+    }
     @Override
     public void onAttachedToWindow() {
         setLockscreenPolicy();
@@ -208,7 +272,7 @@ public class TrackRecordingActivity extends AbstractActivity implements ChooseAc
 
         PreferencesUtils.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
 
-        trackRecordingServiceConnection.startConnection(this);
+       // trackRecordingServiceConnection.startConnection(this);
         trackDataHub.start();
     }
 
@@ -225,7 +289,7 @@ public class TrackRecordingActivity extends AbstractActivity implements ChooseAc
             trackDataHub.setRecordingStatus(recordingStatus);
         }
 
-        trackRecordingServiceConnection.startAndBindWithCallback(this);
+       // trackRecordingServiceConnection.startAndBindWithCallback(this);
     }
 
     @Override
