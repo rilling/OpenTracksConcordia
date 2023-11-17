@@ -233,6 +233,21 @@ public class PreferencesUtils {
             }
         }
     }
+
+    public static WeightUnit getWeightUnit() {
+        final String WEIGHT_UNIT_DEFAULT = resources.getString(R.string.weight_unit_default);
+
+        final String VALUE = getString(R.string.weight_unit_key, WEIGHT_UNIT_DEFAULT);
+        return Arrays.stream(WeightUnit.values())
+                .filter(d -> VALUE.equals(resources.getString(d.getPreferenceId(), WEIGHT_UNIT_DEFAULT)))
+                .findFirst()
+                .orElse(WeightUnit.defaultWeightUnit());
+    }
+
+    public static void setWeightUnit(WeightUnit weightUnit) {
+        setString(R.string.weight_unit_key, weightUnit.getPreferenceId());
+    }
+
     public static TemperatureUnit getTemperatureUnit() {
         final String TEMPERATURE_UNIT_DEFAULT = resources.getString(R.string.temperature_unit_default);
 
