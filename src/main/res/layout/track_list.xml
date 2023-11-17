@@ -109,8 +109,8 @@ limitations under the License.
         app:fabAlignmentMode="end">
 
         <com.google.android.material.button.MaterialButton
-            style="@style/Widget.Material3.Button.IconButton"
             android:id="@+id/aggregated_stats_button"
+            style="@style/Widget.Material3.Button.IconButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:icon="@drawable/ic_statistics_24dp"
@@ -122,6 +122,14 @@ limitations under the License.
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:icon="@drawable/ic_gps_off_24dp"
+            app:iconTint="?attr/colorOnBackground" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/timer_button"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_activity_timer_24dp"
             app:iconTint="?attr/colorOnBackground" />
 
     </com.google.android.material.bottomappbar.BottomAppBar>
