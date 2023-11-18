@@ -199,7 +199,7 @@
 
                 <Button
                     android:id="@+id/resume_button"
-                    android:layout_width="64dp"
+                    android:layout_width="150dp"
                     android:layout_height="64dp"
                     android:text=""
                     android:contentDescription="@string/image_record"
