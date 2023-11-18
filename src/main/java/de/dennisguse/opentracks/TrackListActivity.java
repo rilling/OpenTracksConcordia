@@ -31,11 +31,13 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.cursoradapter.widget.ResourceCursorAdapter;
@@ -75,7 +77,8 @@ import de.dennisguse.opentracks.util.IntentDashboardUtils;
 import de.dennisguse.opentracks.util.IntentUtils;
 import de.dennisguse.opentracks.util.PermissionRequester;
 import de.dennisguse.opentracks.util.StringUtils;
-
+import android.os.CountDownTimer;
+import android.view.MenuItem;
 /**
  * An activity displaying a list of tracks.
  *
@@ -83,6 +86,8 @@ import de.dennisguse.opentracks.util.StringUtils;
  */
 public class TrackListActivity extends AbstractTrackDeleteActivity implements ConfirmDeleteDialogFragment.ConfirmDeleteCaller {
 
+    private CountDownTimer delayTimer;
+    private int selectedDelayInSeconds = 0;
     private static final String TAG = TrackListActivity.class.getSimpleName();
 
     // The following are set in onCreate
@@ -180,6 +185,23 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
             }
         });
 
+        MaterialButton timerButton = findViewById(R.id.timer_button);
+
+        // Set up click listener for the timer button
+        timerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Show the dropdown menu
+                showTimerMenu(v);
+            }
+        });
+
+        this.invalidateOptionsMenu();
+        LoaderManager.getInstance(this).restartLoader(0, null, loaderCallbacks);
+
+        // Float button
+        setFloatButton();
+
         viewBinding.trackList.setEmptyView(viewBinding.trackListEmptyView);
         viewBinding.trackList.setOnItemClickListener((parent, view, position, trackIdId) -> {
             Track.Id trackId = new Track.Id(trackIdId);
@@ -197,6 +219,8 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
                         new Pair<>(view.findViewById(R.id.list_item_icon), TrackRecordedActivity.VIEW_TRACK_ICON));
                 startActivity(newIntent, activityOptions.toBundle());
             }
+
+
         });
 
         resourceCursorAdapter = new ResourceCursorAdapter(this, R.layout.list_item, null, 0) {
@@ -312,6 +336,11 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
         super.onDestroy();
         viewBinding = null;
         trackRecordingServiceConnection = null;
+
+        // Cancel the delay timer if it's running
+        if (delayTimer != null) {
+            delayTimer.cancel();
+        }
     }
 
     @Override
@@ -374,7 +403,109 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
         }
         return super.onKeyUp(keyCode, event);
     }
+    public void showTimerMenu(View view) {
+        PopupMenu popupMenu = new PopupMenu(this, view);
+        popupMenu.getMenuInflater().inflate(R.menu.timer_menu, popupMenu.getMenu());
 
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                /*if (item.getItemId() == R.id.menu_no_timer) {
+                    // Handle 1-second selection
+                    showToast("Timer has been disabled");
+                    return true;
+                }
+                if (item.getItemId() == R.id.menu_1_second) {
+                    // Handle 1-second selection
+                    showToast("1 Second selected");
+                    return true;
+                } else if (item.getItemId() == R.id.menu_2_seconds) {
+                    // Handle 2-seconds selection
+                    showToast("2 Seconds selected");
+                    return true;
+                }
+                else if (item.getItemId() == R.id.menu_5_seconds) {
+                    // Handle 2-seconds selection
+                    showToast("5 Seconds selected");
+                    return true;
+                }
+                else if (item.getItemId() == R.id.menu_10_seconds) {
+                    // Handle 2-seconds selection
+                    showToast("10 Seconds selected");
+                    return true;
+                }else {
+                    return false;
+                }
+            }*/
+
+                handleDelaySelection(item.getItemId());
+                return true;
+            }
+        });
+
+        popupMenu.show();
+    }
+
+    private void handleDelaySelection(int itemId) {
+        if (itemId == R.id.menu_no_timer) {
+            // Handle no delay selection
+            showToast("Timer has been disabled");
+            selectedDelayInSeconds = 0;
+        } else if (itemId == R.id.menu_1_second) {
+            selectedDelayInSeconds = 1;
+            showToast("1 Second selected");
+        } else if (itemId == R.id.menu_2_seconds) {
+            selectedDelayInSeconds = 2;
+            showToast("2 Seconds selected");
+        } else if (itemId == R.id.menu_5_seconds) {
+            selectedDelayInSeconds = 5;
+            showToast("5 Seconds selected");
+        } else if (itemId == R.id.menu_10_seconds) {
+            selectedDelayInSeconds = 10;
+            showToast("10 Seconds selected");
+        }
+
+        // Handle the delay here (start the tracking after the selected delay)
+        startTrackingWithDelay(selectedDelayInSeconds);
+    }
+
+    private void startTrackingWithDelay(int delayInSeconds) {
+        if (delayInSeconds > 0) {
+            delayTimer = new CountDownTimer(delayInSeconds * 1000, 1000) {
+                public void onTick(long millisUntilFinished) {
+                    // Do nothing while counting down
+                }
+
+                public void onFinish() {
+                    // Start tracking after the delay
+                    startTracking();
+                }
+            }.start();
+        } else {
+            // Start tracking immediately if no delay is selected
+            startTracking();
+        }
+    }
+
+    private void startTracking() {
+        // Start tracking logic here
+        updateGpsMenuItem(false, true);
+        new TrackRecordingServiceConnection((service, connection) -> {
+            Track.Id trackId = service.startNewTrack();
+
+            Intent newIntent = IntentUtils.newIntent(TrackListActivity.this, TrackRecordingActivity.class);
+            newIntent.putExtra(TrackRecordingActivity.EXTRA_TRACK_ID, trackId);
+            startActivity(newIntent);
+
+            connection.unbind(this);
+        }).startAndBind(this, true);
+    }
+
+
+
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
     @Override
     public void overridePendingTransition(int enterAnim, int exitAnim) {
         //Disable animations as it is weird going into searchMode; looks okay for SplashScreen.
@@ -444,6 +575,7 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
             }
         }
     }
+
 
     /**
      * Handles a context item selection.

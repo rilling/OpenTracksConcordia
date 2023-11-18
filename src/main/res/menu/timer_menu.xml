@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/menu/timer_menu.xml -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_no_timer"
+        android:title="None" />
+    <item
+        android:id="@+id/menu_1_second"
+        android:title="1 Second" />
+    <item
+        android:id="@+id/menu_2_seconds"
+        android:title="2 Seconds" />
+    <item
+        android:id="@+id/menu_5_seconds"
+        android:title="5 Seconds" />
+    <item
+        android:id="@+id/menu_10_seconds"
+        android:title="10 Seconds" />
+</menu>
