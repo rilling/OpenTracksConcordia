@@ -14,6 +14,8 @@
     <string name="settings_defaults_key" translatable="false">settingsDefaults</string>
 
     <string name="settings_ui_key" translatable="false">settingsUI</string>
+    <string name="user_profile" translatable="false">settingsUserProfile</string>
+
 
     <string name="settings_gps_key" translatable="false">settingsGps</string>
 

@@ -346,6 +346,9 @@ limitations under the License.
     <string name="settings_defaults_title">Default Units and Activity</string>
     <string name="settings_defaults_summary">Preferred Units, Default Activity, Track Default Name</string>
 
+    <string name="settings_user_profile_title">User Profile</string>
+    <string name="settings_user_profile_summary">User Profile to display</string>
+
     <string name="settings_ui_title">User Interface</string>
     <string name="settings_ui_summary">Appearance, Recording Layout, Theme</string>
 
@@ -710,4 +713,5 @@ limitations under the License.
     <string name="always">Always</string>
 
     <string name="introduction_osm_dashboard">OpenTracks itself does not provide a map. Please install OSMDashboard to view your recordings on a map.</string>
+    <string name="profile">User Profile</string>
 </resources>

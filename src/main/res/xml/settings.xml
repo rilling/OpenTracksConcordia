@@ -10,6 +10,12 @@
         android:title="@string/settings_defaults_title" />
 
     <Preference
+        android:icon="@drawable/ic_units"
+        android:key="@string/settings_defaults_key"
+        android:summary="@string/settings_defaults_summary"
+        android:title="@string/settings_defaults_title" />
+
+    <Preference
         android:icon="@drawable/ic_ui"
         android:key="@string/settings_ui_key"
         android:summary="@string/settings_ui_summary"
