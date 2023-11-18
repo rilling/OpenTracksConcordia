@@ -397,6 +397,12 @@ public class PreferencesUtils {
         return getFloat(R.string.voice_speed_rate_key, DEFAULT);
     }
 
+    //adding time thing
+
+    public static boolean shouldVoiceAnnounceTime(){
+        return getBoolean(R.string.voice_announce_time_key, true);
+    }
+
     public static boolean shouldVoiceAnnounceTotalDistance() {
         return getBoolean(R.string.voice_announce_total_distance_key, true);
     }
