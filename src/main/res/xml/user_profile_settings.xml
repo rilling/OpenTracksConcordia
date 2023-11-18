@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:title="@string/settings_api_title">
+
+    <Preference
+        android:key="@string/publicapi_package_key"
+        android:selectable="false"
+        android:persistent="false"
+        android:title="@string/settings_user_age" />
+    <Preference
+        android:key="@string/publicapi_package_key"
+        android:selectable="false"
+        android:persistent="false"
+        android:title="@string/settings_user_height" />
+    <Preference
+        android:key="@string/publicapi_package_key"
+        android:selectable="false"
+        android:persistent="false"
+        android:title="@string/settings_user_weight" />
+
+    <EditTextPreference
+        android:defaultValue="@string/settings_sensor_heart_rate_max_default"
+        android:inputType="number"
+        android:key="key1"
+        android:title="@string/settings_sensor_heart_rate_max"
+        app:useSimpleSummaryProvider="true" />
+
+    <EditTextPreference
+        android:defaultValue="@string/settings_sensor_heart_rate_max_default"
+        android:inputType="number"
+        android:key="key2"
+        android:title="@string/settings_sensor_heart_rate_max"
+        app:useSimpleSummaryProvider="true" />
+
+    <EditTextPreference
+        android:defaultValue="@string/settings_sensor_heart_rate_max_default"
+        android:inputType="datetime"
+        android:key="key3"
+        android:title="@string/settings_sensor_heart_rate_max"
+        app:useSimpleSummaryProvider="true" />
+
+
+    <EditTextPreference
+        android:defaultValue="@string/settings_sensor_heart_rate_max_default"
+        android:inputType="number"
+        android:key="key4"
+        android:title="@string/settings_sensor_heart_rate_max"
+        app:useSimpleSummaryProvider="true" />
+
+
+
+<!--    <SwitchPreferenceCompat-->
+<!--        android:title="@string/settings_public_api_enabled_title"-->
+<!--        android:summaryOn="@string/settings_public_api_enabled_summary_on"-->
+<!--        android:summaryOff="@string/settings_public_api_enabled_summary_off"-->
+<!--        android:defaultValue="@bool/publicapi_enabled_default"-->
+<!--        android:key="@string/publicapi_enabled_key" />-->
+
+<!--    <SwitchPreferenceCompat-->
+<!--        android:title="@string/settings_public_api_dashboard_enabled_title"-->
+<!--        android:summaryOn="@string/settings_public_api_dashboard_enabled_summary_on"-->
+<!--        android:summaryOff="@string/settings_public_api_dashboard_enabled_summary_off"-->
+<!--        android:defaultValue="@bool/publicapi_dashboard_enabled_default"-->
+<!--        android:key="@string/publicapi_dashboard_enabled_key" />-->
+
+</PreferenceScreen>

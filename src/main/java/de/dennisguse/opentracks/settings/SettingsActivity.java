@@ -94,6 +94,8 @@ public class SettingsActivity extends AbstractActivity implements ChooseActivity
             fragment = new ImportExportSettingsFragment();
         } else if (key.equals(getString(R.string.settings_api_key))) {
             fragment = new PublicAPISettingsFragment();
+        }else if (key.equals(getString(R.string.user_profile))) {
+            fragment = new UserProfileSettingsFragment();
         }
 
         return fragment;

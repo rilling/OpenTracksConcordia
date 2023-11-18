@@ -5,9 +5,9 @@
 
     <Preference
         android:icon="@drawable/ic_units"
-        android:key="@string/settings_defaults_key"
-        android:summary="@string/settings_defaults_summary"
-        android:title="@string/settings_defaults_title" />
+        android:key="@string/user_profile"
+        android:summary="@string/settings_user_profile_summary"
+        android:title="@string/settings_user_profile_title" />
 
     <Preference
         android:icon="@drawable/ic_units"
