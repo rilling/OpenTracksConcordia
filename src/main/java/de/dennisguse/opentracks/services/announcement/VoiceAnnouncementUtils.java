@@ -84,6 +84,14 @@ class VoiceAnnouncementUtils {
             return builder;
         }
 
+        //Adding voice Announce
+        if(shouldVoiceAnnounceTime()){
+            SpeechTxtForTime t=new SpeechTxtForTime();
+            CTime c=new CTime();
+            String currentTime = c.getCurrentTime();
+            builder.append(t.speechText+currentTime+".");
+        }
+
         // Announce time
         Duration movingTime = trackStatistics.getMovingTime();
         if (shouldVoiceAnnounceMovingTime() && !movingTime.isZero()) {
