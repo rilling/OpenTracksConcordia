@@ -135,7 +135,7 @@ public class TrackRecordingActivity extends AbstractActivity implements ChooseAc
         viewBinding.trackRecordingFabAction.setImageResource(R.drawable.ic_baseline_stop_24);
         viewBinding.trackRecordingFabAction.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.opentracks));
         viewBinding.trackRecordingFabAction.setBackgroundColor(ContextCompat.getColor(this, R.color.opentracks));
-        viewBinding.trackRecordingFabAction.setOnLongClickListener((view) -> {
+        viewBinding.trackRecordingFabAction.setOnClickListener((view) -> {
             ActivityUtils.vibrate(this, 1000);
             trackRecordingServiceConnection.stopRecording(TrackRecordingActivity.this);
             Intent newIntent = IntentUtils.newIntent(TrackRecordingActivity.this, TrackStoppedActivity.class)
@@ -143,8 +143,8 @@ public class TrackRecordingActivity extends AbstractActivity implements ChooseAc
             startActivity(newIntent);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             finish();
-            return true;
         });
+
         viewBinding.trackRecordingFabAction.setOnClickListener((view) -> Toast.makeText(TrackRecordingActivity.this, getString(R.string.hold_to_stop), Toast.LENGTH_LONG).show());
 
         viewBinding.bottomAppBar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);

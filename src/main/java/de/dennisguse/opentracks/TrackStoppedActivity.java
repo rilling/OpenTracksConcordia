@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ArrayAdapter;
 
 import de.dennisguse.opentracks.data.ContentProviderUtils;
@@ -96,6 +97,9 @@ public class TrackStoppedActivity extends AbstractTrackDeleteActivity implements
             finish();
         });
 
+
+        Button resumeButton = findViewById(R.id.resume_button);
+        resumeButton.setText("RESUME");
         viewBinding.resumeButton.setOnClickListener(v -> {
             storeTrackMetaData(contentProviderUtils, track);
             resumeTrackAndFinish();
