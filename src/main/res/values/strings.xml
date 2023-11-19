@@ -355,6 +355,14 @@ limitations under the License.
     <string name="settings_user_date_of_birth_default">01/01/2001</string>
     <string name="settings_user_date_of_birth_title">Date of birth</string>
 
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="others">Others</string>
+
+    <string name="settings_user_gender_key">userGender</string>
+    <string name="settings_user_gender_default">M</string>
+    <string name="settings_user_gender_title">Gender</string>
+
     <string name="settings_ui_title">User Interface</string>
     <string name="settings_ui_summary">Appearance, Recording Layout, Theme</string>
 

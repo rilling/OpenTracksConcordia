@@ -10,6 +10,15 @@
             android:key="@string/settings_user_date_of_birth_key"
             android:title="@string/settings_user_date_of_birth_title"
             app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
+            android:defaultValue="@string/settings_user_gender_default"
+            android:entries="@array/gender_options"
+            android:entryValues="@array/gender_options"
+            android:key="@string/settings_user_gender_key"
+            android:title="@string/settings_user_gender_title"
+            app:useSimpleSummaryProvider="true" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>
