@@ -20,6 +20,7 @@ import de.dennisguse.opentracks.data.models.DistanceFormatter;
 import de.dennisguse.opentracks.data.models.SpeedFormatter;
 import de.dennisguse.opentracks.settings.PreferencesUtils;
 import de.dennisguse.opentracks.settings.UnitSystem;
+import de.dennisguse.opentracks.stats.TrackStatistics;
 import de.dennisguse.opentracks.util.StringUtils;
 
 public class AggregatedStatisticsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -48,6 +49,9 @@ public class AggregatedStatisticsAdapter extends RecyclerView.Adapter<RecyclerVi
         String type = aggregatedStatistic.getActivityTypeLocalized();
         if (ActivityType.findByLocalizedString(context, type).isShowSpeedPreferred()) {
             viewHolder.setSpeed(aggregatedStatistic);
+            viewHolder.setElevation(aggregatedStatistic);
+
+
         } else {
             viewHolder.setPace(aggregatedStatistic);
         }
@@ -89,6 +93,10 @@ public class AggregatedStatisticsAdapter extends RecyclerView.Adapter<RecyclerVi
         private final TextView maxSpeedUnit;
         private final TextView maxSpeedLabel;
 
+        private final TextView elevationGain;
+        private final TextView elevationLabel;
+        private final TextView elevationUnit;
+
         private UnitSystem unitSystem = UnitSystem.defaultUnitSystem();
         private boolean reportSpeed;
 
@@ -100,15 +108,23 @@ public class AggregatedStatisticsAdapter extends RecyclerView.Adapter<RecyclerVi
             distance = view.findViewById(R.id.aggregated_stats_distance);
             distanceUnit = view.findViewById(R.id.aggregated_stats_distance_unit);
             time = view.findViewById(R.id.aggregated_stats_time);
-
             avgSpeed = view.findViewById(R.id.aggregated_stats_avg_rate);
             avgSpeedUnit = view.findViewById(R.id.aggregated_stats_avg_rate_unit);
             avgSpeedLabel = view.findViewById(R.id.aggregated_stats_avg_rate_label);
             maxSpeed = view.findViewById(R.id.aggregated_stats_max_rate);
             maxSpeedUnit = view.findViewById(R.id.aggregated_stats_max_rate_unit);
             maxSpeedLabel = view.findViewById(R.id.aggregated_stats_max_rate_label);
-        }
+            elevationGain = view.findViewById(R.id.aggregated_stats_elevation_gain);
+            elevationLabel = view.findViewById(R.id.aggregated_stats_elevation_gain_label);
+            elevationUnit = view.findViewById(R.id.aggregated_stats_elevation_gain_unit);
 
+            elevationLabel.setText("Elevation Gain");
+            elevationUnit.setText("ft");
+
+        }
+        public void setElevation(AggregatedStatistics.AggregatedStatistic aggregatedStatistic) {
+                elevationGain.setText(aggregatedStatistic.getTrackStatistics().getTotalAltitudeGain().toString());
+        }
         public void setSpeed(AggregatedStatistics.AggregatedStatistic aggregatedStatistic) {
             setCommonValues(aggregatedStatistic);
 

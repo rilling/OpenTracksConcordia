@@ -21,8 +21,8 @@ apply plugin: 'org.sonarqube'
 
 sonarqube {
     properties {
-        property "sonar.projectName", "Group 8 SOEN 6431"
-        property "sonar.projectKey", "Group-8-SOEN-6431"
+        property "sonar.projectName", "Group 11 SOEN 6431"
+        property "sonar.projectKey", "Group-11-SOEN-6431"
         property "sonar.host.url", "http://localhost:9000"
         property "sonar.login", "sqp_7f8adc6706b839b752be96c5d687384252602ab5"
     }
