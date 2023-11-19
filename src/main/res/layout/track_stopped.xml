@@ -197,16 +197,18 @@
                     app:tint="?attr/colorOnBackground"
                     app:srcCompat="@drawable/ic_delete_forever_24dp" />
 
-                <ImageView
+                <Button
                     android:id="@+id/resume_button"
-                    android:layout_width="64dp"
+                    android:layout_width="150dp"
                     android:layout_height="64dp"
+                    android:text=""
                     android:contentDescription="@string/image_record"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/buttons_guideline"
                     app:layout_constraintStart_toEndOf="@id/buttons_guideline"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_button_resume" />
+
 
                 <ImageView
                     android:id="@+id/finish_button"
