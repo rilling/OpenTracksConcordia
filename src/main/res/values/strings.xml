@@ -349,6 +349,12 @@ limitations under the License.
     <string name="settings_user_profile_title">User Profile</string>
     <string name="settings_user_profile_summary">Saves your name, age, weight and gender</string>
 
+    <string name="settings_user_personal_details">Personal Details</string>
+
+    <string name="settings_user_date_of_birth_key">userDOB</string>
+    <string name="settings_user_date_of_birth_default">01/01/2001</string>
+    <string name="settings_user_date_of_birth_title">Date of birth</string>
+
     <string name="settings_ui_title">User Interface</string>
     <string name="settings_ui_summary">Appearance, Recording Layout, Theme</string>
 

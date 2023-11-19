@@ -3,7 +3,13 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="@string/settings_user_profile_title">
-
-
+    <PreferenceCategory android:title="@string/settings_user_personal_details">
+        <EditTextPreference
+            android:defaultValue="@string/settings_user_date_of_birth_default"
+            android:inputType="date"
+            android:key="@string/settings_user_date_of_birth_key"
+            android:title="@string/settings_user_date_of_birth_title"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
 
 </PreferenceScreen>
