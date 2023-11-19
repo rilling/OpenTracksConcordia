@@ -100,7 +100,7 @@ public class TrackStoppedActivity extends AbstractTrackDeleteActivity implements
 
         Button resumeButton = findViewById(R.id.resume_button);
         resumeButton.setText("RESUME");
-        viewBinding.resumeButton.setOnClickListener(v -> {
+        resumeButton.setOnClickListener(v -> {
             storeTrackMetaData(contentProviderUtils, track);
             resumeTrackAndFinish();
         });
