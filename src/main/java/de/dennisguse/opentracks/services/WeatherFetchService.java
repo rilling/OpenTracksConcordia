@@ -16,7 +16,8 @@ import java.net.URL;
 import de.dennisguse.opentracks.data.models.WeatherInfo;
 
 public class WeatherFetchService {
-
+    public static final String API_KEY = "fa97a8d025bc2ed677edfd981a7491b7";
+    public static final String API_URL = "http://api.weatherstack.com/current";
     
     @Nullable
     public static WeatherInfo fetchWeatherData(double latitudeDouble, double longitudeDouble) {
@@ -28,7 +29,7 @@ public class WeatherFetchService {
             URL url = getURL(latitude, longitude);
 
             HttpURLConnection connection = getHttpURLConnection(url);
-
+            StringBuilder result = getWeatherData(connection);
             JSONObject current = getJsonConverter(result);
 
             // Extract weather information
@@ -45,7 +46,6 @@ public class WeatherFetchService {
 
         return null;
     }
-
  
     private static JSONObject getJsonConverter(StringBuilder result) throws JSONException {
         JSONObject json = new JSONObject(result.toString());
@@ -53,8 +53,19 @@ public class WeatherFetchService {
         return json.getJSONObject("current");
     }
 
-   
+    private static StringBuilder getWeatherData(HttpURLConnection connection) throws IOException {
+        InputStream inputStream = connection.getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        StringBuilder result = new StringBuilder();
+        String line;
 
+        while ((line = reader.readLine()) != null) {
+            result.append(line);
+        }
+
+        return result;
+    }
+  
     private static HttpURLConnection getHttpURLConnection(URL url) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
