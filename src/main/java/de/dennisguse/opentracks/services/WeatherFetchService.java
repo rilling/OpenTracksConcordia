@@ -1,5 +1,7 @@
 package de.dennisguse.opentracks.services;
 
+import androidx.annotation.Nullable;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,6 +20,7 @@ public class WeatherFetchService {
     public static final String API_KEY = "fa97a8d025bc2ed677edfd981a7491b7";
     public static final String API_URL = "http://api.weatherstack.com/current";
 
+    @Nullable
     public static WeatherInfo fetchWeatherData(double latitudeDouble, double longitudeDouble) {
         try {
 
@@ -32,12 +35,11 @@ public class WeatherFetchService {
 
             JSONObject current = getJsonConverter(result);
 
-
             // Extract weather information
-            double temperature = current.getDouble("temperature");
-            double windSpeed = current.getDouble("wind_speed");
-            double humidity = current.getDouble("humidity");
-            String windDirection = current.getString("wind_dir");
+            double temperature = getTemperature(current);
+            double windSpeed = getWindSpeed(current);
+            double humidity = getHumidity(current);
+            String windDirection = getWindDirection(current);
 
             return new WeatherInfo(temperature, windSpeed, humidity, windDirection);
 
@@ -46,6 +48,22 @@ public class WeatherFetchService {
         }
 
         return null;
+    }
+
+    private static String getWindDirection(JSONObject current) throws JSONException {
+        return current.getString("wind_dir");
+    }
+
+    private static double getHumidity(JSONObject current) throws JSONException {
+        return current.getDouble("humidity");
+    }
+
+    private static double getWindSpeed(JSONObject current) throws JSONException {
+        return current.getDouble("wind_speed");
+    }
+
+    private static double getTemperature(JSONObject current) throws JSONException {
+        return current.getDouble("temperature");
     }
 
     private static JSONObject getJsonConverter(StringBuilder result) throws JSONException {
