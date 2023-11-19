@@ -7,6 +7,8 @@ import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldVoiceAnno
 import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldVoiceAnnounceLapSpeedPace;
 import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldVoiceAnnounceMovingTime;
 import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldVoiceAnnounceTotalDistance;
+import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldVoiceAnnounceTime;
+
 
 import android.content.Context;
 import android.icu.text.MessageFormat;
@@ -27,6 +29,8 @@ import de.dennisguse.opentracks.settings.UnitSystem;
 import de.dennisguse.opentracks.stats.SensorStatistics;
 import de.dennisguse.opentracks.stats.TrackStatistics;
 import de.dennisguse.opentracks.ui.intervals.IntervalStatistics;
+import de.dennisguse.opentracks.util.CTime;
+import de.dennisguse.opentracks.util.SpeechTxtForTime;
 
 class VoiceAnnouncementUtils {
 
@@ -38,6 +42,13 @@ class VoiceAnnouncementUtils {
         Distance totalDistance = trackStatistics.getTotalDistance();
         Speed averageMovingSpeed = trackStatistics.getAverageMovingSpeed();
         Speed currentDistancePerTime = currentInterval != null ? currentInterval.getSpeed() : null;
+
+        // Announce current time
+        if(shouldVoiceAnnounceTime()){
+            SpeechTxtForTime t = new SpeechTxtForTime();
+            CTime c = new CTime();
+            String currentTime = c.getCurrentTime();
+            builder.append(t.speechText+currentTime+".");}
 
         int perUnitStringId;
         int distanceId;
@@ -83,6 +94,7 @@ class VoiceAnnouncementUtils {
         if (totalDistance.isZero()) {
             return builder;
         }
+        
 
         // Announce time
         Duration movingTime = trackStatistics.getMovingTime();
@@ -90,6 +102,7 @@ class VoiceAnnouncementUtils {
             appendDuration(context, builder, movingTime);
             builder.append(".");
         }
+
 
         if (isReportSpeed) {
             if (shouldVoiceAnnounceAverageSpeedPace()) {
