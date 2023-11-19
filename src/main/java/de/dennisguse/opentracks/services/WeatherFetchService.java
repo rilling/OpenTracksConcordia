@@ -33,7 +33,7 @@ public class WeatherFetchService {
             JSONObject current = getJsonConverter(result);
 
             // Extract weather information
-            double temperature = null;
+            double temperature = getTemperature(current);
             double windSpeed = null;
             double humidity = null;
             String windDirection = null;
@@ -52,7 +52,11 @@ public class WeatherFetchService {
 
         return json.getJSONObject("current");
     }
-
+    
+    private static double getTemperature(JSONObject current) throws JSONException {
+        return current.getDouble("temperature");
+    }
+    
     private static StringBuilder getWeatherData(HttpURLConnection connection) throws IOException {
         InputStream inputStream = connection.getInputStream();
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
