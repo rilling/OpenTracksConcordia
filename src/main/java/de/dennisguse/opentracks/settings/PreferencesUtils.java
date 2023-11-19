@@ -403,6 +403,11 @@ public class PreferencesUtils {
         return getBoolean(R.string.voice_announce_time_key, true);
     }
 
+    @VisibleForTesting
+    public static void setVoiceAnnounceTime(boolean value) {
+        setBoolean(R.string.voice_announce_time_key, value);
+    }
+
     public static boolean shouldVoiceAnnounceTotalDistance() {
         return getBoolean(R.string.voice_announce_total_distance_key, true);
     }
