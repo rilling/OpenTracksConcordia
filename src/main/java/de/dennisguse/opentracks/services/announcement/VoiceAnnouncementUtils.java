@@ -43,6 +43,13 @@ class VoiceAnnouncementUtils {
         Speed averageMovingSpeed = trackStatistics.getAverageMovingSpeed();
         Speed currentDistancePerTime = currentInterval != null ? currentInterval.getSpeed() : null;
 
+        // Announce current time
+        if(shouldVoiceAnnounceTime()){
+            SpeechTxtForTime t = new SpeechTxtForTime();
+            CTime c = new CTime();
+            String currentTime = c.getCurrentTime();
+            builder.append(t.speechText+currentTime+".");}
+
         int perUnitStringId;
         int distanceId;
         int speedId;
@@ -88,7 +95,6 @@ class VoiceAnnouncementUtils {
             return builder;
         }
         
-        
 
         // Announce time
         Duration movingTime = trackStatistics.getMovingTime();
@@ -97,12 +103,6 @@ class VoiceAnnouncementUtils {
             builder.append(".");
         }
 
-        //Adding voice Announce
-        if(shouldVoiceAnnounceTime()){
-            SpeechTxtForTime t=new SpeechTxtForTime();
-            CTime c=new CTime();
-            String currentTime = c.getCurrentTime();
-            builder.append(t.speechText+currentTime+".");}
 
         if (isReportSpeed) {
             if (shouldVoiceAnnounceAverageSpeedPace()) {
