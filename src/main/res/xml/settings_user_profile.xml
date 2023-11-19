@@ -18,6 +18,13 @@
             android:title="@string/settings_user_height_title"
             app:useSimpleSummaryProvider="true" />
 
+        <EditTextPreference
+        android:defaultValue="@string/settings_user_weight_default"
+        android:inputType="numberDecimal"
+        android:key="@string/settings_user_weight_key"
+        android:title="@string/settings_user_weight_title"
+        app:useSimpleSummaryProvider="true" />
+
         <ListPreference
             android:defaultValue="@string/settings_user_gender_default"
             android:entries="@array/gender_options"
