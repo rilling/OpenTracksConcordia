@@ -83,7 +83,8 @@ class VoiceAnnouncementUtils {
         if (totalDistance.isZero()) {
             return builder;
         }
-
+        
+        
 
         // Announce time
         Duration movingTime = trackStatistics.getMovingTime();
@@ -91,6 +92,13 @@ class VoiceAnnouncementUtils {
             appendDuration(context, builder, movingTime);
             builder.append(".");
         }
+
+        //Adding voice Announce
+        if(shouldVoiceAnnounceTime()){
+            SpeechTxtForTime t=new SpeechTxtForTime();
+            CTime c=new CTime();
+            String currentTime = c.getCurrentTime();
+            builder.append(t.speechText+currentTime+".");}
 
         if (isReportSpeed) {
             if (shouldVoiceAnnounceAverageSpeedPace()) {
