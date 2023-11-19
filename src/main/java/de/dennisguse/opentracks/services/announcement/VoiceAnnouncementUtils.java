@@ -7,6 +7,8 @@ import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldVoiceAnno
 import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldVoiceAnnounceLapSpeedPace;
 import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldVoiceAnnounceMovingTime;
 import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldVoiceAnnounceTotalDistance;
+import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldVoiceAnnounceTime;
+
 
 import android.content.Context;
 import android.icu.text.MessageFormat;
@@ -27,6 +29,8 @@ import de.dennisguse.opentracks.settings.UnitSystem;
 import de.dennisguse.opentracks.stats.SensorStatistics;
 import de.dennisguse.opentracks.stats.TrackStatistics;
 import de.dennisguse.opentracks.ui.intervals.IntervalStatistics;
+import de.dennisguse.opentracks.util.CTime;
+import de.dennisguse.opentracks.util.SpeechTxtForTime;
 
 class VoiceAnnouncementUtils {
 
