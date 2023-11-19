@@ -346,6 +346,9 @@ limitations under the License.
     <string name="settings_defaults_title">Default Units and Activity</string>
     <string name="settings_defaults_summary">Preferred Units, Default Activity, Track Default Name</string>
 
+    <string name="settings_user_profile_title">User Profile</string>
+    <string name="settings_user_profile_summary">Saves your name, age, weight and gender</string>
+
     <string name="settings_ui_title">User Interface</string>
     <string name="settings_ui_summary">Appearance, Recording Layout, Theme</string>
 
