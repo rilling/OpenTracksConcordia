@@ -57,6 +57,12 @@
         android:title="@string/settings_api_title" />
 
     <Preference
+        android:icon="@drawable/ic_statistics_24dp"
+        android:key="@string/settings_aggregated_stats_key"
+        android:summary="@string/settings_aggregated_stats_summary"
+        android:title="@string/settings_aggregated_stats" />
+
+    <Preference
         android:icon="@drawable/ic_baseline_info_24"
         android:summary="@string/settings_open_tracks_summary"
         android:title="@string/about_preference_title">

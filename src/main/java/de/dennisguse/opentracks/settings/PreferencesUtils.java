@@ -451,6 +451,15 @@ public class PreferencesUtils {
         setBoolean(R.string.voice_announce_average_heart_rate_key, value);
     }
 
+    public static boolean shouldElevationGain() {
+        return getBoolean(R.string.aggregated_stats_package_key, false);
+    }
+
+    @VisibleForTesting
+    public static void setElevationGain(boolean value) {
+        setBoolean(R.string.aggregated_stats_package_key, value);
+    }
+
     public static Distance getRecordingDistanceInterval() {
         return Distance.of(getInt(R.string.recording_distance_interval_key, getRecordingDistanceIntervalDefaultInternal()));
     }
