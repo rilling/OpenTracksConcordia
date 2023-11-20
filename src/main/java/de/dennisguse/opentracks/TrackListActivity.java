@@ -296,7 +296,7 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
         LoaderManager.getInstance(this).restartLoader(0, null, loaderCallbacks);
 
         // Float button
-        setFloatButton();
+//        setFloatButton();
     }
 
     @Override
