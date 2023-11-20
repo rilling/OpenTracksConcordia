@@ -365,7 +365,7 @@ limitations under the License.
 
     <string name="settings_user_age_key">userAge</string>
     <string name="settings_user_age_default">0</string>
-    <string name="settings_user_age_title">Age (In Months)</string>
+    <string name="settings_user_age_title">Age</string>
 
     <string name="male">Male</string>
     <string name="female">Female</string>
