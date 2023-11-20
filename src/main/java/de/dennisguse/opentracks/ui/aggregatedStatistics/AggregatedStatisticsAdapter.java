@@ -94,9 +94,9 @@ public class AggregatedStatisticsAdapter extends RecyclerView.Adapter<RecyclerVi
         private final TextView maxSpeedUnit;
         private final TextView maxSpeedLabel;
 
-        private final TextView elevationGain = null;
-        private final TextView elevationLabel = null;
-        private final TextView elevationUnit = null;
+        private TextView elevationGain = null;
+        private TextView elevationLabel = null;
+        private TextView elevationUnit = null;
 
         private UnitSystem unitSystem = UnitSystem.defaultUnitSystem();
         private boolean reportSpeed;
