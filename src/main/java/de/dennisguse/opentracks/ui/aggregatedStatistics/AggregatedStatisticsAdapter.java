@@ -123,7 +123,11 @@ public class AggregatedStatisticsAdapter extends RecyclerView.Adapter<RecyclerVi
 
         }
         public void setElevation(AggregatedStatistics.AggregatedStatistic aggregatedStatistic) {
+            if(aggregatedStatistic.getTrackStatistics().getTotalAltitudeGain()==null)
+                elevationGain.setText("0.0");
+            else
                 elevationGain.setText(aggregatedStatistic.getTrackStatistics().getTotalAltitudeGain().toString());
+            System.out.println();
         }
         public void setSpeed(AggregatedStatistics.AggregatedStatistic aggregatedStatistic) {
             setCommonValues(aggregatedStatistic);
