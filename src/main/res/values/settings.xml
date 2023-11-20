@@ -23,6 +23,8 @@
 
     <string name="settings_import_export_key" translatable="false">settingsImportExport</string>
 
+    <string name="settings_aggregated_stats_key" translatable="false">settingsAggregatedStats</string>
+
     <!-- Setting's categories -->
 
     <string name="settings_reset_key" translatable="false">settingsReset</string>
@@ -286,6 +288,8 @@
     <string name="settings_api_key" translatable="false">settingsAPI</string>
     <string name="publicapi_package_key" translatable="false">apiPackageKey</string>
     <string name="publicapi_enabled_key" translatable="false">apiEnabledKey</string>
+    <string name="aggregated_stats_package_key" translatable="false">AggregatedStatsPackageKey</string>
+    <bool name="aggregated_stats_enabled_default">false</bool>
     <bool name="publicapi_enabled_default">false</bool>
     <string name="publicapi_dashboard_enabled_key" translatable="false">apiDashboardEnabledKey</string>
     <bool name="publicapi_dashboard_enabled_default">false</bool>

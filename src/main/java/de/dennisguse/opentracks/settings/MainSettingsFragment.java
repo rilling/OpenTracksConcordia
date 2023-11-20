@@ -49,6 +49,11 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
             ((SettingsActivity) getActivity()).openScreen(getString(R.string.settings_api_key));
             return true;
         });
+
+        findPreference(getString(R.string.settings_aggregated_stats_key)).setOnPreferenceClickListener(preference -> {
+            ((SettingsActivity) getActivity()).openScreen(getString(R.string.settings_aggregated_stats_key));
+            return true;
+        });
     }
 
     @Override
