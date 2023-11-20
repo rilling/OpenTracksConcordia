@@ -17,6 +17,7 @@ import de.dennisguse.opentracks.R;
 import de.dennisguse.opentracks.TrackListActivity;
 import de.dennisguse.opentracks.data.models.Distance;
 import de.dennisguse.opentracks.data.models.DistanceFormatter;
+import de.dennisguse.opentracks.data.models.HeartRate;
 import de.dennisguse.opentracks.data.models.SpeedFormatter;
 import de.dennisguse.opentracks.data.models.TrackPoint;
 import de.dennisguse.opentracks.settings.PreferencesUtils;
@@ -93,9 +94,26 @@ class TrackRecordingServiceNotificationManager implements SharedPreferences.OnSh
             previousLocationWasAccurate = currentLocationWasAccurate;
         }
 
-        notificationBuilder.setContentTitle(context.getString(R.string.track_distance_notification, formatter.formatDistance(trackStatistics.getTotalDistance())));
-        String formattedSpeed = SpeedFormatter.Builder().setUnit(unitSystem).setReportSpeedOrPace(true).build(context).formatSpeed(trackPoint.getSpeed());
-        notificationBuilder.setContentText(context.getString(R.string.track_speed_notification, formattedSpeed));
+        switch (TrackListActivity.notifChoice) {
+            case "distance" -> {
+                notificationBuilder.setContentTitle(context.getString(R.string.track_distance_notification, formatter.formatDistance(trackStatistics.getTotalDistance())));
+            }
+            case "speed" -> {
+                String formattedSpeed = SpeedFormatter.Builder().setUnit(unitSystem).setReportSpeedOrPace(true).build(context).formatSpeed(trackPoint.getSpeed());
+                notificationBuilder.setContentTitle(context.getString(R.string.track_speed_notification, formattedSpeed));
+            }
+            case "heartRate" -> {
+                if (trackPoint.hasHeartRate()) {
+                    HeartRate heartRate = trackPoint.getHeartRate();
+                    String formattedHeartRate = String.valueOf(heartRate.getBPM());
+                    notificationBuilder.setContentTitle(context.getString(R.string.track_heart_rate_notification, formattedHeartRate));
+                } else {
+                    // Handle the case where no heart rate data is available
+                    notificationBuilder.setContentTitle(context.getString(R.string.no_heart_rate_data));
+                }
+            }
+        }
+
         notificationBuilder.setSubText(context.getString(R.string.track_recording_notification_accuracy, formattedAccuracy));
         updateNotification();
 
