@@ -25,6 +25,13 @@
         android:title="@string/settings_user_weight_title"
         app:useSimpleSummaryProvider="true" />
 
+        <EditTextPreference
+            android:defaultValue="@string/settings_user_age_default"
+            android:inputType="number"
+            android:key="@string/settings_user_age_key"
+            android:title="@string/settings_user_age_title"
+            app:useSimpleSummaryProvider="true" />
+
         <ListPreference
             android:defaultValue="@string/settings_user_gender_default"
             android:entries="@array/gender_options"
