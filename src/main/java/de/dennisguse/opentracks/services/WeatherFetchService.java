@@ -36,7 +36,7 @@ public class WeatherFetchService {
             double temperature = getTemperature(current);
             double windSpeed = null;
             double humidity = getHumidity(current);
-            String windDirection = null;
+            String windDirection = getWindDirection(current);
 
             return new WeatherInfo(temperature, windSpeed, humidity, windDirection);
 
@@ -59,6 +59,10 @@ public class WeatherFetchService {
 
     private static double getHumidity(JSONObject current) throws JSONException {
         return current.getDouble("humidity");
+    }
+
+    private static String getWindDirection(JSONObject current) throws JSONException {
+        return current.getString("wind_dir");
     }
     
     private static StringBuilder getWeatherData(HttpURLConnection connection) throws IOException {
