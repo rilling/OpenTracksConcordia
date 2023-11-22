@@ -17,6 +17,7 @@ package de.dennisguse.opentracks.services.announcement;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -32,6 +33,7 @@ import de.dennisguse.opentracks.data.models.Track;
 import de.dennisguse.opentracks.services.TrackRecordingService;
 import de.dennisguse.opentracks.settings.PreferencesUtils;
 import de.dennisguse.opentracks.stats.TrackStatistics;
+import de.dennisguse.opentracks.services.announcement.VoiceAnnouncement;
 
 /**
  * Execute a periodic task on a time or distance schedule.
@@ -39,7 +41,7 @@ import de.dennisguse.opentracks.stats.TrackStatistics;
  * @author Sandor Dornbush
  */
 public class VoiceAnnouncementManager implements SharedPreferences.OnSharedPreferenceChangeListener {
-
+    String motivationString = "";
     private static final String TAG = VoiceAnnouncementManager.class.getSimpleName();
 
     private final TrackRecordingService trackRecordingService;
@@ -99,10 +101,15 @@ public class VoiceAnnouncementManager implements SharedPreferences.OnSharedPrefe
             announce = true;
         }
 
+
         if (announce) {
             voiceAnnouncement.announce(track);
+
         }
     }
+
+
+
 
     public void stop() {
         if (voiceAnnouncement != null) {
@@ -110,6 +117,8 @@ public class VoiceAnnouncementManager implements SharedPreferences.OnSharedPrefe
             voiceAnnouncement = null;
         }
     }
+
+
 
     public void setFrequency(Duration frequency) {
         this.totalTimeFrequency = frequency;
