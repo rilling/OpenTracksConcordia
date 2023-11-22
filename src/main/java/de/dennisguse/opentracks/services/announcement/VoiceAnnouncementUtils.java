@@ -31,6 +31,7 @@ import de.dennisguse.opentracks.stats.TrackStatistics;
 import de.dennisguse.opentracks.ui.intervals.IntervalStatistics;
 import de.dennisguse.opentracks.util.CTime;
 import de.dennisguse.opentracks.util.SpeechTxtForTime;
+import de.dennisguse.opentracks.util.MotivationalAnnouncements;
 
 class VoiceAnnouncementUtils {
 
@@ -163,6 +164,13 @@ class VoiceAnnouncementUtils {
         }
 
         return builder;
+    }
+
+    static Spannable getMotivationalAnnouncements(){
+        //TODO - randomize the motivational quotes and pass the value
+        //int randomchoice = 5;
+        SpannableStringBuilder motivator = new SpannableStringBuilder();
+        return (motivator.append(new MotivationalAnnouncements().motivations[5]));
     }
 
     private static void appendDuration(@NonNull Context context, @NonNull SpannableStringBuilder builder, @NonNull Duration duration) {
