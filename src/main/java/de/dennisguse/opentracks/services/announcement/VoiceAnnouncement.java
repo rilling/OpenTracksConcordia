@@ -142,7 +142,7 @@ public class VoiceAnnouncement {
         }
     }
 
-    public void announce(@NonNull Track track) {
+    public void announceMotivation(){
         synchronized (this) {
             if (!ttsReady) {
                 ttsReady = ttsInitStatus == TextToSpeech.SUCCESS;
@@ -151,8 +151,6 @@ public class VoiceAnnouncement {
                 }
             }
         }
-
-
 
         if (Arrays.asList(AudioManager.MODE_IN_CALL, AudioManager.MODE_IN_COMMUNICATION)
                 .contains(audioManager.getMode())) {
@@ -171,7 +169,36 @@ public class VoiceAnnouncement {
             return;
         }
 
+        Spannable announcement = VoiceAnnouncementUtils.getMotivationalAnnouncements();
+        tts.speak(announcement, TextToSpeech.QUEUE_FLUSH, null, "not used");
+    }
 
+    public void announce(@NonNull Track track) {
+        synchronized (this) {
+            if (!ttsReady) {
+                ttsReady = ttsInitStatus == TextToSpeech.SUCCESS;
+                if (ttsReady) {
+                    onTtsReady();
+                }
+            }
+        }
+
+        if (Arrays.asList(AudioManager.MODE_IN_CALL, AudioManager.MODE_IN_COMMUNICATION)
+                .contains(audioManager.getMode())) {
+            Log.i(TAG, "Announcement is not allowed at this time.");
+            return;
+        }
+
+        if (!ttsReady) {
+            if (ttsFallback == null) {
+                Log.w(TAG, "MediaPlayer for ttsFallback was not created.");
+            } else {
+                Log.i(TAG, "TTS not ready/available, just generating a tone.");
+                ttsFallback.seekTo(0);
+                ttsFallback.start();
+            }
+            return;
+        }
 
         Distance currentIntervalDistance = PreferencesUtils.getVoiceAnnouncementDistance();
         if (currentIntervalDistance != intervalDistance) {
@@ -188,10 +215,7 @@ public class VoiceAnnouncement {
             sensorStatistics = contentProviderUtils.getSensorStats(track.getId());
         }
 
-//        Spannable announcement = VoiceAnnouncementUtils.getAnnouncement(context, track.getTrackStatistics(), PreferencesUtils.getUnitSystem(), PreferencesUtils.isReportSpeed(track), lastInterval, sensorStatistics);
-       // SpannableStringBuilder announcement = new SpannableStringBuilder();
-        Spannable announcement = VoiceAnnouncementUtils.getMotivationalAnnouncements();
-     //   announcement.append("good job");
+        Spannable announcement = VoiceAnnouncementUtils.getAnnouncement(context, track.getTrackStatistics(), PreferencesUtils.getUnitSystem(), PreferencesUtils.isReportSpeed(track), lastInterval, sensorStatistics);
 
         if (announcement.length() > 0) {
             // We don't care about the utterance id. It is supplied here to force onUtteranceCompleted to be called.

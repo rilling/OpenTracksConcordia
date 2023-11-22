@@ -90,22 +90,24 @@ public class VoiceAnnouncementManager implements SharedPreferences.OnSharedPrefe
             return;
         }
 
-        boolean announce = false;
+//        boolean announce = false;
         this.trackStatistics = track.getTrackStatistics();
         if (trackStatistics.getTotalDistance().greaterThan(nextTotalDistance)) {
             updateNextTaskDistance();
-            announce = true;
+            voiceAnnouncement.announceMotivation();
+//            announce = true;
         }
+
         if (!trackStatistics.getTotalTime().minus(nextTotalTime).isNegative()) {
             updateNextDuration();
-            announce = true;
-        }
-
-
-        if (announce) {
             voiceAnnouncement.announce(track);
-
+//            announce = true;
         }
+
+
+//        if (announce) {
+//            voiceAnnouncement.announce(track);
+//        }
     }
 
 
