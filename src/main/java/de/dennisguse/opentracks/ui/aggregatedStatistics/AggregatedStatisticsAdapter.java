@@ -1,6 +1,7 @@
 package de.dennisguse.opentracks.ui.aggregatedStatistics;
 
 import android.content.Context;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import de.dennisguse.opentracks.settings.UnitSystem;
 import de.dennisguse.opentracks.stats.TrackStatistics;
 import de.dennisguse.opentracks.util.StringUtils;
 import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldElevationGain;
+import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldDistance;
 
 public class AggregatedStatisticsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -52,6 +54,14 @@ public class AggregatedStatisticsAdapter extends RecyclerView.Adapter<RecyclerVi
             viewHolder.setSpeed(aggregatedStatistic);
             if(shouldElevationGain()) {
                 viewHolder.setElevation(aggregatedStatistic);
+            }
+            if(shouldDistance()) {
+                Log.d("myLogs", "ShouldDistance is called");
+                viewHolder.setDistance(aggregatedStatistic, true);
+            }
+            else {
+                Log.d("myLogs", "Inside Else");
+                viewHolder.setDistance(aggregatedStatistic, false);
             }
         } else {
             viewHolder.setPace(aggregatedStatistic);
@@ -131,6 +141,28 @@ public class AggregatedStatisticsAdapter extends RecyclerView.Adapter<RecyclerVi
                 elevationGain.setText(aggregatedStatistic.getTrackStatistics().getTotalAltitudeGain().toString());
             System.out.println();
         }
+
+        public void setDistance(AggregatedStatistics.AggregatedStatistic aggregatedStatistic, Boolean visibility) {
+            if(visibility) {
+                if (aggregatedStatistic.getTrackStatistics().getTotalDistance() == null) {
+                    Log.d("myLogs", "aggregate value is null");
+                    distance.setText("0.0");
+                } else {
+                    Log.d("myLogs", "Visibility true, setting value in else");
+                    Pair<String, String> parts = DistanceFormatter.Builder()
+                            .setUnit(unitSystem)
+                            .build(context).getDistanceParts(aggregatedStatistic.getTrackStatistics().getTotalDistance());
+                    distance.setText(parts.first);
+                    distanceUnit.setText(parts.second);
+                }
+            }
+            else{
+                Log.d("myLogs", "Visibility is false");
+                distance.setText("");
+                distanceUnit.setText("");
+            }
+        }
+
         public void setSpeed(AggregatedStatistics.AggregatedStatistic aggregatedStatistic) {
             setCommonValues(aggregatedStatistic);
 

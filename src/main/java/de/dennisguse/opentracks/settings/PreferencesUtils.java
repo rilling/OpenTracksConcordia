@@ -460,6 +460,16 @@ public class PreferencesUtils {
         setBoolean(R.string.aggregated_stats_package_key, value);
     }
 
+    public static boolean shouldDistance() {
+        Log.d("myLogs", String.valueOf(R.string.distance_preference_key));
+        return getBoolean(R.string.distance_preference_key, false);
+    }
+
+    @VisibleForTesting
+    public static void setDistance(boolean value) {
+        setBoolean(R.string.distance_preference_key, value);
+    }
+
     public static Distance getRecordingDistanceInterval() {
         return Distance.of(getInt(R.string.recording_distance_interval_key, getRecordingDistanceIntervalDefaultInternal()));
     }
