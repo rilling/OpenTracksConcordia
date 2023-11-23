@@ -25,6 +25,7 @@ import de.dennisguse.opentracks.stats.TrackStatistics;
 import de.dennisguse.opentracks.util.StringUtils;
 import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldElevationGain;
 import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldDistance;
+import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldMaxSpeed;
 
 public class AggregatedStatisticsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -62,6 +63,12 @@ public class AggregatedStatisticsAdapter extends RecyclerView.Adapter<RecyclerVi
             else {
                 Log.d("myLogs", "Inside Else");
                 viewHolder.setDistance(aggregatedStatistic, false);
+            }
+            if(shouldMaxSpeed()) {
+                viewHolder.setMaxSpeed(aggregatedStatistic, true);
+            }
+            else {
+                viewHolder.setMaxSpeed(aggregatedStatistic, false);
             }
         } else {
             viewHolder.setPace(aggregatedStatistic);
@@ -161,6 +168,28 @@ public class AggregatedStatisticsAdapter extends RecyclerView.Adapter<RecyclerVi
                 distance.setText("");
                 distanceUnit.setText("");
             }
+        }
+
+        public void setMaxSpeed(AggregatedStatistics.AggregatedStatistic aggregatedStatistic, Boolean visibility) {
+            SpeedFormatter formatter = SpeedFormatter.Builder().setUnit(unitSystem).setReportSpeedOrPace(reportSpeed).build(context);
+            if(visibility){
+                if(aggregatedStatistic.getTrackStatistics().getMaxSpeed() ==null)
+                    maxSpeed.setText("0.0");
+
+                else
+                {
+                    Pair<String, String> parts = formatter.getSpeedParts(aggregatedStatistic.getTrackStatistics().getMaxSpeed());
+                    maxSpeed.setText(parts.first);
+                    maxSpeedUnit.setText(parts.second);
+                    maxSpeedLabel.setText(context.getString(R.string.stats_max_speed));
+                }
+            }
+            else{
+                maxSpeed.setText("");
+                maxSpeedUnit.setText("");
+                maxSpeedLabel.setText("");
+            }
+
         }
 
         public void setSpeed(AggregatedStatistics.AggregatedStatistic aggregatedStatistic) {

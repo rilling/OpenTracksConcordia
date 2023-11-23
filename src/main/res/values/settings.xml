@@ -291,6 +291,7 @@
     <string name="aggregated_stats_package_key" translatable="false">AggregatedStatsPackageKey</string>
     <bool name="aggregated_stats_enabled_default">false</bool>
     <string name="distance_preference_key" translatable="false">DistancePreferenceKey</string>
+    <string name="max_speed_preference_key" translatable="false">MaxSpeedPreferenceKey</string>
     <bool name="publicapi_enabled_default">false</bool>
     <string name="publicapi_dashboard_enabled_key" translatable="false">apiDashboardEnabledKey</string>
     <bool name="publicapi_dashboard_enabled_default">false</bool>

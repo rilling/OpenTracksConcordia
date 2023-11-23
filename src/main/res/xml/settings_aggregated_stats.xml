@@ -18,6 +18,10 @@ android:title="@string/settings_aggregated_stats">
     android:defaultValue="false"
     android:key="@string/distance_preference_key"
     android:title="@string/stats_distance" />
+<SwitchPreference
+    android:defaultValue="false"
+    android:key="@string/max_speed_preference_key"
+    android:title="@string/stats_max_speed" />
 
 <!--<SwitchPreferenceCompat-->
 <!--    android:title="@string/settings_public_api_dashboard_enabled_title"-->

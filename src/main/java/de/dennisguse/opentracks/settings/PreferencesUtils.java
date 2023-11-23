@@ -470,6 +470,15 @@ public class PreferencesUtils {
         setBoolean(R.string.distance_preference_key, value);
     }
 
+    public static boolean shouldMaxSpeed() {
+        return getBoolean(R.string.max_speed_preference_key, false);
+    }
+
+    @VisibleForTesting
+    public static void setMaxSpeed(boolean value) {
+        setBoolean(R.string.distance_preference_key, value);
+    }
+
     public static Distance getRecordingDistanceInterval() {
         return Distance.of(getInt(R.string.recording_distance_interval_key, getRecordingDistanceIntervalDefaultInternal()));
     }
