@@ -245,6 +245,7 @@
     <string name="voice_announce_average_speed_pace_key" translatable="false">voiceAnnounceAverageSpeedPace</string>
     <string name="voice_announce_lap_speed_pace_key" translatable="false">voiceAnnounceLapSpeedPace</string>
     <string name="voice_announce_average_heart_rate_key" translatable="false">voiceAnnounceAverageHeartRate</string>
+    <string name="voice_announce_current_heart_rate_key" translatable="false">voiceAnnounceCurrentHeartRate</string>
     <string name="voice_announce_lap_heart_rate_key" translatable="false">voiceAnnounceLapHeartRate</string>
 
     <string name="export_trackfileformat_key" translatable="false">exportTrackFileFormat</string>
