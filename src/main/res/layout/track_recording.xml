@@ -1,15 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="709dp"
         android:orientation="vertical"
         android:paddingBottom="90dp">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/track_list_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:menu="@menu/track_list"
+                app:navigationIcon="@drawable/ic_logo_color_24dp"
+                app:title="@string/app_name" />
+        </com.google.android.material.appbar.AppBarLayout>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/track_detail_activity_tablayout"
@@ -28,12 +41,13 @@
                 android:layout_height="match_parent" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
         <Button
             android:id="@+id/startRecordingButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Start Recording"
-            android:layout_gravity="bottom|center" />
+            android:layout_gravity="bottom|center"
+            android:text="Start Recording" />
     </LinearLayout>
 
     <com.google.android.material.bottomappbar.BottomAppBar
@@ -42,15 +56,15 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         app:fabAlignmentMode="end"
-        app:navigationIcon="@drawable/ic_logo_color_24dp"
-        app:menu="@menu/track_record" />
+        app:menu="@menu/track_record"
+        app:navigationIcon="@drawable/ic_logo_color_24dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/track_recording_fab_action"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_record_24"
         android:contentDescription="@string/image_stop"
+        android:src="@drawable/ic_baseline_record_24"
         app:layout_anchor="@id/bottom_app_bar" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
