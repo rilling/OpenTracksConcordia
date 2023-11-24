@@ -25,6 +25,7 @@ import android.database.Cursor;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.util.Pair;
 import android.view.KeyEvent;
@@ -270,8 +271,22 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
 
             // Not Recording -> Recording
             try {
-                Thread.sleep(selectedDelayInSeconds*1000);
-            } catch (InterruptedException e) {
+                runOnUiThread(() -> {
+                    for (int i = selectedDelayInSeconds; i >= 0; i--) {
+                        final int secondsLeft = i;
+                        Toast toast = Toast.makeText(TrackListActivity.this,"Recording starts in " + secondsLeft + " seconds", Toast.LENGTH_SHORT);
+                        toast.show();
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                toast.cancel();
+                            }
+                        }, 500);
+                }});
+
+                Thread.sleep(selectedDelayInSeconds * 1000);
+                } catch (Exception e) {
                 throw new RuntimeException(e);
             }
             updateGpsMenuItem(false, true);
