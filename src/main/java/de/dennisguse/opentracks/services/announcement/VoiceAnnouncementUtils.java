@@ -7,6 +7,7 @@ import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldVoiceAnno
 import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldVoiceAnnounceLapSpeedPace;
 import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldVoiceAnnounceMovingTime;
 import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldVoiceAnnounceTotalDistance;
+import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldVoiceAnnounceCurrentHeartRate;
 
 import android.content.Context;
 import android.icu.text.MessageFormat;
@@ -80,9 +81,9 @@ class VoiceAnnouncementUtils {
             // Punctuation helps introduce natural pauses in TTS
             builder.append(".");
         }
-        if (totalDistance.isZero()) {
-            return builder;
-        }
+//        if (totalDistance.isZero()) {
+//            return builder;
+//        }
 
         // Announce time
         Duration movingTime = trackStatistics.getMovingTime();
@@ -148,7 +149,14 @@ class VoiceAnnouncementUtils {
             appendCardinal(builder, context.getString(R.string.sensor_state_heart_rate_value, currentHeartRate), currentHeartRate);
             builder.append(".");
         }
-
+        
+        if(shouldVoiceAnnounceCurrentHeartRate()){
+            builder.append(context.getString(R.string.current_heart_rate))
+                    .append(" ")
+                    .append("80");
+            builder.append(".");
+        }
+        
         return builder;
     }
 
