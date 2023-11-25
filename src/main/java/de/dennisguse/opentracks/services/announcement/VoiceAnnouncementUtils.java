@@ -149,14 +149,12 @@ class VoiceAnnouncementUtils {
             appendCardinal(builder, context.getString(R.string.sensor_state_heart_rate_value, currentHeartRate), currentHeartRate);
             builder.append(".");
         }
-        
-        if(shouldVoiceAnnounceCurrentHeartRate()){
-            builder.append(context.getString(R.string.current_heart_rate))
-                    .append(" ")
-                    .append("80");
+        if(shouldVoiceAnnounceCurrentHeartRate() && currentInterval != null && currentInterval.hasAverageHeartRate()){
+            int currentHeartRate = Math.round(currentInterval.getAverageHeartRate().getBPM());
+            builder.append(context.getString(R.string.current_heart_rate)).append(" ").append(String.valueOf(currentHeartRate));
             builder.append(".");
-        }
-        
+        }
+
         return builder;
     }
 
@@ -213,4 +211,3 @@ class VoiceAnnouncementUtils {
                 .append(localizedText, new TtsSpan.CardinalBuilder().setNumber(number).build(), SPAN_INCLUSIVE_EXCLUSIVE);
     }
 }
-
