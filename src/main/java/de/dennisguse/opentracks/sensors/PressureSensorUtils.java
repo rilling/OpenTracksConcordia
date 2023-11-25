@@ -66,4 +66,9 @@ public class PressureSensorUtils {
     public static AtmosphericPressure getBarometricPressure(float altitudeMeters) {
         return AtmosphericPressure.ofHPA((float) (p0 * Math.pow(1.0 - 0.0065 * altitudeMeters / 288.15, 5.255f)));
     }
+
+    @VisibleForTesting
+    public static AtmosphericPressure calibrateBarometricPressure(float altitudeMeters) {
+        return AtmosphericPressure.ofHPA((float) (p0 * Math.pow(1.0 - 0.0065 * altitudeMeters / 288.15, 5.255f)));
+    }
 }
