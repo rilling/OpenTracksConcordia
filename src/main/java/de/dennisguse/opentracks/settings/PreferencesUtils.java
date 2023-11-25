@@ -428,6 +428,10 @@ public class PreferencesUtils {
         return Distance.of(getInt(R.string.recording_distance_interval_key, getRecordingDistanceIntervalDefaultInternal()));
     }
 
+    public static boolean shouldVoiceAnnounceCurrentHeartRate() {
+        return getBoolean(R.string.voice_announce_current_heart_rate_key, false);
+    }
+    
     public static Distance getRecordingDistanceIntervalDefault() {
         return Distance.of(getRecordingDistanceIntervalDefaultInternal());
     }
