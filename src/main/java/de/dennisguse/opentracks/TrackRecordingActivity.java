@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -357,6 +358,17 @@ public class TrackRecordingActivity extends AbstractActivity implements ChooseAc
         if (item.getItemId() == R.id.track_detail_settings) {
             Intent intent = IntentUtils.newIntent(this, SettingsActivity.class);
             startActivity(intent);
+            return true;
+        }
+
+        if (item.getItemId() == R.id.track_list_settings) {
+            startActivity(IntentUtils.newIntent(this, SettingsActivity.class));
+            return true;
+        }
+
+
+        if (item.getItemId() == R.id.track_list_help) {
+            startActivity(IntentUtils.newIntent(this, HelpActivity.class));
             return true;
         }
 
