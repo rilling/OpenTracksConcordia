@@ -184,6 +184,35 @@
         <item>@string/settings_stats_units_nautical</item>
     </string-array>
 
+    <!-- Weight Preference -->
+    <string name="weight_unit_key" translatable="false">weightUnit</string>
+    <string name="weight_unit_default" translatable="false">@string/unit_kilogram</string>
+    <string-array name="weight_unit_values">
+        <item>@string/unit_kilogram</item>
+        <item>@string/unit_pound</item>
+
+    </string-array>
+    <string-array name="weight_unit_options">
+        <item>@string/unit_kilogram</item>
+        <item>@string/unit_pound</item>
+
+    </string-array>
+
+    <!-- Temperature Preference -->
+    <string name="temperature_unit_key" translatable="false">temperatureUnit</string>
+    <string name="temperature_unit_default" translatable="false">@string/unit_celsius</string>
+    <string-array name="temperature_unit_values">
+        <item>@string/unit_celsius</item>
+        <item>@string/unit_fahrenheit</item>
+
+
+    </string-array>
+    <string-array name="temperature_unit_options">
+        <item>@string/unit_celsius</item>
+        <item>@string/unit_fahrenheit</item>
+
+
+    </string-array>
     <string name="track_name_key" translatable="false">trackName</string>
     <string name="track_name_default" translatable="false">@string/settings_recording_track_name_date_iso_8601_value</string>
     <string name="settings_recording_track_name_date_iso_8601_value" translatable="false">DATE_ISO_8601</string>
@@ -215,6 +244,8 @@
     </string-array>
     <string name="voice_announcement_distance_key" translatable="false">voiceDistance</string>
     <string name="voice_announcement_distance_default" translatable="false">@string/announcement_off</string>
+    <!-- Added Current Time Voice Announcement Switch-->
+    <string name="voice_announce_time_key"  translatable="false">voiceAnnounceTime</string>
     <string-array name="voice_announcement_distance_values">
         <item>@string/voice_announcement_distance_default</item> <!-- km/miles -->
         <item>0.1</item>
