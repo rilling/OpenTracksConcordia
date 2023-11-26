@@ -32,6 +32,7 @@ public class Mapping {
 
         m.put(context.getString(R.string.stats_custom_layout_altitude_key), GenericStatisticsViewHolder.Altitude::new);
         m.put(context.getString(R.string.stats_custom_layout_gain_key), GenericStatisticsViewHolder.Gain::new);
+        m.put(context.getString(R.string.stats_custom_layout_calories_key), GenericStatisticsViewHolder.Calories::new);
         m.put(context.getString(R.string.stats_custom_layout_loss_key), GenericStatisticsViewHolder.Loss::new);
         m.put(context.getString(R.string.stats_custom_layout_coordinates_key), GenericStatisticsViewHolder.Coordinates::new);
 

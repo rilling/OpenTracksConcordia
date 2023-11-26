@@ -337,6 +337,7 @@
     <string name="stats_custom_layout_gain_key" translatable="false">gain</string>
     <string name="stats_custom_layout_loss_key" translatable="false">loss</string>
     <string name="stats_custom_layout_pace_key" translatable="false">pace</string>
+    <string name="stats_custom_layout_calories_key" translatable="false">Calories</string>
     <string name="stats_custom_layout_average_moving_pace_key" translatable="false">average_moving_pace</string>
     <string name="stats_custom_layout_average_pace_key" translatable="false">average_pace</string>
     <string name="stats_custom_layout_fastest_pace_key" translatable="false">fastest_pace</string>
@@ -389,6 +390,7 @@
         <item>@string/stats_custom_layout_gain_key</item>
         <item>1,0,0</item>
     </string-array>
+
     <string-array name="stats_custom_layout_fields_default_value_9">
         <item>@string/stats_custom_layout_loss_key</item>
         <item>1,0,0</item>
@@ -428,6 +430,10 @@
     <string-array name="stats_custom_layout_fields_default_value_18">
         <item>@string/stats_custom_layout_clock_key</item>
         <item>0,0,0</item>
+    </string-array>
+    <string-array name="stats_custom_layout_fields_default_value_19">
+        <item>@string/stats_custom_layout_calories_key</item>
+        <item>1,0,0</item>
     </string-array>
 
     <!-- Stats empty values -->

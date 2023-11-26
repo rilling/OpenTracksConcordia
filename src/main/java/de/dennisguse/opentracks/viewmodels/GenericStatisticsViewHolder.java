@@ -245,6 +245,19 @@ public abstract class GenericStatisticsViewHolder extends StatisticViewHolder<St
         }
     }
 
+    public static class Calories extends GenericStatisticsViewHolder {
+
+        @Override
+        public void onChanged(UnitSystem unitSystem, RecordingData data) {
+
+            Pair<String, String> valueAndUnit = StringUtils.getAltitudeParts(getContext(), data.getTrackStatistics().getTotalAltitudeGain(), unitSystem);
+
+            getBinding().statsValue.setText(valueAndUnit.first);
+            getBinding().statsUnit.setText(valueAndUnit.second);
+            getBinding().statsDescriptionMain.setText(R.string.stats_calories);
+        }
+    }
+
     public static class Loss extends GenericStatisticsViewHolder {
 
         @Override

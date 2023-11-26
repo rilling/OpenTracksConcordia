@@ -663,7 +663,34 @@
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
             app:constraint_referenced_ids="stats_max_power_value,stats_avg_power_value" />
+        
+            <!-- Horizontal line -->
+        <View
+            android:id="@+id/stats_calories_line"
+            style="@style/HorizontalLine"
+            android:layout_margin="8dp"
+            app:layout_constraintStart_toEndOf="@id/guideline"
+            app:layout_constraintEnd_toStartOf="@id/guideline3"
+            app:layout_constraintTop_toBottomOf="@id/stats_power_barrier" />
 
+            <!-- Calories -->
+        <androidx.constraintlayout.widget.Group
+        android:id="@+id/stats_calories_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="stats_calories_line, stats_calories_label" />
+        
+        <TextView
+        android:id="@+id/stats_calories_label"
+        style="@style/TextAppearance.OpenTracks.PrimaryHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/stats_calories"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintEnd_toStartOf="@id/guideline2"
+        app:layout_constraintTop_toBottomOf="@id/stats_calories_line" />
+            
         <!-- Horizontal Line -->
         <View
             android:id="@+id/stats_end_horizontal_line"
@@ -671,7 +698,7 @@
             android:layout_margin="8dp"
             app:layout_constraintStart_toEndOf="@id/guideline"
             app:layout_constraintEnd_toStartOf="@id/guideline3"
-            app:layout_constraintTop_toBottomOf="@id/stats_power_barrier" />
+            app:layout_constraintTop_toBottomOf="@id/stats_calories_label" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
