@@ -612,6 +612,7 @@ limitations under the License.
     <string name="lap_speed">Lap speed</string>
     <string name="speed">Average moving speed</string>
     <string name="total_distance">Total distance</string>
+    <string name="time_announce">Current time</string>
     <string name="voiceDistanceKilometersPlural">
         {n, plural,
         =1 {1 kilometer}
