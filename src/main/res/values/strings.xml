@@ -526,6 +526,8 @@ limitations under the License.
     <string name="track_recording_notification_accuracy">Location accuracy: %1$s</string>
     <string name="track_distance_notification">Distance: %1$s</string>
     <string name="track_speed_notification">Speed: %1$s</string>
+    <string name="track_heart_rate_notification">Heart Rate: %s BPM</string>
+    <string name="no_heart_rate_data">No heart rate data available</string>
     <string name="track_pace_notification">Pace: %1$s</string>
     <string name="track_markers">%1$s Markers</string>
     <!-- Track Delete -->
@@ -634,7 +636,6 @@ limitations under the License.
     <string name="voice_per_kilometer">per kilometer</string>
     <string name="voice_per_mile">per mile</string>
     <string name="voice_per_nautical_mile">per nautical mile</string>
-    <string name="time_announce">Current time</string>
     <string name="lap_time">Lap time</string>
     <string name="pace">Pace</string>
     <string name="lap_speed">Lap speed</string>
@@ -740,4 +741,11 @@ limitations under the License.
     <string name="always">Always</string>
 
     <string name="introduction_osm_dashboard">OpenTracks itself does not provide a map. Please install OSMDashboard to view your recordings on a map.</string>
+    <string-array name="notification_options">
+        <item>Speed</item>
+        <item>Heart Rate</item>
+        <item>Distance</item>
+    </string-array>
+
+    <string name="choose_notification_option">Choose Notification Option</string>
 </resources>
