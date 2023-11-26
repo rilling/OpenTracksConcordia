@@ -615,4 +615,6 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
             case DISTANCE_METRIC_CHOICE -> notifChoice = "distance";
         }
     }
+
+    // Mock commit to check the build
 }
