@@ -479,6 +479,14 @@ public class PreferencesUtils {
         setBoolean(R.string.distance_preference_key, value);
     }
 
+    public static boolean shouldMovingSpeed() {
+        return getBoolean(R.string.moving_speed_preference_key, false);
+    }
+
+    @VisibleForTesting
+    public static void setMovingSpeed(boolean value) {
+        setBoolean(R.string.moving_speed_preference_key, value);
+    }
     public static Distance getRecordingDistanceInterval() {
         return Distance.of(getInt(R.string.recording_distance_interval_key, getRecordingDistanceIntervalDefaultInternal()));
     }

@@ -26,6 +26,8 @@ import de.dennisguse.opentracks.util.StringUtils;
 import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldElevationGain;
 import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldDistance;
 import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldMaxSpeed;
+import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldMovingSpeed;
+import static de.dennisguse.opentracks.settings.PreferencesUtils.setMovingSpeed;
 
 public class AggregatedStatisticsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -69,6 +71,12 @@ public class AggregatedStatisticsAdapter extends RecyclerView.Adapter<RecyclerVi
             }
             else {
                 viewHolder.setMaxSpeed(aggregatedStatistic, false);
+            }
+            if(shouldMovingSpeed()){
+                viewHolder.setMovingSpeed(aggregatedStatistic, true);
+            }
+            else {
+                viewHolder.setMovingSpeed(aggregatedStatistic, false);
             }
         } else {
             viewHolder.setPace(aggregatedStatistic);
@@ -192,6 +200,26 @@ public class AggregatedStatisticsAdapter extends RecyclerView.Adapter<RecyclerVi
 
         }
 
+        public void setMovingSpeed(AggregatedStatistics.AggregatedStatistic aggregatedStatistic, Boolean visibility) {
+            SpeedFormatter formatter = SpeedFormatter.Builder().setUnit(unitSystem).setReportSpeedOrPace(reportSpeed).build(context);
+            if(visibility){
+                if(aggregatedStatistic.getTrackStatistics().getMaxSpeed() ==null)
+                    avgSpeed.setText("0.0");
+                else
+                {
+                    Pair<String, String> parts = formatter.getSpeedParts(aggregatedStatistic.getTrackStatistics().getMaxSpeed());
+                    avgSpeed.setText(parts.first);
+                    avgSpeedUnit.setText(parts.second);
+                    avgSpeedLabel.setText(context.getString(R.string.stats_max_speed));
+                }
+            }
+            else{
+                avgSpeed.setText("");
+                avgSpeedUnit.setText("");
+                avgSpeedLabel.setText("");
+            }
+
+        }
         public void setSpeed(AggregatedStatistics.AggregatedStatistic aggregatedStatistic) {
             setCommonValues(aggregatedStatistic);
 
