@@ -251,10 +251,20 @@ public class StatisticsRecordedFragment extends Fragment {
             viewBinding.statsAltitudeGroup.setVisibility(show ? View.VISIBLE : View.GONE);
         }
 
-        // Setting the calorie value
+        // Setting the calorie value based on Basal Metabolic Rate (BMR)
         {
-            Float calorieCalculated = PreferencesUtils.getVoiceSpeedRate();
-            viewBinding.statsCalorieValue.setText(calorieCalculated.toString());
+            Integer age = PreferencesUtils.getAge();
+            Integer height = PreferencesUtils.getHeight();
+            Integer weight = PreferencesUtils.getWeight();
+            String gender = PreferencesUtils.getGender();
+            double calories = Float.valueOf(0);
+            if(gender.equals("M")){
+                calories = 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+            }else {
+                calories = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+            }
+
+            viewBinding.statsCalorieValue.setText(String.valueOf(calories));
 
         }
     }

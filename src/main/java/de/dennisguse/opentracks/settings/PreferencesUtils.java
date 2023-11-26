@@ -397,6 +397,22 @@ public class PreferencesUtils {
         return getFloat(R.string.voice_speed_rate_key, DEFAULT);
     }
 
+    public static int getAge() {
+        return getInt(R.string.settings_user_age_key, R.string.settings_user_age_default);
+    }
+
+    public static int getWeight() {
+        return getInt(R.string.settings_user_weight_key, R.string.settings_user_weight_default);
+    }
+
+    public static int getHeight() {
+        return getInt(R.string.settings_user_height_key, R.string.settings_user_height_default);
+    }
+
+    public static String getGender() {
+        return resources.getString(R.string.settings_user_gender_default);
+    }
+
     public static boolean shouldVoiceAnnounceTotalDistance() {
         return getBoolean(R.string.voice_announce_total_distance_key, true);
     }
@@ -506,6 +522,7 @@ public class PreferencesUtils {
         final int MAX_RECORDING_DISTANCE = Integer.parseInt(resources.getString(R.string.max_recording_distance_default));
         return Distance.of(getInt(R.string.max_recording_distance_key, MAX_RECORDING_DISTANCE));
     }
+
 
     static String[] getMaxRecordingDistanceEntries() {
         String[] entryValues = resources.getStringArray(R.array.max_recording_distance_values);
