@@ -16,6 +16,7 @@
 
 package de.dennisguse.opentracks.fragments;
 
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -248,6 +249,13 @@ public class StatisticsRecordedFragment extends Fragment {
 
             boolean show = altitudeGainM != null && altitudeLossM != null;
             viewBinding.statsAltitudeGroup.setVisibility(show ? View.VISIBLE : View.GONE);
+        }
+
+        // Setting the calorie value
+        {
+            Float calorieCalculated = PreferencesUtils.getVoiceSpeedRate();
+            viewBinding.statsCalorieValue.setText(calorieCalculated.toString());
+
         }
     }
 
