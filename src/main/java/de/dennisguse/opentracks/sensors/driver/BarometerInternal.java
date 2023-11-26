@@ -13,6 +13,11 @@ import java.util.concurrent.TimeUnit;
 import de.dennisguse.opentracks.data.models.AtmosphericPressure;
 import de.dennisguse.opentracks.sensors.AltitudeSumManager;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
+
+
 public class BarometerInternal {
 
     private static final String TAG = BarometerInternal.class.getSimpleName();
@@ -21,6 +26,8 @@ public class BarometerInternal {
 
     private AltitudeSumManager observer;
 
+    private static final int FILTER_WINDOW_SIZE = 5; // Window size for the moving average filter
+    private Queue<Float> pressureReadings = new LinkedList<>();
     private final SensorEventListener listener = new SensorEventListener() {
         @Override
         public void onSensorChanged(SensorEvent event) {
@@ -29,7 +36,21 @@ public class BarometerInternal {
                 return;
             }
 
-            observer.onSensorValueChanged(AtmosphericPressure.ofHPA(event.values[0]));
+            // Add new reading to the queue
+            if (pressureReadings.size() >= FILTER_WINDOW_SIZE) {
+                pressureReadings.poll(); // Remove the oldest reading
+            }
+            pressureReadings.offer(event.values[0]);
+
+            // Calculate the average of the readings in the queue
+            float sum = 0;
+            for (Float reading : pressureReadings) {
+                sum += reading;
+            }
+            float average = sum / pressureReadings.size();
+
+            // Use the averaged value instead of the raw reading
+            observer.onSensorValueChanged(AtmosphericPressure.ofHPA(average));
         }
 
         @Override
