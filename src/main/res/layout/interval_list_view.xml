@@ -14,7 +14,7 @@
         android:layout_marginBottom="8dp"
         android:hint="@string/stats_split_interval">
 
-        <de.dennisguse.opentracks.ui.util.AutoCompleteTextViewForDropdown
+    <de.dennisguse.opentracks.ui.util.AutoCompleteTextViewForDropdown
             android:id="@+id/intervals_dropdown"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
