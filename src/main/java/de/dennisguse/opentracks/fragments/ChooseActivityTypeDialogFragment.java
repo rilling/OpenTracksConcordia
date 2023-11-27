@@ -101,7 +101,7 @@ public class ChooseActivityTypeDialogFragment extends DialogFragment implements 
         viewBinding.chooseActivityTypeGridView.setOnItemClickListener(this);
         return viewBinding.getRoot();
     }
-
+    @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {
