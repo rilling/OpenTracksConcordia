@@ -139,9 +139,9 @@ public class TrackRecordingActivity extends AbstractActivity implements ChooseAc
 //        }
 
         if(getIntent().getParcelableExtra(EXTRA_TRACK_ID)!=null){
-            viewBinding.trackRecordingFabAction.setImageResource(R.drawable.ic_baseline_stop_24);
+            viewBinding.trackRecordingFabAction.setImageResource(R.drawable.stop);
         }else{
-            viewBinding.trackRecordingFabAction.setImageResource(R.drawable.ic_baseline_play_arrow_24);
+            viewBinding.trackRecordingFabAction.setImageResource(R.drawable.start);
         }
 
         viewBinding.trackRecordingFabAction.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.opentracks));
@@ -192,7 +192,7 @@ public class TrackRecordingActivity extends AbstractActivity implements ChooseAc
                 (tab, position) -> tab.setText(pagerAdapter.getPageTitle(position))).attach();
         viewBinding.bottomAppBar.setVisibility(View.VISIBLE);
 
-        viewBinding.trackRecordingFabAction.setImageResource(R.drawable.ic_baseline_stop_24);
+        viewBinding.trackRecordingFabAction.setImageResource(R.drawable.stop);
 
 
     }

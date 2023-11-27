@@ -316,7 +316,7 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
             ActivityUtils.vibrate(this, 1000);
             updateGpsMenuItem(false, false);
             trackRecordingServiceConnection.stopRecording(TrackListActivity.this);
-            viewBinding.trackListFabAction.setImageResource(R.drawable.ic_baseline_play_arrow_24);
+            viewBinding.trackListFabAction.setImageResource(R.drawable.start);
             viewBinding.trackListFabAction.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.red_dark));
             selectedDelayInSeconds=0;
             return true;
@@ -698,7 +698,9 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
     }
 
     private void setFloatButton() {
-        viewBinding.trackListFabAction.setImageResource(recordingStatus.isRecording() ? R.drawable.ic_baseline_stop_24 : R.drawable.ic_baseline_play_arrow_24);
+        viewBinding.trackListFabAction.setImageResource(recordingStatus.isRecording() ? R.drawable.stop : R.drawable.start);
+//        viewBinding.trackListFabAction.setTex
+
         viewBinding.trackListFabAction.setBackgroundTintList(ContextCompat.getColorStateList(this, recordingStatus.isRecording() ? R.color.opentracks : R.color.red_dark));
     }
 
