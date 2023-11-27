@@ -182,6 +182,12 @@ class VoiceAnnouncementUtils {
         SpannableStringBuilder motivator = new SpannableStringBuilder();
         return (motivator.append(ma.motivations[i]));
     }
+    static Spannable getMotivationalAnnouncementsForSpeedIncreased(){
+        MotivationalAnnouncements ma = new MotivationalAnnouncements();
+
+        SpannableStringBuilder motivator = new SpannableStringBuilder();
+        return (motivator.append(ma.speedIncreased_motivations));
+    }
 
     private static void appendDuration(@NonNull Context context, @NonNull SpannableStringBuilder builder, @NonNull Duration duration) {
         int hours = (int) (duration.toHours());

@@ -30,6 +30,7 @@ import java.util.Random;
 
 import de.dennisguse.opentracks.R;
 import de.dennisguse.opentracks.data.models.Distance;
+import de.dennisguse.opentracks.data.models.Speed;
 import de.dennisguse.opentracks.data.models.Track;
 import de.dennisguse.opentracks.services.TrackRecordingService;
 import de.dennisguse.opentracks.settings.PreferencesUtils;
@@ -77,6 +78,12 @@ public class VoiceAnnouncementManager implements SharedPreferences.OnSharedPrefe
         updateNextDuration();
         updateNextTaskDistance();
     }
+    boolean isSignificantSpeedIncreased(Speed max, Speed avg) {
+        // Define your criteria for a significant speed change (e.g., double or reduce by a certain percentage)
+        double speedChangeThreshold = 0.5; // Example: 50%
+
+        return Math.abs(max.toMPH() - avg.toMPH()) / max.toMPH() >= speedChangeThreshold;
+    }
 
     public void update(@NonNull Context context, @NonNull Track track) {
         if (voiceAnnouncement == null) {
@@ -92,18 +99,43 @@ public class VoiceAnnouncementManager implements SharedPreferences.OnSharedPrefe
             return;
         }
 
+
+
         boolean announce = false;
+        boolean announceForSpeed =false;
+        boolean finalannounce=false;
         this.trackStatistics = track.getTrackStatistics();
 
         if (trackStatistics.getTotalDistance().greaterThan(nextTotalDistance)) {
             updateNextTaskDistance();
             announce = true;
+            announceForSpeed=true;
         }
 
-        if (!trackStatistics.getTotalTime().minus(nextTotalTime).isNegative()) {
+        if (!trackStatistics.getTotalTime().minus(nextTotalTime).isNegative() && announceForSpeed) {
             updateNextDuration();
             announce = true;
+            announceForSpeed=true;
         }
+
+        Speed maxSpeed = track.getTrackStatistics().getMaxSpeed();
+        Speed avgSpeed =track.getTrackStatistics().getAverageSpeed();
+        Speed current=Speed.of(trackStatistics.getTotalDistance(),trackStatistics.getTotalTime());
+        if (isSignificantSpeedIncreased(maxSpeed, avgSpeed) && announceForSpeed) {
+            // Make a motivational announcement
+            finalannounce = true;
+
+        }
+
+        if (finalannounce) {
+
+                voiceAnnouncement.announceMotivationForIncreasedSpeed();
+            }
+
+
+
+
+
         if (announce) {
             Random random = new Random();
             float p = random.nextFloat();
