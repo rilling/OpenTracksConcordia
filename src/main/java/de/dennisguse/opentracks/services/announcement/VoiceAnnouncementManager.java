@@ -104,7 +104,6 @@ public class VoiceAnnouncementManager implements SharedPreferences.OnSharedPrefe
             updateNextDuration();
             announce = true;
         }
-
         if (announce) {
             Random random = new Random();
             float p = random.nextFloat();
@@ -120,6 +119,7 @@ public class VoiceAnnouncementManager implements SharedPreferences.OnSharedPrefe
 
 
     public void stop() {
+        voiceAnnouncement.announceatTheEndOfTrack();
         if (voiceAnnouncement != null) {
             voiceAnnouncement.stop();
             voiceAnnouncement = null;

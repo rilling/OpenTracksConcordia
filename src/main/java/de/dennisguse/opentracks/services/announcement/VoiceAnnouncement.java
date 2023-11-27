@@ -142,6 +142,36 @@ public class VoiceAnnouncement {
         }
     }
 
+    public void announceatTheEndOfTrack(){
+        synchronized (this) {
+            if (!ttsReady) {
+                ttsReady = ttsInitStatus == TextToSpeech.SUCCESS;
+                if (ttsReady) {
+                    onTtsReady();
+                }
+            }
+        }
+
+        if (Arrays.asList(AudioManager.MODE_IN_CALL, AudioManager.MODE_IN_COMMUNICATION)
+                .contains(audioManager.getMode())) {
+            Log.i(TAG, "Announcement is not allowed at this time.");
+            return;
+        }
+
+        if (!ttsReady) {
+            if (ttsFallback == null) {
+                Log.w(TAG, "MediaPlayer for ttsFallback was not created.");
+            } else {
+                Log.i(TAG, "TTS not ready/available, just generating a tone.");
+                ttsFallback.seekTo(0);
+                ttsFallback.start();
+            }
+            return;
+        }
+
+        Spannable announcement = VoiceAnnouncementUtils.atTheEndAnnounce();
+        tts.speak(announcement, TextToSpeech.QUEUE_FLUSH, null, "not used");
+    }
     public void announceMotivation(){
         synchronized (this) {
             if (!ttsReady) {

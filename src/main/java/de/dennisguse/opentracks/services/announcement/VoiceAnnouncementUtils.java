@@ -167,6 +167,13 @@ class VoiceAnnouncementUtils {
         return builder;
     }
 
+    static Spannable atTheEndAnnounce(){
+        String ma="Your session as ended.Remember! Consistency is the key to success";
+        SpannableStringBuilder motivator = new SpannableStringBuilder();
+        return (motivator.append(ma));
+    }
+
+
     static Spannable getMotivationalAnnouncements(){
         MotivationalAnnouncements ma = new MotivationalAnnouncements();
         Random random = new Random();
