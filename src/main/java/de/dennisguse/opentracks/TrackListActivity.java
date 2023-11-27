@@ -706,7 +706,7 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
         recordingStatus = status;
         // setFloatButton();
     }
-}
+
 
     // Add a new method for handling the start recording action
     private void startRecording() {
