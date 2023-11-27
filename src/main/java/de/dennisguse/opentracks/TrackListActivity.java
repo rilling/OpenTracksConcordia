@@ -31,11 +31,13 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.cursoradapter.widget.ResourceCursorAdapter;
@@ -180,6 +182,16 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
             }
         });
 
+        MaterialButton timerButton = findViewById(R.id.timer_button);
+
+        // Set up click listener for the timer button
+        timerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Show the dropdown menu
+                showTimerMenu(v);
+            }
+        });
         viewBinding.trackList.setEmptyView(viewBinding.trackListEmptyView);
         viewBinding.trackList.setOnItemClickListener((parent, view, position, trackIdId) -> {
             Track.Id trackId = new Track.Id(trackIdId);
@@ -374,7 +386,48 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
         }
         return super.onKeyUp(keyCode, event);
     }
+    public void showTimerMenu(View view) {
+        PopupMenu popupMenu = new PopupMenu(this, view);
+        popupMenu.getMenuInflater().inflate(R.menu.timer_menu, popupMenu.getMenu());
 
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.menu_no_timer) {
+                    // Handle 0 seconds
+                    showToast("Timer has been disabled");
+                    return true;
+                }
+                if (item.getItemId() == R.id.menu_1_second) {
+                    // Handle 1-second selection
+                    showToast("1 Second selected");
+                    return true;
+                } else if (item.getItemId() == R.id.menu_2_seconds) {
+                    // Handle 2-seconds selection
+                    showToast("2 Seconds selected");
+                    return true;
+                }
+                else if (item.getItemId() == R.id.menu_5_seconds) {
+                    // Handle 5-seconds selection
+                    showToast("5 Seconds selected");
+                    return true;
+                }
+                else if (item.getItemId() == R.id.menu_10_seconds) {
+                    // Handle 10-seconds selection
+                    showToast("10 Seconds selected");
+                    return true;
+                }else {
+                    return false;
+                }
+            }
+        });
+
+        popupMenu.show();
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
     @Override
     public void overridePendingTransition(int enterAnim, int exitAnim) {
         //Disable animations as it is weird going into searchMode; looks okay for SplashScreen.
@@ -444,6 +497,7 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
             }
         }
     }
+
 
     /**
      * Handles a context item selection.
