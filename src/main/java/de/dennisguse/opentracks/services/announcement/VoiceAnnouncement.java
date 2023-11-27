@@ -23,6 +23,7 @@ import android.media.MediaPlayer;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -108,6 +109,7 @@ public class VoiceAnnouncement {
     private boolean ttsReady = false;
 
     private MediaPlayer ttsFallback;
+    public String msg;
 
     VoiceAnnouncement(Context context) {
         this.context = context;
@@ -138,6 +140,37 @@ public class VoiceAnnouncement {
                 ttsFallback.setLooping(false);
             }
         }
+    }
+
+    public void announceMotivation(){
+        synchronized (this) {
+            if (!ttsReady) {
+                ttsReady = ttsInitStatus == TextToSpeech.SUCCESS;
+                if (ttsReady) {
+                    onTtsReady();
+                }
+            }
+        }
+
+        if (Arrays.asList(AudioManager.MODE_IN_CALL, AudioManager.MODE_IN_COMMUNICATION)
+                .contains(audioManager.getMode())) {
+            Log.i(TAG, "Announcement is not allowed at this time.");
+            return;
+        }
+
+        if (!ttsReady) {
+            if (ttsFallback == null) {
+                Log.w(TAG, "MediaPlayer for ttsFallback was not created.");
+            } else {
+                Log.i(TAG, "TTS not ready/available, just generating a tone.");
+                ttsFallback.seekTo(0);
+                ttsFallback.start();
+            }
+            return;
+        }
+
+        Spannable announcement = VoiceAnnouncementUtils.getMotivationalAnnouncements();
+        tts.speak(announcement, TextToSpeech.QUEUE_FLUSH, null, "not used");
     }
 
     public void announce(@NonNull Track track) {

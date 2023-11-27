@@ -12,6 +12,7 @@
 
     <!-- Main settings -->
     <string name="settings_defaults_key" translatable="false">settingsDefaults</string>
+    <string name="user_profile" translatable="false">userProfile</string>
 
     <string name="settings_ui_key" translatable="false">settingsUI</string>
 
@@ -175,6 +176,11 @@
         <item>@string/stats_units_imperial_meter</item>
         <item>@string/stats_units_nautical</item>
     </string-array>
+    <string-array name="gender_options">
+        <item>@string/male</item>
+        <item>@string/female</item>
+        <item>@string/others</item>
+    </string-array>
     <string name="stats_units_metric" translatable="false">METRIC</string>
     <string name="stats_units_imperial_feet" translatable="false">IMPERIAL</string>
     <string name="stats_units_imperial_meter" translatable="false">IMPERIAL_METER</string>
@@ -246,6 +252,8 @@
     </string-array>
     <string name="voice_announcement_distance_key" translatable="false">voiceDistance</string>
     <string name="voice_announcement_distance_default" translatable="false">@string/announcement_off</string>
+    <!-- Added Current Time Voice Announcement Switch-->
+    <string name="voice_announce_time_key"  translatable="false">voiceAnnounceTime</string>
     <string-array name="voice_announcement_distance_values">
         <item>@string/voice_announcement_distance_default</item> <!-- km/miles -->
         <item>0.1</item>

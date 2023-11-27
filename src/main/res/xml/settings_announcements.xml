@@ -32,6 +32,13 @@
         android:title="@string/voice_on_device_speaker_title" />
     <PreferenceCategory android:title="@string/settings_announcements_title">
 
+        <!-- Added Current Time Voice Announcement Switch-->
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/voice_announce_time_key"
+            android:title="@string/time_announce" />
+
+        
         <SwitchPreference
             android:defaultValue="true"
             android:key="@string/voice_announce_total_distance_key"
