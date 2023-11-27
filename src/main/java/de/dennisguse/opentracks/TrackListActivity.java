@@ -17,9 +17,11 @@
 package de.dennisguse.opentracks;
 
 import android.app.ActivityOptions;
+import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
 import android.graphics.drawable.AnimatedVectorDrawable;
@@ -86,7 +88,7 @@ import android.view.MenuItem;
  * @author Leif Hendrik Wilden
  */
 public class TrackListActivity extends AbstractTrackDeleteActivity implements ConfirmDeleteDialogFragment.ConfirmDeleteCaller {
-
+    public static String notifChoice = "speed";
     private static final String TAG = TrackListActivity.class.getSimpleName();
     private CountDownTimer delayTimer;
     private int selectedDelayInSeconds = 0;
@@ -103,6 +105,14 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
 
     private GpsStatusValue gpsStatusValue = TrackRecordingService.STATUS_GPS_DEFAULT;
     private RecordingStatus recordingStatus = TrackRecordingService.STATUS_DEFAULT;
+
+    private static final String NOTIFICATION_PREFERENCE_KEY = "notification_preference_key";
+
+    // Constants for notification options
+    private static final int SPEED_METRIC_CHOICE = 0;
+    private static final int HEART_RATE_METRIC_CHOICE = 1;
+    private static final int DISTANCE_METRIC_CHOICE = 2;
+    private static final int DEFAULT_CHOICE = SPEED_METRIC_CHOICE;
 
     // Callback when an item is selected in the contextual action mode
     private final ActivityUtils.ContextualActionModeCallback contextualActionModeCallback = new ActivityUtils.ContextualActionModeCallback() {
@@ -266,6 +276,7 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
                 Toast.makeText(TrackListActivity.this, getString(R.string.hold_to_stop), Toast.LENGTH_LONG).show();
                 return;
             }
+
 
             // Not Recording -> Recording
             try {
@@ -694,5 +705,75 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
     private void onRecordingStatusChanged(RecordingStatus status) {
         recordingStatus = status;
         setFloatButton();
+    }
+
+    // Add a new method for handling the start recording action
+    private void startRecording() {
+        // Not Recording -> Recording
+        try {
+            runOnUiThread(() -> {
+                for (int i = selectedDelayInSeconds; i >= 0; i--) {
+
+                    final int secondsLeft = i;
+                    Toast toast = Toast.makeText(TrackListActivity.this,"Recording starts in " + secondsLeft + " seconds", Toast.LENGTH_SHORT);
+                    toast.show();
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    toast.cancel();
+                }});
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        updateGpsMenuItem(false, true);
+        new TrackRecordingServiceConnection((service, connection) -> {
+            Track.Id trackId = service.startNewTrack();
+
+            Intent newIntent = IntentUtils.newIntent(TrackListActivity.this, TrackRecordingActivity.class);
+            newIntent.putExtra(TrackRecordingActivity.EXTRA_TRACK_ID, trackId);
+            startActivity(newIntent);
+
+            connection.unbind(this);
+        }).startAndBind(this, true);
+    }
+
+    // Function to show the dialog for notification options
+    private void showNotificationOptionsDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.choose_notification_option)
+                .setItems(R.array.notification_options, (dialog, which) -> {
+                    // Store the user's choice
+                    saveNotificationPreference(which);
+
+                    // Update the notification based on the user's choice
+                    updateNotification();
+
+                    // Start recording after the user has made a choice
+                    startRecording();
+                });
+        builder.create().show();
+    }
+
+    // Function to save the user's notification preference
+    private void saveNotificationPreference(int choice) {
+        SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(NOTIFICATION_PREFERENCE_KEY, choice);
+        editor.apply();
+    }
+
+    // Function to update the notification based on user's choice
+    private void updateNotification() {
+        SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
+        int userChoice = preferences.getInt(NOTIFICATION_PREFERENCE_KEY, DEFAULT_CHOICE);
+
+        switch (userChoice) {
+            case SPEED_METRIC_CHOICE -> notifChoice = "speed";
+            case HEART_RATE_METRIC_CHOICE -> notifChoice = "heartRate";
+            case DISTANCE_METRIC_CHOICE -> notifChoice = "distance";
+        }
     }
 }
