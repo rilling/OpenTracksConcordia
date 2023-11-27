@@ -673,5 +673,28 @@
             app:layout_constraintEnd_toStartOf="@id/guideline3"
             app:layout_constraintTop_toBottomOf="@id/stats_power_barrier" />
 
+        <TextView
+            android:id="@+id/stats_calorie_label"
+            style="@style/TextAppearance.OpenTracks.PrimaryHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stats_calories"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/stats_end_horizontal_line" />
+
+        <TextView
+            android:id="@+id/stats_calorie_value"
+            style="@style/TextAppearance.OpenTracks.PrimaryValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:value="@string/value_unknown"
+
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toBottomOf="@+id/stats_calorie_label"
+            tools:text="0" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

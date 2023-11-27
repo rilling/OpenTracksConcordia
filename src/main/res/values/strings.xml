@@ -503,6 +503,7 @@ limitations under the License.
     <string name="stats_average_moving_speed">Avg moving speed</string>
     <string name="stats_average_pace">Avg pace</string>
     <string name="stats_average_speed">Avg speed</string>
+    <string name="stats_calories">Calories</string>
     <string name="stats_altitude">Elevation</string>
     <string name="stats_fastest_pace">Fastest pace</string>
     <string name="stats_gain">Gain</string>
