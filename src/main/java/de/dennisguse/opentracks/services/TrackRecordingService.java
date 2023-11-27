@@ -119,7 +119,7 @@ public class TrackRecordingService extends Service implements TrackPointCreator.
     @Override
     public void onDestroy() {
         Log.d(TAG, "Destroying");
-        if (isRecording()) {
+        if (recordingStatus.isRecording()) {
             endCurrentTrack();
         }
 
