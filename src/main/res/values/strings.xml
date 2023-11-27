@@ -478,6 +478,11 @@ limitations under the License.
     <string name="settings_stats_units_nautical">Nautical (NM, ft)</string>
     <string name="settings_stats_units_title">Preferred units</string>
 
+    <!-- Settings Aggregated stats -->
+    <string name="settings_aggregated_stats">Aggregated Stats</string>
+    <string name="settings_aggregated_stats_summary">Choose your own stats</string>
+    <string name="settings_elevation_gain">Elevation Gain</string>
+
     <!-- Settings public api -->
     <string name="settings_api_title">Public API</string>
     <string name="settings_api_summary">Remote control and statistics API for other apps</string>
