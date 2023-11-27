@@ -62,7 +62,6 @@ public class VoiceAnnouncementManager implements SharedPreferences.OnSharedPrefe
     @NonNull
     private Duration nextTotalTime = TOTALTIME_OFF;
 
-
     public VoiceAnnouncementManager(@NonNull TrackRecordingService trackRecordingService) {
         this.trackRecordingService = trackRecordingService;
     }
@@ -78,11 +77,18 @@ public class VoiceAnnouncementManager implements SharedPreferences.OnSharedPrefe
         updateNextDuration();
         updateNextTaskDistance();
     }
+
     boolean isSignificantSpeedIncreased(Speed max, Speed avg) {
-        // Define your criteria for a significant speed change (e.g., double or reduce by a certain percentage)
+        // Define your criteria for a significant speed change (e.g., double or reduce
+        // by a certain percentage)
         double speedChangeThreshold = 0.5; // Example: 50%
 
         return Math.abs(max.toMPH() - avg.toMPH()) / max.toMPH() >= speedChangeThreshold;
+    }
+
+    boolean isSignificantSpeedDecreased(Speed max, Speed avg) {
+        double speedChangeThreshold = 0.4;
+        return Math.abs(max.toMPH() - avg.toMPH()) / max.toMPH() <= speedChangeThreshold;
     }
 
     public void update(@NonNull Context context, @NonNull Track track) {
@@ -93,62 +99,60 @@ public class VoiceAnnouncementManager implements SharedPreferences.OnSharedPrefe
 
         if (!PreferencesUtils.shouldVoiceAnnouncementOnDeviceSpeaker()
                 && MediaRouter.getInstance(context)
-                .getSelectedRoute()
-                .isDeviceSpeaker()) {
+                        .getSelectedRoute()
+                        .isDeviceSpeaker()) {
             Log.i(TAG, "No voice announcement on device speaker.");
             return;
         }
 
-
-
         boolean announce = false;
-        boolean announceForSpeed =false;
-        boolean finalannounce=false;
+        boolean announceForSpeed = false;
+        boolean finalannounce = false;
+        boolean finalSpeedDecreaseAnnounce = false;
         this.trackStatistics = track.getTrackStatistics();
 
         if (trackStatistics.getTotalDistance().greaterThan(nextTotalDistance)) {
             updateNextTaskDistance();
             announce = true;
-            announceForSpeed=true;
+            announceForSpeed = true;
         }
 
         if (!trackStatistics.getTotalTime().minus(nextTotalTime).isNegative() && announceForSpeed) {
             updateNextDuration();
             announce = true;
-            announceForSpeed=true;
+            announceForSpeed = true;
         }
 
         Speed maxSpeed = track.getTrackStatistics().getMaxSpeed();
-        Speed avgSpeed =track.getTrackStatistics().getAverageSpeed();
-        Speed current=Speed.of(trackStatistics.getTotalDistance(),trackStatistics.getTotalTime());
+        Speed avgSpeed = track.getTrackStatistics().getAverageSpeed();
+        Speed current = Speed.of(trackStatistics.getTotalDistance(), trackStatistics.getTotalTime());
         if (isSignificantSpeedIncreased(maxSpeed, avgSpeed) && announceForSpeed) {
             // Make a motivational announcement
             finalannounce = true;
 
         }
 
+        if (isSignificantSpeedDecreased(maxSpeed, avgSpeed) && announceForSpeed) {
+            finalSpeedDecreaseAnnounce = true;
+        }
+
         if (finalannounce) {
-
-                voiceAnnouncement.announceMotivationForIncreasedSpeed();
-            }
-
-
-
-
+            voiceAnnouncement.announceMotivationForIncreasedSpeed();
+        }
+        if (finalSpeedDecreaseAnnounce) {
+            voiceAnnouncement.announceMotivationForDecreasedSpeed();
+        }
 
         if (announce) {
             Random random = new Random();
             float p = random.nextFloat();
-            if(p < 0.7){
+            if (p < 0.7) {
                 voiceAnnouncement.announce(track);
             } else {
                 voiceAnnouncement.announceMotivation();
             }
         }
     }
-
-
-
 
     public void stop() {
         voiceAnnouncement.announceatTheEndOfTrack();
@@ -157,8 +161,6 @@ public class VoiceAnnouncementManager implements SharedPreferences.OnSharedPrefe
             voiceAnnouncement = null;
         }
     }
-
-
 
     public void setFrequency(Duration frequency) {
         this.totalTimeFrequency = frequency;
@@ -189,7 +191,8 @@ public class VoiceAnnouncementManager implements SharedPreferences.OnSharedPrefe
         } else {
 
             Duration totalTime = trackStatistics.getTotalTime();
-            Duration intervalMod = Duration.ofMillis(trackStatistics.getTotalTime().toMillis() % totalTimeFrequency.toMillis());
+            Duration intervalMod = Duration
+                    .ofMillis(trackStatistics.getTotalTime().toMillis() % totalTimeFrequency.toMillis());
 
             nextTotalTime = totalTime.plus(totalTimeFrequency.minus(intervalMod));
         }
@@ -213,7 +216,8 @@ public class VoiceAnnouncementManager implements SharedPreferences.OnSharedPrefe
             setFrequency(PreferencesUtils.getVoiceAnnouncementFrequency());
         }
 
-        if (PreferencesUtils.isKey(new int[]{R.string.voice_announcement_distance_key, R.string.stats_units_key}, key)) {
+        if (PreferencesUtils.isKey(new int[] { R.string.voice_announcement_distance_key, R.string.stats_units_key },
+                key)) {
             setFrequency(PreferencesUtils.getVoiceAnnouncementDistance());
         }
     }

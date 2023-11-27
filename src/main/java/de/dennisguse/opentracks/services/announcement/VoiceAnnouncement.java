@@ -69,7 +69,9 @@ public class VoiceAnnouncement {
         public void onAudioFocusChange(int focusChange) {
             Log.d(TAG, "Audio focus changed to " + focusChange);
 
-            boolean stop = List.of(AudioManager.AUDIOFOCUS_LOSS, AudioManager.AUDIOFOCUS_LOSS_TRANSIENT, AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK)
+            boolean stop = List
+                    .of(AudioManager.AUDIOFOCUS_LOSS, AudioManager.AUDIOFOCUS_LOSS_TRANSIENT,
+                            AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK)
                     .contains(focusChange);
 
             if (stop && tts != null && tts.isSpeaking()) {
@@ -82,7 +84,8 @@ public class VoiceAnnouncement {
     private final UtteranceProgressListener utteranceListener = new UtteranceProgressListener() {
         @Override
         public void onStart(String utteranceId) {
-            int result = audioManager.requestAudioFocus(audioFocusChangeListener, AUDIO_STREAM, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK);
+            int result = audioManager.requestAudioFocus(audioFocusChangeListener, AUDIO_STREAM,
+                    AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK);
             if (result == AudioManager.AUDIOFOCUS_REQUEST_FAILED) {
                 Log.w(TAG, "Failed to request audio focus.");
             }
@@ -142,7 +145,7 @@ public class VoiceAnnouncement {
         }
     }
 
-    public void announceatTheEndOfTrack(){
+    public void announceatTheEndOfTrack() {
         synchronized (this) {
             if (!ttsReady) {
                 ttsReady = ttsInitStatus == TextToSpeech.SUCCESS;
@@ -172,7 +175,8 @@ public class VoiceAnnouncement {
         Spannable announcement = VoiceAnnouncementUtils.atTheEndAnnounce();
         tts.speak(announcement, TextToSpeech.QUEUE_FLUSH, null, "not used");
     }
-    public void announceMotivation(){
+
+    public void announceMotivation() {
         synchronized (this) {
             if (!ttsReady) {
                 ttsReady = ttsInitStatus == TextToSpeech.SUCCESS;
@@ -202,7 +206,8 @@ public class VoiceAnnouncement {
         Spannable announcement = VoiceAnnouncementUtils.getMotivationalAnnouncements();
         tts.speak(announcement, TextToSpeech.QUEUE_FLUSH, null, "not used");
     }
-    public void announceMotivationForIncreasedSpeed(){
+
+    public void announceMotivationForIncreasedSpeed() {
         synchronized (this) {
             if (!ttsReady) {
                 ttsReady = ttsInitStatus == TextToSpeech.SUCCESS;
@@ -230,6 +235,37 @@ public class VoiceAnnouncement {
         }
 
         Spannable announcement = VoiceAnnouncementUtils.getMotivationalAnnouncementsForSpeedIncreased();
+        tts.speak(announcement, TextToSpeech.QUEUE_FLUSH, null, "not used");
+    }
+
+    public void announceMotivationForDecreasedSpeed() {
+        synchronized (this) {
+            if (!ttsReady) {
+                ttsReady = ttsInitStatus == TextToSpeech.SUCCESS;
+                if (ttsReady) {
+                    onTtsReady();
+                }
+            }
+        }
+
+        if (Arrays.asList(AudioManager.MODE_IN_CALL, AudioManager.MODE_IN_COMMUNICATION)
+                .contains(audioManager.getMode())) {
+            Log.i(TAG, "Announcement is not allowed at this time.");
+            return;
+        }
+
+        if (!ttsReady) {
+            if (ttsFallback == null) {
+                Log.w(TAG, "MediaPlayer for ttsFallback was not created.");
+            } else {
+                Log.i(TAG, "TTS not ready/available, just generating a tone.");
+                ttsFallback.seekTo(0);
+                ttsFallback.start();
+            }
+            return;
+        }
+
+        Spannable announcement = VoiceAnnouncementUtils.getMotivationalAnnouncementsForSpeedDecreased();
         tts.speak(announcement, TextToSpeech.QUEUE_FLUSH, null, "not used");
     }
 
@@ -267,7 +303,8 @@ public class VoiceAnnouncement {
             startTrackPointId = null;
         }
 
-        TrackPointIterator trackPointIterator = new TrackPointIterator(contentProviderUtils, track.getId(), startTrackPointId);
+        TrackPointIterator trackPointIterator = new TrackPointIterator(contentProviderUtils, track.getId(),
+                startTrackPointId);
         startTrackPointId = intervalStatistics.addTrackPoints(trackPointIterator);
         IntervalStatistics.Interval lastInterval = intervalStatistics.getLastInterval();
         SensorStatistics sensorStatistics = null;
@@ -275,10 +312,13 @@ public class VoiceAnnouncement {
             sensorStatistics = contentProviderUtils.getSensorStats(track.getId());
         }
 
-        Spannable announcement = VoiceAnnouncementUtils.getAnnouncement(context, track.getTrackStatistics(), PreferencesUtils.getUnitSystem(), PreferencesUtils.isReportSpeed(track), lastInterval, sensorStatistics);
+        Spannable announcement = VoiceAnnouncementUtils.getAnnouncement(context, track.getTrackStatistics(),
+                PreferencesUtils.getUnitSystem(), PreferencesUtils.isReportSpeed(track), lastInterval,
+                sensorStatistics);
 
         if (announcement.length() > 0) {
-            // We don't care about the utterance id. It is supplied here to force onUtteranceCompleted to be called.
+            // We don't care about the utterance id. It is supplied here to force
+            // onUtteranceCompleted to be called.
             tts.speak(announcement, TextToSpeech.QUEUE_FLUSH, null, "not used");
         }
     }
@@ -298,12 +338,14 @@ public class VoiceAnnouncement {
     private void onTtsReady() {
         Locale locale = Locale.getDefault();
         int languageAvailability = tts.isLanguageAvailable(locale);
-        if (languageAvailability == TextToSpeech.LANG_MISSING_DATA || languageAvailability == TextToSpeech.LANG_NOT_SUPPORTED) {
+        if (languageAvailability == TextToSpeech.LANG_MISSING_DATA
+                || languageAvailability == TextToSpeech.LANG_NOT_SUPPORTED) {
             Log.w(TAG, "Default locale not available, use English.");
             locale = Locale.ENGLISH;
             /*
-             * TODO: instead of using english, load the language if missing and show a toast if not supported.
-             *  Not able to change the resource strings to English.
+             * TODO: instead of using english, load the language if missing and show a toast
+             * if not supported.
+             * Not able to change the resource strings to English.
              */
         }
         tts.setLanguage(locale);
