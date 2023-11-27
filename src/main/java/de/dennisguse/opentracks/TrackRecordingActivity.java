@@ -138,23 +138,14 @@ public class TrackRecordingActivity extends AbstractActivity implements ChooseAc
 //            viewBinding.trackDetailActivityViewPager.setCurrentItem(savedInstanceState.getInt(CURRENT_TAB_TAG_KEY));
 //        }
 
-        Button startRecordingButton = findViewById(R.id.startRecordingButton);
         if(getIntent().getParcelableExtra(EXTRA_TRACK_ID)!=null){
-            startRecordingButton.setText("Stop Recording");
-            new TabLayoutMediator(viewBinding.trackDetailActivityTablayout, viewBinding.trackDetailActivityViewPager,
-                    (tab, position) -> tab.setText(pagerAdapter.getPageTitle(position))).attach();
-            viewBinding.bottomAppBar.setVisibility(View.VISIBLE);
+            viewBinding.trackRecordingFabAction.setImageResource(R.drawable.ic_baseline_stop_24);
         }else{
-            viewBinding.bottomAppBar.setVisibility(View.GONE);
-
+            viewBinding.trackRecordingFabAction.setImageResource(R.drawable.ic_baseline_play_arrow_24);
         }
-        viewBinding.trackRecordingFabAction.hide();
-
-
 
         viewBinding.trackRecordingFabAction.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.opentracks));
         viewBinding.trackRecordingFabAction.setBackgroundColor(ContextCompat.getColor(this, R.color.opentracks));
-        startRecordingButton.setOnClickListener(v -> startRecording(pagerAdapter));
         viewBinding.trackRecordingFabAction.setOnClickListener((view) -> {
             ActivityUtils.vibrate(this, 1000);
             trackRecordingServiceConnection.stopRecording(TrackRecordingActivity.this);
@@ -172,7 +163,7 @@ public class TrackRecordingActivity extends AbstractActivity implements ChooseAc
         setSupportActionBar(viewBinding.trackListToolbar);
         viewBinding.trackRecordingFabAction.setOnClickListener(v -> startRecording(pagerAdapter));
 
-        startRecordingButton.setOnLongClickListener((view) -> {
+        viewBinding.trackRecordingFabAction.setOnLongClickListener((view) -> {
             ActivityUtils.vibrate(this, 1000);
             trackRecordingServiceConnection.stopRecording(TrackRecordingActivity.this);
             Intent newIntent = IntentUtils.newIntent(TrackRecordingActivity.this, TrackStoppedActivity.class)
@@ -200,9 +191,7 @@ public class TrackRecordingActivity extends AbstractActivity implements ChooseAc
         new TabLayoutMediator(viewBinding.trackDetailActivityTablayout, viewBinding.trackDetailActivityViewPager,
                 (tab, position) -> tab.setText(pagerAdapter.getPageTitle(position))).attach();
         viewBinding.bottomAppBar.setVisibility(View.VISIBLE);
-        Button startRecordingButton = findViewById(R.id.startRecordingButton);
 
-        startRecordingButton.setText("Stop Recording");
         viewBinding.trackRecordingFabAction.setImageResource(R.drawable.ic_baseline_stop_24);
 
 
