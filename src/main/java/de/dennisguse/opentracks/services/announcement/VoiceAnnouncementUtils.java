@@ -1,5 +1,6 @@
 package de.dennisguse.opentracks.services.announcement;
 
+import 	java.util.Random;
 import static android.text.Spanned.SPAN_INCLUSIVE_EXCLUSIVE;
 import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldVoiceAnnounceAverageHeartRate;
 import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldVoiceAnnounceAverageSpeedPace;
@@ -167,10 +168,12 @@ class VoiceAnnouncementUtils {
     }
 
     static Spannable getMotivationalAnnouncements(){
-        //TODO - randomize the motivational quotes and pass the value
-        //int randomchoice = 5;
+        MotivationalAnnouncements ma = new MotivationalAnnouncements();
+        Random random = new Random();
+        int i = random.nextInt(ma.motivations.length); //random number between 0 (inclusive) and length of the array (exclusive)
+
         SpannableStringBuilder motivator = new SpannableStringBuilder();
-        return (motivator.append(new MotivationalAnnouncements().motivations[5]));
+        return (motivator.append(ma.motivations[i]));
     }
 
     private static void appendDuration(@NonNull Context context, @NonNull SpannableStringBuilder builder, @NonNull Duration duration) {

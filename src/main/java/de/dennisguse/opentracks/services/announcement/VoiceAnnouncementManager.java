@@ -26,6 +26,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.mediarouter.media.MediaRouter;
 
 import java.time.Duration;
+import java.util.Random;
 
 import de.dennisguse.opentracks.R;
 import de.dennisguse.opentracks.data.models.Distance;
@@ -60,6 +61,7 @@ public class VoiceAnnouncementManager implements SharedPreferences.OnSharedPrefe
     @NonNull
     private Duration nextTotalTime = TOTALTIME_OFF;
 
+
     public VoiceAnnouncementManager(@NonNull TrackRecordingService trackRecordingService) {
         this.trackRecordingService = trackRecordingService;
     }
@@ -92,19 +94,25 @@ public class VoiceAnnouncementManager implements SharedPreferences.OnSharedPrefe
 
         boolean announce = false;
         this.trackStatistics = track.getTrackStatistics();
+
         if (trackStatistics.getTotalDistance().greaterThan(nextTotalDistance)) {
             updateNextTaskDistance();
             announce = true;
         }
+
         if (!trackStatistics.getTotalTime().minus(nextTotalTime).isNegative()) {
             updateNextDuration();
             announce = true;
         }
 
-
         if (announce) {
-            voiceAnnouncement.announce(track);
-
+            Random random = new Random();
+            float p = random.nextFloat();
+            if(p < 0.7){
+                voiceAnnouncement.announce(track);
+            } else {
+                voiceAnnouncement.announceMotivation();
+            }
         }
     }
 
