@@ -113,6 +113,10 @@ public class TrackRecordingActivity extends AbstractActivity implements ChooseAc
         super.onCreate(savedInstanceState);
         contentProviderUtils = new ContentProviderUtils(this);
 
+        if(getIntent().getParcelableExtra(EXTRA_TRACK_ID)!=null){
+            trackId = getIntent().getParcelableExtra(EXTRA_TRACK_ID);
+            trackRecordingServiceConnection = new TrackRecordingServiceConnection(bindChangedCallback);
+        }
 
 
 //        if (trackId == null) {
@@ -134,7 +138,12 @@ public class TrackRecordingActivity extends AbstractActivity implements ChooseAc
 //            viewBinding.trackDetailActivityViewPager.setCurrentItem(savedInstanceState.getInt(CURRENT_TAB_TAG_KEY));
 //        }
 
-        viewBinding.trackRecordingFabAction.setImageResource(R.drawable.ic_baseline_play_arrow_24);
+        if(getIntent().getParcelableExtra(EXTRA_TRACK_ID)!=null){
+            viewBinding.trackRecordingFabAction.setImageResource(R.drawable.ic_baseline_stop_24);
+        }else{
+            viewBinding.trackRecordingFabAction.setImageResource(R.drawable.ic_baseline_play_arrow_24);
+        }
+
         viewBinding.trackRecordingFabAction.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.opentracks));
         viewBinding.trackRecordingFabAction.setBackgroundColor(ContextCompat.getColor(this, R.color.opentracks));
         viewBinding.trackRecordingFabAction.setOnClickListener((view) -> {
@@ -150,6 +159,7 @@ public class TrackRecordingActivity extends AbstractActivity implements ChooseAc
         viewBinding.trackRecordingFabAction.setOnClickListener((view) -> Toast.makeText(TrackRecordingActivity.this, getString(R.string.hold_to_stop), Toast.LENGTH_LONG).show());
 
         viewBinding.bottomAppBar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
+        setSupportActionBar(viewBinding.bottomAppBar);
         setSupportActionBar(viewBinding.trackListToolbar);
         viewBinding.trackRecordingFabAction.setOnClickListener(v -> startRecording(pagerAdapter));
 
