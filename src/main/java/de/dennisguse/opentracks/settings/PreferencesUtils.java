@@ -82,6 +82,18 @@ public class PreferencesUtils {
         PreferencesOpenHelper.newInstance(PREFERENCES_VERSION).check();
     }
 
+    public static SharedPreferences getDefaultSharedPreferences(){
+        return PreferencesUtils.sharedPreferences;
+    }
+
+    public static Resources getDefaultResources(){
+        return PreferencesUtils.resources;
+    }
+
+    public static int getDefaultPreferenceVersion(){
+        return PreferencesUtils.PREFERENCES_VERSION;
+    }
+
     public static void registerOnSharedPreferenceChangeListener(SharedPreferences.OnSharedPreferenceChangeListener changeListener) {
         sharedPreferences.registerOnSharedPreferenceChangeListener(changeListener);
         changeListener.onSharedPreferenceChanged(sharedPreferences, null);
