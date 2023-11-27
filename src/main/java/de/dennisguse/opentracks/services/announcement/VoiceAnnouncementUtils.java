@@ -94,9 +94,9 @@ class VoiceAnnouncementUtils {
             // Punctuation helps introduce natural pauses in TTS
             builder.append(".");
         }
-//        if (totalDistance.isZero()) {
-//            return builder;
-//        }
+        if (totalDistance.isZero()) {
+            return builder;
+        }
 
         // Announce time
         Duration movingTime = trackStatistics.getMovingTime();
