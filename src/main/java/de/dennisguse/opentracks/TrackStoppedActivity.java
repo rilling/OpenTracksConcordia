@@ -16,6 +16,7 @@ import de.dennisguse.opentracks.databinding.TrackStoppedBinding;
 import de.dennisguse.opentracks.fragments.ChooseActivityTypeDialogFragment;
 import de.dennisguse.opentracks.services.TrackRecordingServiceConnection;
 import de.dennisguse.opentracks.settings.PreferencesUtils;
+import de.dennisguse.opentracks.stats.SensorStatistics;
 import de.dennisguse.opentracks.ui.aggregatedStatistics.ConfirmDeleteDialogFragment;
 import de.dennisguse.opentracks.util.ExportUtils;
 import de.dennisguse.opentracks.util.IntentUtils;
@@ -46,9 +47,12 @@ public class TrackStoppedActivity extends AbstractTrackDeleteActivity implements
 
         ContentProviderUtils contentProviderUtils = new ContentProviderUtils(this);
         Track track = contentProviderUtils.getTrack(trackId);
-                try {
+        try {
             SensorStatistics sensorStatistics = contentProviderUtils.getSensorStats(trackId);
-            float maxHr = sensorStatistics.getMaxHeartRate().getBPM();
+            if(sensorStatistics!=null)
+            {
+                float maxHr = sensorStatistics.getMaxHeartRate().getBPM();
+            }
         }catch (Exception e){}
 
         viewBinding.trackEditName.setText(track.getName());
