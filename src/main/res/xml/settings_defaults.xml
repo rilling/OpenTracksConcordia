@@ -19,6 +19,20 @@
             android:key="@string/stats_rate_key"
             android:title="@string/settings_stats_rate_title"
             app:useSimpleSummaryProvider="true" />
+        <ListPreference
+            android:defaultValue="@string/weight_unit_default"
+            android:entries="@array/weight_unit_options"
+            android:entryValues="@array/weight_unit_values"
+            android:key="@string/weight_unit_key"
+            android:title="@string/settings_weight_title"
+            app:useSimpleSummaryProvider="true" />
+        <ListPreference
+            android:defaultValue="@string/temperature_unit_default"
+            android:entries="@array/temperature_unit_options"
+            android:entryValues="@array/temperature_unit_values"
+            android:key="@string/temperature_unit_key"
+            android:title="@string/settings_temperature_title"
+            app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/settings_activity_defaults_category">

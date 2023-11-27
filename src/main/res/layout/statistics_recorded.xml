@@ -123,7 +123,8 @@
             app:layout_constraintStart_toEndOf="@id/guideline"
             app:layout_constraintEnd_toStartOf="@id/stats_distance_unit"
             app:layout_constraintTop_toBottomOf="@id/stats_distance_label"
-            tools:text="100" />
+            tools:text="100"
+            />
 
         <TextView
             android:id="@+id/stats_distance_unit"

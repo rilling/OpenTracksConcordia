@@ -17,6 +17,7 @@ package de.dennisguse.opentracks.services.announcement;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.mediarouter.media.MediaRouter;
 
 import java.time.Duration;
+import java.util.Random;
 
 import de.dennisguse.opentracks.R;
 import de.dennisguse.opentracks.data.models.Distance;
@@ -32,6 +34,7 @@ import de.dennisguse.opentracks.data.models.Track;
 import de.dennisguse.opentracks.services.TrackRecordingService;
 import de.dennisguse.opentracks.settings.PreferencesUtils;
 import de.dennisguse.opentracks.stats.TrackStatistics;
+import de.dennisguse.opentracks.services.announcement.VoiceAnnouncement;
 
 /**
  * Execute a periodic task on a time or distance schedule.
@@ -39,7 +42,7 @@ import de.dennisguse.opentracks.stats.TrackStatistics;
  * @author Sandor Dornbush
  */
 public class VoiceAnnouncementManager implements SharedPreferences.OnSharedPreferenceChangeListener {
-
+    String motivationString = "";
     private static final String TAG = VoiceAnnouncementManager.class.getSimpleName();
 
     private final TrackRecordingService trackRecordingService;
@@ -57,6 +60,7 @@ public class VoiceAnnouncementManager implements SharedPreferences.OnSharedPrefe
     private Duration totalTimeFrequency = TOTALTIME_OFF;
     @NonNull
     private Duration nextTotalTime = TOTALTIME_OFF;
+
 
     public VoiceAnnouncementManager(@NonNull TrackRecordingService trackRecordingService) {
         this.trackRecordingService = trackRecordingService;
@@ -90,19 +94,30 @@ public class VoiceAnnouncementManager implements SharedPreferences.OnSharedPrefe
 
         boolean announce = false;
         this.trackStatistics = track.getTrackStatistics();
+
         if (trackStatistics.getTotalDistance().greaterThan(nextTotalDistance)) {
             updateNextTaskDistance();
             announce = true;
         }
+
         if (!trackStatistics.getTotalTime().minus(nextTotalTime).isNegative()) {
             updateNextDuration();
             announce = true;
         }
 
         if (announce) {
-            voiceAnnouncement.announce(track);
+            Random random = new Random();
+            float p = random.nextFloat();
+            if(p < 0.7){
+                voiceAnnouncement.announce(track);
+            } else {
+                voiceAnnouncement.announceMotivation();
+            }
         }
     }
+
+
+
 
     public void stop() {
         if (voiceAnnouncement != null) {
@@ -110,6 +125,8 @@ public class VoiceAnnouncementManager implements SharedPreferences.OnSharedPrefe
             voiceAnnouncement = null;
         }
     }
+
+
 
     public void setFrequency(Duration frequency) {
         this.totalTimeFrequency = frequency;
