@@ -212,8 +212,8 @@
 
                 <ImageView
                     android:id="@+id/finish_button"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
                     android:contentDescription="@string/image_stop"
                     android:layout_marginStart="36dp"
                     app:layout_constraintBottom_toBottomOf="@id/resume_button"
