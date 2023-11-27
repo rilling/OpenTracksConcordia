@@ -277,8 +277,35 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
                 return;
             }
 
-            // Show the notification dialog to select type of the metric to show in starting new track
-            showNotificationOptionsDialog();
+
+            // Not Recording -> Recording
+            try {
+                runOnUiThread(() -> {
+                    for (int i = selectedDelayInSeconds; i >= 0; i--) {
+
+                        final int secondsLeft = i;
+                        Toast toast = Toast.makeText(TrackListActivity.this,"Recording starts in " + secondsLeft + " seconds", Toast.LENGTH_SHORT);
+                        toast.show();
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        toast.cancel();
+                    }});
+
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            updateGpsMenuItem(false, true);
+            new TrackRecordingServiceConnection((service, connection) -> {
+               // Track.Id trackId = service.startNewTrack();
+                Intent newIntent = IntentUtils.newIntent(TrackListActivity.this, TrackRecordingActivity.class);
+                //newIntent.putExtra(TrackRecordingActivity.EXTRA_TRACK_ID, trackId);
+                startActivity(newIntent);
+
+                connection.unbind(this);
+            }).startAndBind(this, true);
         });
         viewBinding.trackListFabAction.setOnLongClickListener((view) -> {
             if (!recordingStatus.isRecording()) {
@@ -289,14 +316,29 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
             ActivityUtils.vibrate(this, 1000);
             updateGpsMenuItem(false, false);
             trackRecordingServiceConnection.stopRecording(TrackListActivity.this);
-            viewBinding.trackListFabAction.setImageResource(R.drawable.ic_baseline_record_24);
+            viewBinding.trackListFabAction.setImageResource(R.drawable.start);
             viewBinding.trackListFabAction.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.red_dark));
             selectedDelayInSeconds=0;
             return true;
         });
 
         setSupportActionBar(viewBinding.trackListToolbar);
+        if (recordingStatus.isRecording()) {
+            Toast.makeText(TrackListActivity.this, getString(R.string.hold_to_stop), Toast.LENGTH_LONG).show();
+            return;
+        }
 
+        // Not Recording -> Recording
+        updateGpsMenuItem(false, true);
+        new TrackRecordingServiceConnection((service, connection) -> {
+            //Track.Id trackId = service.startNewTrack();
+
+            Intent newIntent = IntentUtils.newIntent(TrackListActivity.this, TrackRecordingActivity.class);
+//            newIntent.putExtra(TrackRecordingActivity.EXTRA_TRACK_ID, trackId);
+            startActivity(newIntent);
+
+            connection.unbind(this);
+        }).startAndBind(this, true);
         loadData(getIntent());
     }
 
@@ -656,7 +698,9 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
     }
 
     private void setFloatButton() {
-        viewBinding.trackListFabAction.setImageResource(recordingStatus.isRecording() ? R.drawable.ic_baseline_stop_24 : R.drawable.ic_baseline_record_24);
+        viewBinding.trackListFabAction.setImageResource(recordingStatus.isRecording() ? R.drawable.stop : R.drawable.start);
+//        viewBinding.trackListFabAction.setTex
+
         viewBinding.trackListFabAction.setBackgroundTintList(ContextCompat.getColorStateList(this, recordingStatus.isRecording() ? R.color.opentracks : R.color.red_dark));
     }
 

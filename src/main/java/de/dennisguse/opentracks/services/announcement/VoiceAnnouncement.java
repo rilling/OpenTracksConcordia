@@ -183,6 +183,8 @@ public class VoiceAnnouncement {
             }
         }
 
+
+
         if (Arrays.asList(AudioManager.MODE_IN_CALL, AudioManager.MODE_IN_COMMUNICATION)
                 .contains(audioManager.getMode())) {
             Log.i(TAG, "Announcement is not allowed at this time.");
@@ -200,6 +202,8 @@ public class VoiceAnnouncement {
             return;
         }
 
+
+
         Distance currentIntervalDistance = PreferencesUtils.getVoiceAnnouncementDistance();
         if (currentIntervalDistance != intervalDistance) {
             intervalStatistics = new IntervalStatistics(currentIntervalDistance);
@@ -215,7 +219,10 @@ public class VoiceAnnouncement {
             sensorStatistics = contentProviderUtils.getSensorStats(track.getId());
         }
 
-        Spannable announcement = VoiceAnnouncementUtils.getAnnouncement(context, track.getTrackStatistics(), PreferencesUtils.getUnitSystem(), PreferencesUtils.isReportSpeed(track), lastInterval, sensorStatistics);
+//        Spannable announcement = VoiceAnnouncementUtils.getAnnouncement(context, track.getTrackStatistics(), PreferencesUtils.getUnitSystem(), PreferencesUtils.isReportSpeed(track), lastInterval, sensorStatistics);
+       // SpannableStringBuilder announcement = new SpannableStringBuilder();
+        Spannable announcement = VoiceAnnouncementUtils.getMotivationalAnnouncements();
+     //   announcement.append("good job");
 
         if (announcement.length() > 0) {
             // We don't care about the utterance id. It is supplied here to force onUtteranceCompleted to be called.
