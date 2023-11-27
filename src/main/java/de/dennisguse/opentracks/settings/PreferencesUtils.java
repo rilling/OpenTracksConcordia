@@ -409,6 +409,11 @@ public class PreferencesUtils {
         return getInt(R.string.settings_user_weight_key, R.string.settings_user_weight_default);
     }
 
+    public static int getAge(){
+        System.out.println(R.string.settings_user_age_key);
+        return getInt(R.string.settings_user_age_key, R.string.settings_user_age_default);
+    }
+
     public static boolean shouldVoiceAnnounceTime(){
         return getBoolean(R.string.voice_announce_time_key, true);
     }
