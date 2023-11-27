@@ -122,7 +122,7 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
             boolean isSingleSelection = trackIds.length == 1;
 
             viewBinding.bottomAppBar.performHide(true);
-            viewBinding.trackListFabAction.setVisibility(View.INVISIBLE);
+            viewBinding.button.setVisibility(View.INVISIBLE);
 
             menu.findItem(R.id.list_context_menu_edit).setVisible(isSingleSelection);
             menu.findItem(R.id.list_context_menu_select_all).setVisible(showSelectAll);
@@ -135,7 +135,7 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
 
         @Override
         public void onDestroy() {
-            viewBinding.trackListFabAction.setVisibility(View.VISIBLE);
+            viewBinding.button.setVisibility(View.VISIBLE);
             viewBinding.bottomAppBar.performShow(true);
         }
     };
@@ -211,7 +211,7 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
         LoaderManager.getInstance(this).restartLoader(0, null, loaderCallbacks);
 
         // Float button
-        setFloatButton();
+//         setFloatButton();
 
         viewBinding.trackList.setEmptyView(viewBinding.trackListEmptyView);
         viewBinding.trackList.setOnItemClickListener((parent, view, position, trackIdId) -> {
@@ -271,7 +271,7 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
         viewBinding.trackList.setAdapter(resourceCursorAdapter);
         ActivityUtils.configureListViewContextualMenu(viewBinding.trackList, contextualActionModeCallback);
 
-        viewBinding.trackListFabAction.setOnClickListener((view) -> {
+        viewBinding.button.setOnClickListener((view) -> {
             if (recordingStatus.isRecording()) {
                 Toast.makeText(TrackListActivity.this, getString(R.string.hold_to_stop), Toast.LENGTH_LONG).show();
                 return;
@@ -307,7 +307,7 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
                 connection.unbind(this);
             }).startAndBind(this, true);
         });
-        viewBinding.trackListFabAction.setOnLongClickListener((view) -> {
+        viewBinding.button.setOnLongClickListener((view) -> {
             if (!recordingStatus.isRecording()) {
                 return false;
             }
@@ -316,8 +316,8 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
             ActivityUtils.vibrate(this, 1000);
             updateGpsMenuItem(false, false);
             trackRecordingServiceConnection.stopRecording(TrackListActivity.this);
-            viewBinding.trackListFabAction.setImageResource(R.drawable.start);
-            viewBinding.trackListFabAction.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.red_dark));
+            //   viewBinding.button.setImageResource(R.drawable.ic_baseline_record_24);
+            viewBinding.button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.red_dark));
             selectedDelayInSeconds=0;
             return true;
         });
@@ -363,7 +363,7 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
         LoaderManager.getInstance(this).restartLoader(0, null, loaderCallbacks);
 
         // Float button
-        setFloatButton();
+//        setFloatButton();
     }
 
     @Override
@@ -697,17 +697,16 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
         updateGpsMenuItem(true, recordingStatus.isRecording());
     }
 
-    private void setFloatButton() {
-        viewBinding.trackListFabAction.setImageResource(recordingStatus.isRecording() ? R.drawable.stop : R.drawable.start);
-//        viewBinding.trackListFabAction.setTex
-
-        viewBinding.trackListFabAction.setBackgroundTintList(ContextCompat.getColorStateList(this, recordingStatus.isRecording() ? R.color.opentracks : R.color.red_dark));
-    }
+    // private void setFloatButton() {
+    //   viewBinding.button.setImageResource(recordingStatus.isRecording() ? R.drawable.ic_baseline_stop_24 : R.drawable.ic_baseline_record_24);
+    // viewBinding.button.setBackgroundTintList(ContextCompat.getColorStateList(this, recordingStatus.isRecording() ? R.color.opentracks : R.color.red_dark));
+    // }
 
     private void onRecordingStatusChanged(RecordingStatus status) {
         recordingStatus = status;
-        setFloatButton();
+        // setFloatButton();
     }
+
 
     // Add a new method for handling the start recording action
     private void startRecording() {

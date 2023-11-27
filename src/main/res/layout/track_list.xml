@@ -32,6 +32,7 @@ limitations under the License.
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
@@ -133,13 +134,16 @@ limitations under the License.
 
     </com.google.android.material.bottomappbar.BottomAppBar>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/track_list_fab_action"
-        android:tint="@android:color/white"
+    <Button
+        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/image_record"
-        android:src="@drawable/ic_baseline_record_24"
-        app:layout_anchor="@id/bottom_app_bar" />
+        android:layout_weight="1"
+        android:backgroundTint="#0B0A0A"
+        android:fontFamily="monospace"
+        android:text="START WORKOUT"
+        android:textStyle="bold"
+        app:layout_anchor="@+id/bottom_app_bar"
+        app:layout_anchorGravity="center" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
