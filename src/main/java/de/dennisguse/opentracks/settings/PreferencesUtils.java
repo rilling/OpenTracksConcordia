@@ -397,6 +397,10 @@ public class PreferencesUtils {
         return getFloat(R.string.voice_speed_rate_key, DEFAULT);
     }
 
+    public static int getHeight() {
+        return getInt(R.string.settings_user_height_key, R.string.settings_user_height_default);
+    }
+
     public static boolean shouldVoiceAnnounceTotalDistance() {
         return getBoolean(R.string.voice_announce_total_distance_key, true);
     }
