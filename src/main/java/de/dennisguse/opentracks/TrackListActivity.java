@@ -268,6 +268,11 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
             }
 
             // Not Recording -> Recording
+            try {
+                Thread.sleep(selectedDelayInSeconds*1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             updateGpsMenuItem(false, true);
             new TrackRecordingServiceConnection((service, connection) -> {
                 Track.Id trackId = service.startNewTrack();
@@ -290,6 +295,7 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
             trackRecordingServiceConnection.stopRecording(TrackListActivity.this);
             viewBinding.trackListFabAction.setImageResource(R.drawable.ic_baseline_record_24);
             viewBinding.trackListFabAction.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.red_dark));
+            selectedDelayInSeconds=0;
             return true;
         });
 
@@ -467,41 +473,9 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
             showToast("10 Seconds selected");
         }
 
-        // Handle the delay here (start the tracking after the selected delay)
-        startTrackingWithDelay(selectedDelayInSeconds);
     }
 
-    private void startTrackingWithDelay(int delayInSeconds) {
-        if (delayInSeconds > 0) {
-            delayTimer = new CountDownTimer(delayInSeconds * 1000, 1000) {
-                public void onTick(long millisUntilFinished) {
-                    // Do nothing while counting down
-                }
 
-                public void onFinish() {
-                    // Start tracking after the delay
-                    startTracking();
-                }
-            }.start();
-        } else {
-            // Start tracking immediately if no delay is selected
-            startTracking();
-        }
-    }
-
-    private void startTracking() {
-        // Start tracking logic here
-        updateGpsMenuItem(false, true);
-        new TrackRecordingServiceConnection((service, connection) -> {
-            Track.Id trackId = service.startNewTrack();
-
-            Intent newIntent = IntentUtils.newIntent(TrackListActivity.this, TrackRecordingActivity.class);
-            newIntent.putExtra(TrackRecordingActivity.EXTRA_TRACK_ID, trackId);
-            startActivity(newIntent);
-
-            connection.unbind(this);
-        }).startAndBind(this, true);
-    }
 
     private void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
