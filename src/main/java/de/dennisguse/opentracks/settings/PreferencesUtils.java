@@ -399,6 +399,21 @@ public class PreferencesUtils {
 
     //adding time thing
 
+
+    public static String getGender() {
+        return resources.getString(R.string.settings_user_gender_default);
+    }
+
+    public static int getWeight() {
+        System.out.println(R.string.settings_user_weight_key);
+        return getInt(R.string.settings_user_weight_key, R.string.settings_user_weight_default);
+    }
+
+    public static int getAge(){
+        System.out.println(R.string.settings_user_age_key);
+        return getInt(R.string.settings_user_age_key, R.string.settings_user_age_default);
+    }
+
     public static boolean shouldVoiceAnnounceTime(){
         return getBoolean(R.string.voice_announce_time_key, true);
     }
@@ -473,6 +488,8 @@ public class PreferencesUtils {
     private static int getRecordingDistanceIntervalDefaultInternal() {
         return Integer.parseInt(resources.getString(R.string.recording_distance_interval_default));
     }
+
+
 
     static String[] getRecordingDistanceIntervalEntries() {
         String[] entryValues = resources.getStringArray(R.array.recording_distance_interval_values);
