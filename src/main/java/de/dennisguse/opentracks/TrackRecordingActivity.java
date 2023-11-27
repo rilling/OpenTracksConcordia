@@ -359,6 +359,12 @@ public class TrackRecordingActivity extends AbstractActivity implements ChooseAc
             return true;
         }
 
+
+        if (item.getItemId() == R.id.track_list_help) {
+            startActivity(IntentUtils.newIntent(this, HelpActivity.class));
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
