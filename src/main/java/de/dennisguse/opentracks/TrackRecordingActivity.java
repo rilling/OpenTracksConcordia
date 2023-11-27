@@ -151,10 +151,9 @@ public class TrackRecordingActivity extends AbstractActivity implements ChooseAc
 
         viewBinding.bottomAppBar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
         setSupportActionBar(viewBinding.trackListToolbar);
-        Button startRecordingButton = findViewById(R.id.startRecordingButton);
-        startRecordingButton.setOnClickListener(v -> startRecording(pagerAdapter));
+        viewBinding.trackRecordingFabAction.setOnClickListener(v -> startRecording(pagerAdapter));
 
-        startRecordingButton.setOnLongClickListener((view) -> {
+        viewBinding.trackRecordingFabAction.setOnLongClickListener((view) -> {
             ActivityUtils.vibrate(this, 1000);
             trackRecordingServiceConnection.stopRecording(TrackRecordingActivity.this);
             Intent newIntent = IntentUtils.newIntent(TrackRecordingActivity.this, TrackStoppedActivity.class)
@@ -164,17 +163,6 @@ public class TrackRecordingActivity extends AbstractActivity implements ChooseAc
             finish();
             return true;
         });
-
-        if(getIntent().getParcelableExtra(EXTRA_TRACK_ID)!=null){
-            startRecordingButton.setText("Stop Recording");
-            new TabLayoutMediator(viewBinding.trackDetailActivityTablayout, viewBinding.trackDetailActivityViewPager,
-                    (tab, position) -> tab.setText(pagerAdapter.getPageTitle(position))).attach();
-            viewBinding.bottomAppBar.setVisibility(View.VISIBLE);
-        }else{
-            viewBinding.bottomAppBar.setVisibility(View.GONE);
-
-        }
-        viewBinding.trackRecordingFabAction.hide();
 
     }
     void startRecording(CustomFragmentPagerAdapter pagerAdapter) {
@@ -193,9 +181,7 @@ public class TrackRecordingActivity extends AbstractActivity implements ChooseAc
         new TabLayoutMediator(viewBinding.trackDetailActivityTablayout, viewBinding.trackDetailActivityViewPager,
                 (tab, position) -> tab.setText(pagerAdapter.getPageTitle(position))).attach();
         viewBinding.bottomAppBar.setVisibility(View.VISIBLE);
-        Button startRecordingButton = findViewById(R.id.startRecordingButton);
 
-        startRecordingButton.setText("Stop Recording");
 
     }
     @Override
