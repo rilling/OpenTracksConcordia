@@ -22,11 +22,14 @@ android:title="@string/settings_aggregated_stats">
     android:defaultValue="false"
     android:key="@string/max_speed_preference_key"
     android:title="@string/stats_max_speed" />
-
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="@string/moving_speed_preference_key"
-        android:title="@string/stats_moving_speed" />
+<SwitchPreference
+    android:defaultValue="false"
+    android:key="@string/moving_speed_preference_key"
+    android:title="@string/stats_moving_speed" />
+<SwitchPreference
+    android:defaultValue="false"
+    android:key="@string/moving_time_preference_key"
+    android:title="@string/stats_moving_time" />
 
 <!--<SwitchPreferenceCompat-->
 <!--    android:title="@string/settings_public_api_dashboard_enabled_title"-->

@@ -27,7 +27,7 @@ import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldElevation
 import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldDistance;
 import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldMaxSpeed;
 import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldMovingSpeed;
-import static de.dennisguse.opentracks.settings.PreferencesUtils.setMovingSpeed;
+import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldMovingTime;
 
 public class AggregatedStatisticsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -77,6 +77,12 @@ public class AggregatedStatisticsAdapter extends RecyclerView.Adapter<RecyclerVi
             }
             else {
                 viewHolder.setMovingSpeed(aggregatedStatistic, false);
+            }
+            if(shouldMovingTime()){
+                viewHolder.setMovingTime(aggregatedStatistic, true);
+            }
+            else {
+                viewHolder.setMovingTime(aggregatedStatistic, false);
             }
         } else {
             viewHolder.setPace(aggregatedStatistic);
@@ -217,6 +223,21 @@ public class AggregatedStatisticsAdapter extends RecyclerView.Adapter<RecyclerVi
                 avgSpeed.setText("");
                 avgSpeedUnit.setText("");
                 avgSpeedLabel.setText("");
+            }
+
+        }
+        public void setMovingTime(AggregatedStatistics.AggregatedStatistic aggregatedStatistic, Boolean visibility) {
+            SpeedFormatter formatter = SpeedFormatter.Builder().setUnit(unitSystem).setReportSpeedOrPace(reportSpeed).build(context);
+            if(visibility){
+                if(aggregatedStatistic.getTrackStatistics().getMaxSpeed() ==null)
+                    time.setText("0.0");
+                else
+                {
+                    time.setText(StringUtils.formatElapsedTime(aggregatedStatistic.getTrackStatistics().getMovingTime()));
+                }
+            }
+            else{
+                time.setText("");
             }
 
         }

@@ -487,6 +487,10 @@ public class PreferencesUtils {
     public static void setMovingSpeed(boolean value) {
         setBoolean(R.string.moving_speed_preference_key, value);
     }
+    public static boolean shouldMovingTime() {
+        return getBoolean(R.string.moving_time_preference_key, false);
+    }
+
     public static Distance getRecordingDistanceInterval() {
         return Distance.of(getInt(R.string.recording_distance_interval_key, getRecordingDistanceIntervalDefaultInternal()));
     }
