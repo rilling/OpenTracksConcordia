@@ -46,6 +46,10 @@ public class TrackStoppedActivity extends AbstractTrackDeleteActivity implements
 
         ContentProviderUtils contentProviderUtils = new ContentProviderUtils(this);
         Track track = contentProviderUtils.getTrack(trackId);
+                try {
+            SensorStatistics sensorStatistics = contentProviderUtils.getSensorStats(trackId);
+            float maxHr = sensorStatistics.getMaxHeartRate().getBPM();
+        }catch (Exception e){}
 
         viewBinding.trackEditName.setText(track.getName());
 
