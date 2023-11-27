@@ -12,6 +12,7 @@
 
     <!-- Main settings -->
     <string name="settings_defaults_key" translatable="false">settingsDefaults</string>
+    <string name="user_profile" translatable="false">userProfile</string>
 
     <string name="settings_ui_key" translatable="false">settingsUI</string>
 
@@ -22,6 +23,8 @@
     <string name="settings_announcements_key" translatable="false">settingsAnnouncements</string>
 
     <string name="settings_import_export_key" translatable="false">settingsImportExport</string>
+
+    <string name="settings_aggregated_stats_key" translatable="false">settingsAggregatedStats</string>
 
     <!-- Setting's categories -->
 
@@ -173,6 +176,11 @@
         <item>@string/stats_units_imperial_meter</item>
         <item>@string/stats_units_nautical</item>
     </string-array>
+    <string-array name="gender_options">
+        <item>@string/male</item>
+        <item>@string/female</item>
+        <item>@string/others</item>
+    </string-array>
     <string name="stats_units_metric" translatable="false">METRIC</string>
     <string name="stats_units_imperial_feet" translatable="false">IMPERIAL</string>
     <string name="stats_units_imperial_meter" translatable="false">IMPERIAL_METER</string>
@@ -288,6 +296,16 @@
     <string name="settings_api_key" translatable="false">settingsAPI</string>
     <string name="publicapi_package_key" translatable="false">apiPackageKey</string>
     <string name="publicapi_enabled_key" translatable="false">apiEnabledKey</string>
+    <string name="aggregated_stats_package_key" translatable="false">AggregatedStatsPackageKey</string>
+    <bool name="aggregated_stats_enabled_default">false</bool>
+    <string name="distance_preference_key" translatable="false">DistancePreferenceKey</string>
+    <string name="max_speed_preference_key" translatable="false">MaxSpeedPreferenceKey</string>
+    <string name="moving_speed_preference_key" translatable="false">MovingSpeedPreferenceKey</string>
+    <string name="stats_moving_speed" translatable="false">Moving Speed</string>
+    <string name="moving_time_preference_key" translatable="false">MovingTimePreferenceKey</string>
+    <string name="stats_time_speed" translatable="false">Average Moving Time</string>
+
+
     <bool name="publicapi_enabled_default">false</bool>
     <string name="publicapi_dashboard_enabled_key" translatable="false">apiDashboardEnabledKey</string>
     <bool name="publicapi_dashboard_enabled_default">false</bool>

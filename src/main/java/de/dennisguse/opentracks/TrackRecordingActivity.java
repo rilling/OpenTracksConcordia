@@ -132,10 +132,10 @@ public class TrackRecordingActivity extends AbstractActivity implements ChooseAc
             viewBinding.trackDetailActivityViewPager.setCurrentItem(savedInstanceState.getInt(CURRENT_TAB_TAG_KEY));
         }
 
-        viewBinding.trackRecordingFabAction.setImageResource(R.drawable.ic_baseline_stop_24);
-        viewBinding.trackRecordingFabAction.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.opentracks));
-        viewBinding.trackRecordingFabAction.setBackgroundColor(ContextCompat.getColor(this, R.color.opentracks));
-        viewBinding.trackRecordingFabAction.setOnLongClickListener((view) -> {
+//        viewBinding.holdToStopButton.setImageResource(R.drawable.ic_baseline_stop_24);
+//        viewBinding.holdToStopButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.opentracks));
+//        viewBinding.holdToStopButton.setBackgroundColor(ContextCompat.getColor(this, R.color.opentracks));
+        viewBinding.holdToStopButton.setOnLongClickListener((view) -> {
             ActivityUtils.vibrate(this, 1000);
             trackRecordingServiceConnection.stopRecording(TrackRecordingActivity.this);
             Intent newIntent = IntentUtils.newIntent(TrackRecordingActivity.this, TrackStoppedActivity.class)
@@ -145,7 +145,7 @@ public class TrackRecordingActivity extends AbstractActivity implements ChooseAc
             finish();
             return true;
         });
-        viewBinding.trackRecordingFabAction.setOnClickListener((view) -> Toast.makeText(TrackRecordingActivity.this, getString(R.string.hold_to_stop), Toast.LENGTH_LONG).show());
+        viewBinding.holdToStopButton.setOnClickListener((view) -> Toast.makeText(TrackRecordingActivity.this, getString(R.string.hold_to_stop), Toast.LENGTH_LONG).show());
 
         viewBinding.bottomAppBar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
         setSupportActionBar(viewBinding.bottomAppBar);

@@ -346,6 +346,35 @@ limitations under the License.
     <string name="settings_defaults_title">Default Units and Activity</string>
     <string name="settings_defaults_summary">Preferred Units, Default Activity, Track Default Name</string>
 
+    <string name="settings_user_profile_title">User Profile</string>
+    <string name="settings_user_profile_summary">Saves your name, age, weight and gender</string>
+
+    <string name="settings_user_personal_details">Personal Details</string>
+
+    <string name="settings_user_date_of_birth_key">userDOB</string>
+    <string name="settings_user_date_of_birth_default">01/01/2001</string>
+    <string name="settings_user_date_of_birth_title">Date of birth</string>
+
+    <string name="settings_user_height_key">userHeight</string>
+    <string name="settings_user_height_default">180</string>
+    <string name="settings_user_height_title">Height (In Centimeters)</string>
+
+    <string name="settings_user_weight_key">userWeight</string>
+    <string name="settings_user_weight_default">56</string>
+    <string name="settings_user_weight_title">Weight (In Kg)</string>
+
+    <string name="settings_user_age_key">userAge</string>
+    <string name="settings_user_age_default">0</string>
+    <string name="settings_user_age_title">Age</string>
+
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="others">Others</string>
+
+    <string name="settings_user_gender_key">userGender</string>
+    <string name="settings_user_gender_default">M</string>
+    <string name="settings_user_gender_title">Gender</string>
+
     <string name="settings_ui_title">User Interface</string>
     <string name="settings_ui_summary">Appearance, Recording Layout, Theme</string>
 
@@ -449,6 +478,11 @@ limitations under the License.
     <string name="settings_stats_units_nautical">Nautical (NM, ft)</string>
     <string name="settings_stats_units_title">Preferred units</string>
 
+    <!-- Settings Aggregated stats -->
+    <string name="settings_aggregated_stats">Aggregated Stats</string>
+    <string name="settings_aggregated_stats_summary">Choose your own stats</string>
+    <string name="settings_elevation_gain">Elevation Gain</string>
+
     <!-- Settings public api -->
     <string name="settings_api_title">Public API</string>
     <string name="settings_api_summary">Remote control and statistics API for other apps</string>
@@ -497,6 +531,8 @@ limitations under the License.
     <string name="track_recording_notification_accuracy">Location accuracy: %1$s</string>
     <string name="track_distance_notification">Distance: %1$s</string>
     <string name="track_speed_notification">Speed: %1$s</string>
+    <string name="track_heart_rate_notification">Heart Rate: %s BPM</string>
+    <string name="no_heart_rate_data">No heart rate data available</string>
     <string name="track_pace_notification">Pace: %1$s</string>
     <string name="track_markers">%1$s Markers</string>
     <!-- Track Delete -->
@@ -605,12 +641,12 @@ limitations under the License.
     <string name="voice_per_kilometer">per kilometer</string>
     <string name="voice_per_mile">per mile</string>
     <string name="voice_per_nautical_mile">per nautical mile</string>
-    <string name="time_announce">Current time</string>
     <string name="lap_time">Lap time</string>
     <string name="pace">Pace</string>
     <string name="lap_speed">Lap speed</string>
     <string name="speed">Average moving speed</string>
     <string name="total_distance">Total distance</string>
+    <string name="time_announce">Current time</string>
     <string name="voiceDistanceKilometersPlural">
         {n, plural,
         =1 {1 kilometer}
@@ -688,6 +724,8 @@ limitations under the License.
     <string name="share_image_body">I think you might be interested in this image.</string>
 
     <string name="hold_to_stop">Hold to stop</string>
+    <string name="hold_to_pause">Hold to Pause</string>
+
 
     <string name="instant_export_enabled_summary">Export track to storage after recording is finished</string>
     <string name="instant_export_enabled_title">Instant post-workout export</string>
@@ -711,4 +749,11 @@ limitations under the License.
     <string name="always">Always</string>
 
     <string name="introduction_osm_dashboard">OpenTracks itself does not provide a map. Please install OSMDashboard to view your recordings on a map.</string>
+    <string-array name="notification_options">
+        <item>Speed</item>
+        <item>Heart Rate</item>
+        <item>Distance</item>
+    </string-array>
+
+    <string name="choose_notification_option">Choose Notification Option</string>
 </resources>
