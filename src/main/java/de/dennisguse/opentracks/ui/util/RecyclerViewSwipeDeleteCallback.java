@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import de.dennisguse.opentracks.R;
 
-abstract public class RecyclerViewSwipeDeleteCallback extends ItemTouchHelper.Callback {
+public abstract class RecyclerViewSwipeDeleteCallback extends ItemTouchHelper.Callback {
 
     private final Paint clearPaint;
     private final ColorDrawable background;

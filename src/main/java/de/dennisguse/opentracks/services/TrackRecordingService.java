@@ -119,7 +119,7 @@ public class TrackRecordingService extends Service implements TrackPointCreator.
     @Override
     public void onDestroy() {
         Log.d(TAG, "Destroying");
-        if (isRecording()) {
+        if (recordingStatus.isRecording()) {
             endCurrentTrack();
         }
 
@@ -225,7 +225,7 @@ public class TrackRecordingService extends Service implements TrackPointCreator.
 
     void stopSensors() {
         trackPointCreator.stop();
-        stopForeground(true);
+        stopForeground(Service.STOP_FOREGROUND_REMOVE);
         notificationManager.cancelNotification();
         wakeLock = SystemUtils.releaseWakeLock(wakeLock);
     }

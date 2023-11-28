@@ -141,8 +141,9 @@ public class StatisticsRecordedFragment extends Fragment {
         if (isResumed()) {
             getActivity().runOnUiThread(() -> {
                 if (isResumed()) {
-                    Track track = contentProviderUtils.getTrack(trackId);
-                    if (track == null) {
+                    Track loadedTrack = contentProviderUtils.getTrack(trackId); // Rename the variable here
+
+                    if (loadedTrack == null) {
                         Log.e(TAG, "track cannot be null");
                         getActivity().finish();
                         return;
@@ -150,13 +151,14 @@ public class StatisticsRecordedFragment extends Fragment {
 
                     sensorStatistics = contentProviderUtils.getSensorStats(trackId);
 
-                    boolean prefsChanged = this.track == null || (!this.track.getActivityTypeLocalized().equals(track.getActivityTypeLocalized()));
-                    this.track = track;
+                    boolean prefsChanged = this.track == null || (!this.track.getActivityTypeLocalized().equals(loadedTrack.getActivityTypeLocalized()));
+                    // Update this.track to loadedTrack
+                    this.track = loadedTrack; // Rename this.track to loadedTrack
                     if (prefsChanged) {
                         sharedPreferenceChangeListener.onSharedPreferenceChanged(null, getString(R.string.stats_rate_key));
                     }
 
-                    loadTrackDescription(track);
+                    loadTrackDescription(loadedTrack); // Update this.track to loadedTrack
                     updateUI();
                     updateSensorUI();
 
@@ -165,6 +167,7 @@ public class StatisticsRecordedFragment extends Fragment {
             });
         }
     }
+
 
     private void loadTrackDescription(@NonNull Track track) {
         viewBinding.statsNameValue.setText(track.getName());
@@ -230,20 +233,20 @@ public class StatisticsRecordedFragment extends Fragment {
 
         // Set altitude gain and loss
         {
-            Float altitudeGain_m = trackStatistics.getTotalAltitudeGain();
-            Float altitudeLoss_m = trackStatistics.getTotalAltitudeLoss();
+            Float altitudeGainM = trackStatistics.getTotalAltitudeGain();
+            Float altitudeLossM = trackStatistics.getTotalAltitudeLoss();
 
             Pair<String, String> parts;
 
-            parts = StringUtils.getAltitudeParts(getContext(), altitudeGain_m, unitSystem);
+            parts = StringUtils.getAltitudeParts(getContext(), altitudeGainM, unitSystem);
             viewBinding.statsAltitudeGainValue.setText(parts.first);
             viewBinding.statsAltitudeGainUnit.setText(parts.second);
 
-            parts = StringUtils.getAltitudeParts(getContext(), altitudeLoss_m, unitSystem);
+            parts = StringUtils.getAltitudeParts(getContext(), altitudeLossM, unitSystem);
             viewBinding.statsAltitudeLossValue.setText(parts.first);
             viewBinding.statsAltitudeLossUnit.setText(parts.second);
 
-            boolean show = altitudeGain_m != null && altitudeLoss_m != null;
+            boolean show = altitudeGainM != null && altitudeLossM != null;
             viewBinding.statsAltitudeGroup.setVisibility(show ? View.VISIBLE : View.GONE);
         }
     }

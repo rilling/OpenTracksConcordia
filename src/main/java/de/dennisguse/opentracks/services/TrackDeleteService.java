@@ -9,13 +9,23 @@ import android.os.ResultReceiver;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.JobIntentService;
-
+import java.util.List;
 import java.util.ArrayList;
+
 
 import de.dennisguse.opentracks.data.ContentProviderUtils;
 import de.dennisguse.opentracks.data.models.Track;
 
+
+class UnknownResultCodeException extends Exception {
+    public UnknownResultCodeException() {
+        super("Unknown resultCode.");
+    }
+}
+
 public class TrackDeleteService extends JobIntentService {
+
+
 
     private static final int JOB_ID = 3;
 
@@ -23,17 +33,22 @@ public class TrackDeleteService extends JobIntentService {
 
     private static final String EXTRA_TRACK_IDS = "extra_track_ids";
 
-    public static void enqueue(Context context, TrackDeleteResultReceiver receiver, ArrayList<Track.Id> toBeDeleted) {
+    public static void enqueue(Context context, TrackDeleteResultReceiver receiver, List<Track.Id> toBeDeleted) {
         Intent intent = new Intent(context, JobService.class);
         intent.putExtra(EXTRA_RECEIVER, receiver);
-        intent.putParcelableArrayListExtra(EXTRA_TRACK_IDS, toBeDeleted);
+        intent.putParcelableArrayListExtra(EXTRA_TRACK_IDS, new ArrayList<>(toBeDeleted));
         enqueueWork(context, TrackDeleteService.class, JOB_ID, intent);
     }
 
     @Override
     protected void onHandleWork(@NonNull Intent intent) {
-        ResultReceiver resultReceiver = intent.getParcelableExtra(EXTRA_RECEIVER);
-        ArrayList<Track.Id> trackIds = intent.getParcelableArrayListExtra(EXTRA_TRACK_IDS);
+        Bundle extras = intent.getExtras();
+        if (extras == null) {
+            return;
+        }
+
+        ResultReceiver resultReceiver = extras.getParcelable(EXTRA_RECEIVER);
+        ArrayList<Track.Id> trackIds = extras.getParcelableArrayList(EXTRA_TRACK_IDS);
 
         ContentProviderUtils contentProviderUtils = new ContentProviderUtils(this);
         contentProviderUtils.deleteTracks(this, trackIds);
@@ -54,10 +69,18 @@ public class TrackDeleteService extends JobIntentService {
 
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
-            switch (resultCode) {
-                case RESULT_CODE_SUCCESS -> receiver.onDeleteFinished();
-                default -> throw new RuntimeException("Unknown resultCode.");
+            if (resultCode == RESULT_CODE_SUCCESS) {
+                receiver.onDeleteFinished();
+            } else {
+                try {
+                    throw new UnknownResultCodeException();
+                } catch (UnknownResultCodeException e) {
+
+                    
+                }
             }
+
+
         }
 
         public interface Receiver {

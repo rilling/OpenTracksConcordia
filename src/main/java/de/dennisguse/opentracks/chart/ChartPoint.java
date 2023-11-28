@@ -21,11 +21,18 @@ public class ChartPoint {
     private Double cadence;
     private Double power;
 
-    @Deprecated
+    /**
+     * This class represents a chart point.
+     *
+     * @deprecated This constructor is deprecated and will be removed in a future version.
+     *             Use an alternative constructor or method to create ChartPoint instances.
+     */
+    @Deprecated(since = "1.0", forRemoval = true)
     @VisibleForTesting
     ChartPoint(double altitude) {
         this.altitude = altitude;
     }
+
 
     public ChartPoint(@NonNull TrackStatistics trackStatistics, @NonNull TrackPoint trackPoint, Speed smoothedSpeed, boolean chartByDistance, UnitSystem unitSystem) {
         if (chartByDistance) {

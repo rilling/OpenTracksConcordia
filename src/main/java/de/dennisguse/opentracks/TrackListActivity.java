@@ -17,9 +17,11 @@
 package de.dennisguse.opentracks;
 
 import android.app.ActivityOptions;
+import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
 import android.graphics.drawable.AnimatedVectorDrawable;
@@ -31,11 +33,13 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
-
+import android.os.Handler;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.cursoradapter.widget.ResourceCursorAdapter;
@@ -75,6 +79,8 @@ import de.dennisguse.opentracks.util.IntentDashboardUtils;
 import de.dennisguse.opentracks.util.IntentUtils;
 import de.dennisguse.opentracks.util.PermissionRequester;
 import de.dennisguse.opentracks.util.StringUtils;
+import android.os.CountDownTimer;
+import android.view.MenuItem;
 
 /**
  * An activity displaying a list of tracks.
@@ -82,9 +88,10 @@ import de.dennisguse.opentracks.util.StringUtils;
  * @author Leif Hendrik Wilden
  */
 public class TrackListActivity extends AbstractTrackDeleteActivity implements ConfirmDeleteDialogFragment.ConfirmDeleteCaller {
-
+    public static String notifChoice = "speed";
     private static final String TAG = TrackListActivity.class.getSimpleName();
-
+    private CountDownTimer delayTimer;
+    private int selectedDelayInSeconds = 0;
     // The following are set in onCreate
     private TrackRecordingServiceConnection trackRecordingServiceConnection;
     private ResourceCursorAdapter resourceCursorAdapter;
@@ -99,6 +106,14 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
     private GpsStatusValue gpsStatusValue = TrackRecordingService.STATUS_GPS_DEFAULT;
     private RecordingStatus recordingStatus = TrackRecordingService.STATUS_DEFAULT;
 
+    private static final String NOTIFICATION_PREFERENCE_KEY = "notification_preference_key";
+
+    // Constants for notification options
+    private static final int SPEED_METRIC_CHOICE = 0;
+    private static final int HEART_RATE_METRIC_CHOICE = 1;
+    private static final int DISTANCE_METRIC_CHOICE = 2;
+    private static final int DEFAULT_CHOICE = SPEED_METRIC_CHOICE;
+
     // Callback when an item is selected in the contextual action mode
     private final ActivityUtils.ContextualActionModeCallback contextualActionModeCallback = new ActivityUtils.ContextualActionModeCallback() {
 
@@ -107,7 +122,7 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
             boolean isSingleSelection = trackIds.length == 1;
 
             viewBinding.bottomAppBar.performHide(true);
-            viewBinding.trackListFabAction.setVisibility(View.INVISIBLE);
+            viewBinding.button.setVisibility(View.INVISIBLE);
 
             menu.findItem(R.id.list_context_menu_edit).setVisible(isSingleSelection);
             menu.findItem(R.id.list_context_menu_select_all).setVisible(showSelectAll);
@@ -120,7 +135,7 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
 
         @Override
         public void onDestroy() {
-            viewBinding.trackListFabAction.setVisibility(View.VISIBLE);
+            viewBinding.button.setVisibility(View.VISIBLE);
             viewBinding.bottomAppBar.performShow(true);
         }
     };
@@ -180,6 +195,24 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
             }
         });
 
+        MaterialButton timerButton = findViewById(R.id.timer_button);
+
+        // Set up click listener for the timer button
+        timerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Show the dropdown menu
+                showTimerMenu(v);
+            }
+        });
+
+
+        this.invalidateOptionsMenu();
+        LoaderManager.getInstance(this).restartLoader(0, null, loaderCallbacks);
+
+        // Float button
+//         setFloatButton();
+
         viewBinding.trackList.setEmptyView(viewBinding.trackListEmptyView);
         viewBinding.trackList.setOnItemClickListener((parent, view, position, trackIdId) -> {
             Track.Id trackId = new Track.Id(trackIdId);
@@ -238,25 +271,43 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
         viewBinding.trackList.setAdapter(resourceCursorAdapter);
         ActivityUtils.configureListViewContextualMenu(viewBinding.trackList, contextualActionModeCallback);
 
-        viewBinding.trackListFabAction.setOnClickListener((view) -> {
+        viewBinding.button.setOnClickListener((view) -> {
             if (recordingStatus.isRecording()) {
                 Toast.makeText(TrackListActivity.this, getString(R.string.hold_to_stop), Toast.LENGTH_LONG).show();
                 return;
             }
 
+
             // Not Recording -> Recording
+            try {
+                runOnUiThread(() -> {
+                    for (int i = selectedDelayInSeconds; i >= 0; i--) {
+
+                        final int secondsLeft = i;
+                        Toast toast = Toast.makeText(TrackListActivity.this,"Recording starts in " + secondsLeft + " seconds", Toast.LENGTH_SHORT);
+                        toast.show();
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        toast.cancel();
+                    }});
+
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
             updateGpsMenuItem(false, true);
             new TrackRecordingServiceConnection((service, connection) -> {
-                Track.Id trackId = service.startNewTrack();
-
+               // Track.Id trackId = service.startNewTrack();
                 Intent newIntent = IntentUtils.newIntent(TrackListActivity.this, TrackRecordingActivity.class);
-                newIntent.putExtra(TrackRecordingActivity.EXTRA_TRACK_ID, trackId);
+                //newIntent.putExtra(TrackRecordingActivity.EXTRA_TRACK_ID, trackId);
                 startActivity(newIntent);
 
                 connection.unbind(this);
             }).startAndBind(this, true);
         });
-        viewBinding.trackListFabAction.setOnLongClickListener((view) -> {
+        viewBinding.button.setOnLongClickListener((view) -> {
             if (!recordingStatus.isRecording()) {
                 return false;
             }
@@ -265,13 +316,29 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
             ActivityUtils.vibrate(this, 1000);
             updateGpsMenuItem(false, false);
             trackRecordingServiceConnection.stopRecording(TrackListActivity.this);
-            viewBinding.trackListFabAction.setImageResource(R.drawable.ic_baseline_record_24);
-            viewBinding.trackListFabAction.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.red_dark));
+            //   viewBinding.button.setImageResource(R.drawable.ic_baseline_record_24);
+            viewBinding.button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.red_dark));
+            selectedDelayInSeconds=0;
             return true;
         });
 
         setSupportActionBar(viewBinding.trackListToolbar);
+        if (recordingStatus.isRecording()) {
+            Toast.makeText(TrackListActivity.this, getString(R.string.hold_to_stop), Toast.LENGTH_LONG).show();
+            return;
+        }
 
+        // Not Recording -> Recording
+        updateGpsMenuItem(false, true);
+        new TrackRecordingServiceConnection((service, connection) -> {
+            //Track.Id trackId = service.startNewTrack();
+
+            Intent newIntent = IntentUtils.newIntent(TrackListActivity.this, TrackRecordingActivity.class);
+//            newIntent.putExtra(TrackRecordingActivity.EXTRA_TRACK_ID, trackId);
+            startActivity(newIntent);
+
+            connection.unbind(this);
+        }).startAndBind(this, true);
         loadData(getIntent());
     }
 
@@ -296,7 +363,7 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
         LoaderManager.getInstance(this).restartLoader(0, null, loaderCallbacks);
 
         // Float button
-        setFloatButton();
+//        setFloatButton();
     }
 
     @Override
@@ -312,7 +379,14 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
         super.onDestroy();
         viewBinding = null;
         trackRecordingServiceConnection = null;
+
+        // Cancel the delay timer if it's running
+        if (delayTimer != null) {
+            delayTimer.cancel();
+        }
     }
+
+
 
     @Override
     protected View getRootView() {
@@ -374,7 +448,76 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
         }
         return super.onKeyUp(keyCode, event);
     }
+    public void showTimerMenu(View view) {
+        PopupMenu popupMenu = new PopupMenu(this, view);
+        popupMenu.getMenuInflater().inflate(R.menu.timer_menu, popupMenu.getMenu());
 
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+
+                /*if (item.getItemId() == R.id.menu_no_timer) {
+                    // Handle 0 seconds
+                    showToast("Timer has been disabled");
+                    return true;
+                }
+                if (item.getItemId() == R.id.menu_1_second) {
+                    // Handle 1-second selection
+                    showToast("1 Second selected");
+                    return true;
+                } else if (item.getItemId() == R.id.menu_2_seconds) {
+                    // Handle 2-seconds selection
+                    showToast("2 Seconds selected");
+                    return true;
+                }
+                else if (item.getItemId() == R.id.menu_5_seconds) {
+                    // Handle 5-seconds selection
+                    showToast("5 Seconds selected");
+                    return true;
+                }
+                else if (item.getItemId() == R.id.menu_10_seconds) {
+                    // Handle 10-seconds selection
+                    showToast("10 Seconds selected");
+                    return true;
+                }else {
+                    return false;
+                }
+            */
+                handleDelaySelection(item.getItemId());
+                return true;
+            }
+        });
+
+        popupMenu.show();
+    }
+
+    private void handleDelaySelection(int itemId) {
+        if (itemId == R.id.menu_no_timer) {
+            // Handle no delay selection
+            showToast("Timer has been disabled");
+            selectedDelayInSeconds = 0;
+        } else if (itemId == R.id.menu_1_second) {
+            selectedDelayInSeconds = 1;
+            showToast("1 Second selected");
+        } else if (itemId == R.id.menu_2_seconds) {
+            selectedDelayInSeconds = 2;
+            showToast("2 Seconds selected");
+        } else if (itemId == R.id.menu_5_seconds) {
+            selectedDelayInSeconds = 5;
+            showToast("5 Seconds selected");
+        } else if (itemId == R.id.menu_10_seconds) {
+            selectedDelayInSeconds = 10;
+            showToast("10 Seconds selected");
+        }
+
+    }
+
+
+
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
     @Override
     public void overridePendingTransition(int enterAnim, int exitAnim) {
         //Disable animations as it is weird going into searchMode; looks okay for SplashScreen.
@@ -444,6 +587,7 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
             }
         }
     }
+
 
     /**
      * Handles a context item selection.
@@ -553,13 +697,84 @@ public class TrackListActivity extends AbstractTrackDeleteActivity implements Co
         updateGpsMenuItem(true, recordingStatus.isRecording());
     }
 
-    private void setFloatButton() {
-        viewBinding.trackListFabAction.setImageResource(recordingStatus.isRecording() ? R.drawable.ic_baseline_stop_24 : R.drawable.ic_baseline_record_24);
-        viewBinding.trackListFabAction.setBackgroundTintList(ContextCompat.getColorStateList(this, recordingStatus.isRecording() ? R.color.opentracks : R.color.red_dark));
-    }
+    // private void setFloatButton() {
+    //   viewBinding.button.setImageResource(recordingStatus.isRecording() ? R.drawable.ic_baseline_stop_24 : R.drawable.ic_baseline_record_24);
+    // viewBinding.button.setBackgroundTintList(ContextCompat.getColorStateList(this, recordingStatus.isRecording() ? R.color.opentracks : R.color.red_dark));
+    // }
 
     private void onRecordingStatusChanged(RecordingStatus status) {
         recordingStatus = status;
-        setFloatButton();
+        // setFloatButton();
+    }
+
+
+    // Add a new method for handling the start recording action
+    private void startRecording() {
+        // Not Recording -> Recording
+        try {
+            runOnUiThread(() -> {
+                for (int i = selectedDelayInSeconds; i >= 0; i--) {
+
+                    final int secondsLeft = i;
+                    Toast toast = Toast.makeText(TrackListActivity.this,"Recording starts in " + secondsLeft + " seconds", Toast.LENGTH_SHORT);
+                    toast.show();
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    toast.cancel();
+                }});
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        updateGpsMenuItem(false, true);
+        new TrackRecordingServiceConnection((service, connection) -> {
+            Track.Id trackId = service.startNewTrack();
+
+            Intent newIntent = IntentUtils.newIntent(TrackListActivity.this, TrackRecordingActivity.class);
+            newIntent.putExtra(TrackRecordingActivity.EXTRA_TRACK_ID, trackId);
+            startActivity(newIntent);
+
+            connection.unbind(this);
+        }).startAndBind(this, true);
+    }
+
+    // Function to show the dialog for notification options
+    private void showNotificationOptionsDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.choose_notification_option)
+                .setItems(R.array.notification_options, (dialog, which) -> {
+                    // Store the user's choice
+                    saveNotificationPreference(which);
+
+                    // Update the notification based on the user's choice
+                    updateNotification();
+
+                    // Start recording after the user has made a choice
+                    startRecording();
+                });
+        builder.create().show();
+    }
+
+    // Function to save the user's notification preference
+    private void saveNotificationPreference(int choice) {
+        SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(NOTIFICATION_PREFERENCE_KEY, choice);
+        editor.apply();
+    }
+
+    // Function to update the notification based on user's choice
+    private void updateNotification() {
+        SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
+        int userChoice = preferences.getInt(NOTIFICATION_PREFERENCE_KEY, DEFAULT_CHOICE);
+
+        switch (userChoice) {
+            case SPEED_METRIC_CHOICE -> notifChoice = "speed";
+            case HEART_RATE_METRIC_CHOICE -> notifChoice = "heartRate";
+            case DISTANCE_METRIC_CHOICE -> notifChoice = "distance";
+        }
     }
 }

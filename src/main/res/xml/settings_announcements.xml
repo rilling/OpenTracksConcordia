@@ -32,6 +32,13 @@
         android:title="@string/voice_on_device_speaker_title" />
     <PreferenceCategory android:title="@string/settings_announcements_title">
 
+        <!-- Added Current Time Voice Announcement Switch-->
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/voice_announce_time_key"
+            android:title="@string/time_announce" />
+
+        
         <SwitchPreference
             android:defaultValue="true"
             android:key="@string/voice_announce_total_distance_key"
@@ -56,6 +63,11 @@
             android:defaultValue="false"
             android:key="@string/voice_announce_average_heart_rate_key"
             android:title="@string/settings_announcements_average_heart_rate" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="@string/voice_announce_current_heart_rate_key"
+            android:title="@string/settings_announcements_current_heart_rate" />
 
         <SwitchPreference
             android:defaultValue="false"

@@ -234,6 +234,33 @@ public class PreferencesUtils {
         }
     }
 
+    public static WeightUnit getWeightUnit() {
+        final String WEIGHT_UNIT_DEFAULT = resources.getString(R.string.weight_unit_default);
+
+        final String VALUE = getString(R.string.weight_unit_key, WEIGHT_UNIT_DEFAULT);
+        return Arrays.stream(WeightUnit.values())
+                .filter(d -> VALUE.equals(resources.getString(d.getPreferenceId(), WEIGHT_UNIT_DEFAULT)))
+                .findFirst()
+                .orElse(WeightUnit.defaultWeightUnit());
+    }
+
+    public static void setWeightUnit(WeightUnit weightUnit) {
+        setString(R.string.weight_unit_key, weightUnit.getPreferenceId());
+    }
+
+    public static TemperatureUnit getTemperatureUnit() {
+        final String TEMPERATURE_UNIT_DEFAULT = resources.getString(R.string.temperature_unit_default);
+
+        final String VALUE = getString(R.string.temperature_unit_key, TEMPERATURE_UNIT_DEFAULT);
+        return Arrays.stream(TemperatureUnit.values())
+                .filter(d -> VALUE.equals(resources.getString(d.getPreferenceId(), TEMPERATURE_UNIT_DEFAULT)))
+                .findFirst()
+                .orElse(TemperatureUnit.defaultTemperatureUnit());
+    }
+
+    public static void setTemperatureUnit(TemperatureUnit temperatureUnit) {
+        setString(R.string.temperature_unit_key, temperatureUnit.getPreferenceId());
+    }
     public static boolean isReportSpeed(String activityTypeLocalized) {
         final String STATS_RATE_DEFAULT = resources.getString(R.string.stats_rate_default);
         String currentStatsRate = getString(R.string.stats_rate_key, STATS_RATE_DEFAULT);
@@ -370,6 +397,17 @@ public class PreferencesUtils {
         return getFloat(R.string.voice_speed_rate_key, DEFAULT);
     }
 
+    //adding time thing
+
+    public static boolean shouldVoiceAnnounceTime(){
+        return getBoolean(R.string.voice_announce_time_key, true);
+    }
+
+    @VisibleForTesting
+    public static void setVoiceAnnounceTime(boolean value) {
+        setBoolean(R.string.voice_announce_time_key, value);
+    }
+
     public static boolean shouldVoiceAnnounceTotalDistance() {
         return getBoolean(R.string.voice_announce_total_distance_key, true);
     }
@@ -424,10 +462,59 @@ public class PreferencesUtils {
         setBoolean(R.string.voice_announce_average_heart_rate_key, value);
     }
 
+    public static boolean shouldElevationGain() {
+        return getBoolean(R.string.aggregated_stats_package_key, false);
+    }
+
+    @VisibleForTesting
+    public static void setElevationGain(boolean value) {
+        setBoolean(R.string.aggregated_stats_package_key, value);
+    }
+
+    public static boolean shouldDistance() {
+        Log.d("myLogs", String.valueOf(R.string.distance_preference_key));
+        return getBoolean(R.string.distance_preference_key, false);
+    }
+
+    @VisibleForTesting
+    public static void setDistance(boolean value) {
+        setBoolean(R.string.distance_preference_key, value);
+    }
+
+    public static boolean shouldMaxSpeed() {
+        return getBoolean(R.string.max_speed_preference_key, false);
+    }
+
+    @VisibleForTesting
+    public static void setMaxSpeed(boolean value) {
+        setBoolean(R.string.distance_preference_key, value);
+    }
+
+    public static boolean shouldMovingSpeed() {
+        return getBoolean(R.string.moving_speed_preference_key, false);
+    }
+
+    @VisibleForTesting
+    public static void setMovingSpeed(boolean value) {
+        setBoolean(R.string.moving_speed_preference_key, value);
+    }
+    public static boolean shouldMovingTime() {
+        return getBoolean(R.string.moving_time_preference_key, false);
+    }
+
     public static Distance getRecordingDistanceInterval() {
         return Distance.of(getInt(R.string.recording_distance_interval_key, getRecordingDistanceIntervalDefaultInternal()));
     }
 
+    public static boolean shouldVoiceAnnounceCurrentHeartRate() {
+        return getBoolean(R.string.voice_announce_current_heart_rate_key, false);
+    }
+
+    @VisibleForTesting
+    public static void setVoiceAnnounceCurrentHeartRate(boolean value) {
+        setBoolean(R.string.voice_announce_current_heart_rate_key, value);
+    }
+    
     public static Distance getRecordingDistanceIntervalDefault() {
         return Distance.of(getRecordingDistanceIntervalDefaultInternal());
     }

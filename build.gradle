@@ -1,12 +1,30 @@
-apply plugin: 'com.android.application'
-
 buildscript {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.2.0-beta01'
+        classpath 'com.android.tools.build:gradle:8.1.2'
+        classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:4.2.1.3168'
+    }
+}
+
+plugins {
+    id "org.sonarqube" version "4.2.1.3168"
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'org.sonarqube'
+
+sonarqube {
+    properties {
+        property "sonar.projectName", "Group 11 SOEN 6431"
+        property "sonar.projectKey", "Group-11-SOEN-6431"
+        property "sonar.host.url", "http://localhost:9000"
+        property "sonar.login", "sqp_7f8adc6706b839b752be96c5d687384252602ab5"
     }
 }
 
@@ -65,7 +83,7 @@ android {
     defaultConfig {
         applicationId "de.dennisguse.opentracks"
         versionCode 5389
-        versionName "v4.8.3"
+        versionName "v4.9.0"
 
         buildConfigField "String", "VERSION_NAME_FULL", "\"${getVersionName()}\""
 
@@ -77,13 +95,14 @@ android {
     }
     signingConfigs {
         nightly {
-            if (System.getProperty("nightly_store_file") != null) {
-                storeFile file(System.getProperty("nightly_store_file"))
-                storePassword System.getProperty("nightly_store_password")
-                keyAlias System.getProperty("nightly_key_alias")
-                keyPassword System.getProperty("nightly_key_password")
-            }
+
+            storeFile file("my-release-key.keystore")
+            storePassword "Group5"
+            keyAlias "Group5"
+            keyPassword "Group5"
+
         }
+
     }
 
     namespace 'de.dennisguse.opentracks'
@@ -131,10 +150,10 @@ dependencies {
     implementation 'androidx.preference:preference:1.2.1'
     implementation 'androidx.documentfile:documentfile:1.0.1'
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
-    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'com.google.android.material:material:1.10.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.core:core-splashscreen:1.0.1'
-    implementation 'androidx.mediarouter:mediarouter:1.4.0'
+    implementation 'androidx.mediarouter:mediarouter:1.6.0'
 
     androidTestImplementation 'androidx.test:core:1.5.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

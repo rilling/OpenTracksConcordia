@@ -62,11 +62,11 @@ public abstract class BluetoothLeSensorPreference extends DialogPreference {
     private String value;
     private boolean valueSet = false;
 
-    public String getValue() {
+    public String getData() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setData(String value) {
         final boolean changed = !TextUtils.equals(this.value, value);
         if (changed || !valueSet) {
             this.value = value;
@@ -80,16 +80,16 @@ public abstract class BluetoothLeSensorPreference extends DialogPreference {
 
     @Override
     protected void onSetInitialValue(Object defaultValue) {
-        setValue(getPersistedString((String) defaultValue));
+        setData(getPersistedString((String) defaultValue));
     }
 
     @Override
     public CharSequence getSummary() {
-        if (getValue() == null || PreferencesUtils.isBluetoothSensorAddressNone(getValue())) {
+        if (getData() == null || PreferencesUtils.isBluetoothSensorAddressNone(getData())) {
             return getContext().getString(DEVICE_NONE_RESOURCEID);
         }
 
-        return getValue();
+        return getData();
     }
 
     public abstract PreferenceDialogFragmentCompat createInstance();
@@ -192,9 +192,9 @@ public abstract class BluetoothLeSensorPreference extends DialogPreference {
             selectedEntryIndex = 0;
 
             BluetoothLeSensorPreference preference = (BluetoothLeSensorPreference) getPreference();
-            String deviceSelected = preference.getValue();
+            String deviceSelected = preference.getData();
             if (deviceSelected != null && !deviceNone.equals(deviceSelected)) {
-                listAdapter.add(preference.getValue(), preference.getValue());
+                listAdapter.add(preference.getData(), preference.getData());
                 selectedEntryIndex = 1;
             }
 
@@ -239,7 +239,7 @@ public abstract class BluetoothLeSensorPreference extends DialogPreference {
                 String value = listAdapter.get(selectedEntryIndex).getAddress();
                 BluetoothLeSensorPreference preference = (BluetoothLeSensorPreference) getPreference();
                 if (preference.callChangeListener(value)) {
-                    preference.setValue(value);
+                    preference.setData(value);
                 }
             }
         }

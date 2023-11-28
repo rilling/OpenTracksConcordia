@@ -1,5 +1,6 @@
 package de.dennisguse.opentracks.services.announcement;
 
+import java.util.Random;
 import static android.text.Spanned.SPAN_INCLUSIVE_EXCLUSIVE;
 import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldVoiceAnnounceAverageHeartRate;
 import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldVoiceAnnounceAverageSpeedPace;
@@ -7,6 +8,8 @@ import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldVoiceAnno
 import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldVoiceAnnounceLapSpeedPace;
 import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldVoiceAnnounceMovingTime;
 import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldVoiceAnnounceTotalDistance;
+import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldVoiceAnnounceCurrentHeartRate;
+import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldVoiceAnnounceTime;
 
 import android.content.Context;
 import android.icu.text.MessageFormat;
@@ -27,17 +30,30 @@ import de.dennisguse.opentracks.settings.UnitSystem;
 import de.dennisguse.opentracks.stats.SensorStatistics;
 import de.dennisguse.opentracks.stats.TrackStatistics;
 import de.dennisguse.opentracks.ui.intervals.IntervalStatistics;
+import de.dennisguse.opentracks.util.CTime;
+import de.dennisguse.opentracks.util.SpeechTxtForTime;
+import de.dennisguse.opentracks.util.MotivationalAnnouncements;
 
 class VoiceAnnouncementUtils {
 
     private VoiceAnnouncementUtils() {
     }
 
-    static Spannable getAnnouncement(Context context, TrackStatistics trackStatistics, UnitSystem unitSystem, boolean isReportSpeed, @Nullable IntervalStatistics.Interval currentInterval, @Nullable SensorStatistics sensorStatistics) {
+    static Spannable getAnnouncement(Context context, TrackStatistics trackStatistics, UnitSystem unitSystem,
+            boolean isReportSpeed, @Nullable IntervalStatistics.Interval currentInterval,
+            @Nullable SensorStatistics sensorStatistics) {
         SpannableStringBuilder builder = new SpannableStringBuilder();
         Distance totalDistance = trackStatistics.getTotalDistance();
         Speed averageMovingSpeed = trackStatistics.getAverageMovingSpeed();
         Speed currentDistancePerTime = currentInterval != null ? currentInterval.getSpeed() : null;
+
+        // Announce current time
+        if (shouldVoiceAnnounceTime()) {
+            SpeechTxtForTime t = new SpeechTxtForTime();
+            CTime c = new CTime();
+            String currentTime = c.getCurrentTime();
+            builder.append(t.speechText + currentTime + ".");
+        }
 
         int perUnitStringId;
         int distanceId;
@@ -74,9 +90,11 @@ class VoiceAnnouncementUtils {
         if (shouldVoiceAnnounceTotalDistance()) {
             builder.append(context.getString(R.string.total_distance));
             // Units should always be english singular for TTS.
-            // See https://developer.android.com/reference/android/text/style/TtsSpan?hl=en#TYPE_MEASURE
+            // See
+            // https://developer.android.com/reference/android/text/style/TtsSpan?hl=en#TYPE_MEASURE
             String template = context.getResources().getString(distanceId);
-            appendDecimalUnit(builder, MessageFormat.format(template, Map.of("n", distanceInUnit)), distanceInUnit, 1, unitDistanceTTS);
+            appendDecimalUnit(builder, MessageFormat.format(template, Map.of("n", distanceInUnit)), distanceInUnit, 1,
+                    unitDistanceTTS);
             // Punctuation helps introduce natural pauses in TTS
             builder.append(".");
         }
@@ -97,7 +115,8 @@ class VoiceAnnouncementUtils {
                 builder.append(" ")
                         .append(context.getString(R.string.speed));
                 String template = context.getResources().getString(speedId);
-                appendDecimalUnit(builder, MessageFormat.format(template, Map.of("n", speedInUnit)), speedInUnit, 1, unitSpeedTTS);
+                appendDecimalUnit(builder, MessageFormat.format(template, Map.of("n", speedInUnit)), speedInUnit, 1,
+                        unitSpeedTTS);
                 builder.append(".");
             }
             if (shouldVoiceAnnounceLapSpeedPace() && currentDistancePerTime != null) {
@@ -106,7 +125,9 @@ class VoiceAnnouncementUtils {
                     builder.append(" ")
                             .append(context.getString(R.string.lap_speed));
                     String template = context.getResources().getString(speedId);
-                    appendDecimalUnit(builder, MessageFormat.format(template, Map.of("n", currentDistancePerTimeInUnit)), currentDistancePerTimeInUnit, 1, unitSpeedTTS);
+                    appendDecimalUnit(builder,
+                            MessageFormat.format(template, Map.of("n", currentDistancePerTimeInUnit)),
+                            currentDistancePerTimeInUnit, 1, unitSpeedTTS);
                     builder.append(".");
                 }
             }
@@ -137,7 +158,8 @@ class VoiceAnnouncementUtils {
 
             builder.append(" ")
                     .append(context.getString(R.string.average_heart_rate));
-            appendCardinal(builder, context.getString(R.string.sensor_state_heart_rate_value, averageHeartRate), averageHeartRate);
+            appendCardinal(builder, context.getString(R.string.sensor_state_heart_rate_value, averageHeartRate),
+                    averageHeartRate);
             builder.append(".");
         }
         if (shouldVoiceAnnounceLapHeartRate() && currentInterval != null && currentInterval.hasAverageHeartRate()) {
@@ -145,14 +167,51 @@ class VoiceAnnouncementUtils {
 
             builder.append(" ")
                     .append(context.getString(R.string.current_heart_rate));
-            appendCardinal(builder, context.getString(R.string.sensor_state_heart_rate_value, currentHeartRate), currentHeartRate);
+            appendCardinal(builder, context.getString(R.string.sensor_state_heart_rate_value, currentHeartRate),
+                    currentHeartRate);
+            builder.append(".");
+        }
+        if(shouldVoiceAnnounceCurrentHeartRate() && currentInterval != null && currentInterval.hasAverageHeartRate()){
+            int currentHeartRate = Math.round(currentInterval.getAverageHeartRate().getBPM());
+            builder.append(context.getString(R.string.current_heart_rate)).append(" ").append(String.valueOf(currentHeartRate));
             builder.append(".");
         }
 
         return builder;
     }
 
-    private static void appendDuration(@NonNull Context context, @NonNull SpannableStringBuilder builder, @NonNull Duration duration) {
+    static Spannable atTheEndAnnounce() {
+        String ma = "Your session as ended.Remember! Consistency is the key to success";
+        SpannableStringBuilder motivator = new SpannableStringBuilder();
+        return (motivator.append(ma));
+    }
+
+    static Spannable getMotivationalAnnouncements() {
+        MotivationalAnnouncements ma = new MotivationalAnnouncements();
+        Random random = new Random();
+        int i = random.nextInt(ma.motivations.length); // random number between 0 (inclusive) and length of the array
+                                                       // (exclusive)
+
+        SpannableStringBuilder motivator = new SpannableStringBuilder();
+        return (motivator.append(ma.motivations[i]));
+    }
+
+    static Spannable getMotivationalAnnouncementsForSpeedIncreased() {
+        MotivationalAnnouncements ma = new MotivationalAnnouncements();
+
+        SpannableStringBuilder motivator = new SpannableStringBuilder();
+        return (motivator.append(ma.speedIncreased_motivations));
+    }
+
+    static Spannable getMotivationalAnnouncementsForSpeedDecreased() {
+        MotivationalAnnouncements ma = new MotivationalAnnouncements();
+
+        SpannableStringBuilder motivator = new SpannableStringBuilder();
+        return (motivator.append(ma.speedDecreasedMotivation));
+    }
+
+    private static void appendDuration(@NonNull Context context, @NonNull SpannableStringBuilder builder,
+            @NonNull Duration duration) {
         int hours = (int) (duration.toHours());
         int minutes = (int) (duration.toMinutes() % 60);
         int seconds = (int) (duration.getSeconds() % 60);
@@ -172,17 +231,19 @@ class VoiceAnnouncementUtils {
     }
 
     /**
-     * Speaks as: 98.14 [UNIT] - ninety eight point one four [UNIT with correct plural form]
+     * Speaks as: 98.14 [UNIT] - ninety eight point one four [UNIT with correct
+     * plural form]
      *
-     * @param number The number to speak
+     * @param number    The number to speak
      * @param precision The number of decimal places to announce
      */
-    private static void appendDecimalUnit(@NonNull SpannableStringBuilder builder, @NonNull String localizedText, double number, int precision, @NonNull String unit) {
+    private static void appendDecimalUnit(@NonNull SpannableStringBuilder builder, @NonNull String localizedText,
+            double number, int precision, @NonNull String unit) {
         TtsSpan.MeasureBuilder measureBuilder = new TtsSpan.MeasureBuilder()
                 .setUnit(unit);
 
         if (precision == 0) {
-            measureBuilder.setNumber((long)number);
+            measureBuilder.setNumber((long) number);
         } else {
             // Round before extracting integral and decimal parts
             double roundedNumber = Math.round(Math.pow(10, precision) * number) / Math.pow(10.0, precision);
@@ -200,9 +261,10 @@ class VoiceAnnouncementUtils {
     /**
      * Speaks as: 98 - ninety eight
      */
-    private static void appendCardinal(@NonNull SpannableStringBuilder builder, @NonNull String localizedText, long number) {
+    private static void appendCardinal(@NonNull SpannableStringBuilder builder, @NonNull String localizedText,
+            long number) {
         builder.append(" ")
-                .append(localizedText, new TtsSpan.CardinalBuilder().setNumber(number).build(), SPAN_INCLUSIVE_EXCLUSIVE);
+                .append(localizedText, new TtsSpan.CardinalBuilder().setNumber(number).build(),
+                        SPAN_INCLUSIVE_EXCLUSIVE);
     }
 }
-

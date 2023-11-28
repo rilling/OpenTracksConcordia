@@ -4,6 +4,12 @@
     android:title="@string/menu_settings">
 
     <Preference
+        android:icon="@drawable/user_profile"
+        android:key="@string/user_profile"
+        android:summary="@string/settings_user_profile_summary"
+        android:title="@string/settings_user_profile_title" />
+
+    <Preference
         android:icon="@drawable/ic_units"
         android:key="@string/settings_defaults_key"
         android:summary="@string/settings_defaults_summary"
@@ -55,6 +61,12 @@
         android:key="@string/settings_api_key"
         android:summary="@string/settings_api_summary"
         android:title="@string/settings_api_title" />
+
+    <Preference
+        android:icon="@drawable/ic_statistics_24dp"
+        android:key="@string/settings_aggregated_stats_key"
+        android:summary="@string/settings_aggregated_stats_summary"
+        android:title="@string/settings_aggregated_stats" />
 
     <Preference
         android:icon="@drawable/ic_baseline_info_24"
