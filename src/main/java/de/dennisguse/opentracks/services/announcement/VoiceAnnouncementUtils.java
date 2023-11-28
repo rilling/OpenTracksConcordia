@@ -8,6 +8,7 @@ import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldVoiceAnno
 import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldVoiceAnnounceLapSpeedPace;
 import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldVoiceAnnounceMovingTime;
 import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldVoiceAnnounceTotalDistance;
+import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldVoiceAnnounceCurrentHeartRate;
 import static de.dennisguse.opentracks.settings.PreferencesUtils.shouldVoiceAnnounceTime;
 
 import android.content.Context;
@@ -168,6 +169,11 @@ class VoiceAnnouncementUtils {
                     .append(context.getString(R.string.current_heart_rate));
             appendCardinal(builder, context.getString(R.string.sensor_state_heart_rate_value, currentHeartRate),
                     currentHeartRate);
+            builder.append(".");
+        }
+        if(shouldVoiceAnnounceCurrentHeartRate() && currentInterval != null && currentInterval.hasAverageHeartRate()){
+            int currentHeartRate = Math.round(currentInterval.getAverageHeartRate().getBPM());
+            builder.append(context.getString(R.string.current_heart_rate)).append(" ").append(String.valueOf(currentHeartRate));
             builder.append(".");
         }
 
